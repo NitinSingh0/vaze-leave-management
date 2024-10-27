@@ -33,6 +33,10 @@ Javascript
 <!--animate on Scroll js-->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 
+<!-- js chart libraray -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <!--Jquery-->
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -48,4 +52,3 @@ Javascript
 
 <!--Tailwind CSS and JS-->
 <script src="https://cdn.tailwindcss.com"></script>
-
