@@ -10,7 +10,7 @@ $pass = $row['Password'];
 }
 ?>
 
-<div class="bg-blue-200 h-screen pt-10">
+<div class="bg-blue-200 min-h-screen pt-4">
 <div class=" mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
   <div class=" bg-white mx-auto max-w-3xl rounded-md py-10">
 
