@@ -23,8 +23,6 @@
     MAIN CONTENTS 
     ****************/
     -->
-    <?php include('../Components/login.php'); ?>
-
     <!--
     /***************
     FOOTER
