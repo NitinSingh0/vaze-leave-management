@@ -1,6 +1,5 @@
 <?php
 error_reporting(0);
-session_start();
 if(isset($_POST['submit'])){
     $u_name=$_POST['u_name'];
     $pass=$_POST['pass'];
@@ -12,14 +11,16 @@ if(isset($_POST['submit'])){
             if($row['Username']==$u_name){
               if($pass=='NEW'){
                 if($row['Password']==$pass){
+                  session_start();
                   $_SESSION['Staff_id'] = $row['Staff_id'];
+                  echo $_SESSION['Staff_id'];
                   echo '<META HTTP-EQUIV="Refresh" Content="0.2; URL=changepass.php">';
                   $val=3;  //   3-> for new user
                   break;
                 }
               }else{
                 $hashedpass=$row['Password'];
-                echo $hashedpass ;
+                echo $hashedpass;
                 $okay=password_verify($pass,$hashedpass);
                 //$row['Password']==$pass
                 if($okay) {
@@ -34,6 +35,7 @@ if(isset($_POST['submit'])){
             }
 
             if($val==1){  //   1-> correct password  2-> incorrect password   0 -> user not exist
+              session_start();
               $_SESSION['Staff_id'] = $row['Staff_id'];
               echo '<script>alert("LOGIN SUCCESSFULL.....");</script>';
               echo '<META HTTP-EQUIV="Refresh" Content="0.5; URL=Main.php">';
