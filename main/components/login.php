@@ -1,72 +1,74 @@
-
 <?php
-include('../../config/connect.php');
+error_reporting(0);
 if(isset($_POST['submit'])){
-
     $u_name=$_POST['u_name'];
     $pass=$_POST['pass'];
-
     $sql="select * from staff";
     $result=mysqli_query($conn,$sql);
-
+    $val=0;  // 0 -> user not exist  1-> correct password  2-> incorrect password   3-> for new user  
     if($result){
         while($row=mysqli_fetch_assoc($result)){
             if($row['Username']==$u_name){
-                if ($row['Password']==$pass) {
-                    session_start();
-                    $_SESSION['Staff_id'] = $row['Staff_id'];
-                    echo '<script>alert("LOGIN SUCCESSFULL.....");</script>';
-                    echo '<META HTTP-EQUIV="Refresh" Content="0.5; URL=Main.php">';
+              if($pass=='NEW'){
+                if($row['Password']==$pass){
+                  session_start();
+                  $_SESSION['Staff_id'] = $row['Staff_id'];
+                  echo '<META HTTP-EQUIV="Refresh" Content="0.2; URL=changepass.php">';
+                  $val=3;  //   3-> for new user
+                  break;
+                }
+              }else{
+                $hashedpass=$row['Password'];
+                echo $hashedpass ;
+                $okay=password_verify($pass,$hashedpass);
+                //$row['Password']==$pass
+                if($okay) {
+                    $val=1;
+                    break;
                 }else{
-                    echo '<script>alert("WRONG PASSWORd !!");</script>';
+                    $val=2;
+                    break;
                   } 
-                }else{
-                    echo '<script>alert("USER DO NOT EXIST !!!! to Login.. !!!");</script/>';
-                  }
+                }
+              }
+            }
+
+            if($val==1){  //   1-> correct password  2-> incorrect password   0 -> user not exist
+              session_start();
+              $_SESSION['Staff_id'] = $row['Staff_id'];
+              echo '<script>alert("LOGIN SUCCESSFULL.....");</script>';
+              echo '<META HTTP-EQUIV="Refresh" Content="0.5; URL=Main.php">';
+            }elseif($val==2){
+              echo '<script>alert("WRONG PASSWORd !!");</script>';
+            }elseif($val==0){
+              echo '<script>alert("USER DO NOT EXIST !!!! to Login.. !!!");</script/>';
             }
         }
     }
+?>
 
-
-
-
-  ?>
-
-
-
-
-
-
-
+           
 <div class="bg-blue-200 h-screen pt-10">
-<script src="https://cdn.tailwindcss.com"></script>
 <div class=" mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
   <div class=" bg-white mx-auto max-w-3xl rounded-md py-10">
     <h1 class="text-center text-4xl font-bold text-black sm:text-4xl">Login</h1>
-
-
     <form method="POST" action="login.php" class="mb-0 mt-6 space-y-5 rounded-lg p-4 sm:p-6 lg:p-8">
-
     <div>
         <div>
             <h1 class="text-xl font-medium mb-3">Email</h1>
         </div>
-        
+      
         <div class="relative">
-       
           <input type="email" id="u_name" name="u_name" class="w-full border-2 border-black rounded-lg p-4 pe-12 text-sm shadow-sm" placeholder="Enter email" />
-
           <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
-
             <svg xmlns="http://www.w3.org/2000/svg" class="size-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
             </svg>
           </span>
         </div>
-        </div>
+      </div>
 
       <div>
-        
         <div>
             <h1 class="text-xl font-medium mb-3">Password</h1>
         </div>
