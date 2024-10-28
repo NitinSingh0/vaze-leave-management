@@ -15,6 +15,7 @@
 
 <body class="bg-white dark:bg-black text-white">
     <?php include('../layouts/header.php'); ?>
+    
     <?php include('../components/Main.php'); ?>
     <?php include('../layouts/footer.php'); ?>
     
