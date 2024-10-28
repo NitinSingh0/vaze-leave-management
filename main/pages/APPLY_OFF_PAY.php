@@ -98,7 +98,8 @@
                     </label>
                     <input type="number" name="no_of_days" id="no_of_days" required
                         class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                        onchange="generateDutyTable()" />
+                        onchange="generateDutyTable()"
+                        placeholder="Select No. Of Days" />
                 </div>
 
                 <!-- Dynamic Duty Table -->
@@ -109,7 +110,7 @@
                             <tr>
                                 <th class="border px-4 py-2">Date of Duty</th>
                                 <th class="border px-4 py-2">Nature of Work</th>
-                                <th class="border px-4 py-2">Off Duty Date</th> <!-- New column for Off Duty Date -->
+                                <th class="border px-4 py-2">Off Pay Date</th> <!-- New column for Off Duty Date -->
                             </tr>
                         </thead>
                         <tbody>
@@ -173,6 +174,7 @@
                     const offDutyInput = document.createElement("input");
                     offDutyInput.type = "date";
                     offDutyInput.name = `off_pay_date_${i + 1}`;
+                    offDutyInput.required = true;
                     offDutyInput.className = "w-full border border-[#e0e0e0] py-2 px-3";
                     // Get today's date
                     const today = new Date();
