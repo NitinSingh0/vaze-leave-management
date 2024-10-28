@@ -17,7 +17,7 @@
     <?php include('../layouts/header.php'); ?>
     <?php include('../components/Main.php'); ?>
     <?php include('../layouts/footer.php'); ?>
-    <h1>ok</h1>
+
 
     <!-- <script src=""></script> -->
 </body>
