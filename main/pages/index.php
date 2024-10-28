@@ -13,11 +13,11 @@
 
 </head>
 
-<body class="bg-white dark:bg-black">
+<body class="bg-white dark:bg-black text-white">
     <?php include('../layouts/header.php'); ?>
     <?php include('../components/Main.php'); ?>
     <?php include('../layouts/footer.php'); ?>
-    <h1>ok</h1>
+    
 
     <!-- <script src=""></script> -->
 </body>
