@@ -5,5 +5,9 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+<<<<<<< HEAD
 }
 
+=======
+};
+>>>>>>> main
