@@ -8,6 +8,9 @@ define("DB_NAME", "vaze_leave_management_db");
 
 $conn = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 if (mysqli_connect_errno()) {
-    //echo("not connected");
+    echo("not connected");
 } else {
+    echo("Successfull !!");
 }
+
+?>
