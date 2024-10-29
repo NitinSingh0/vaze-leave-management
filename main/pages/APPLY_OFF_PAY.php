@@ -169,6 +169,20 @@
                     workCell.appendChild(workInput);
                     row.appendChild(workCell);
 
+
+                    // // Nature of Work input cell
+                    // const workCell = document.createElement("td");
+                    // const workTextarea = document.createElement("textarea"); // Create a textarea instead of input
+                    // workTextarea.name = `nature_of_work_${i + 1}`;
+                    // workTextarea.required = true;
+                    // workTextarea.className = "w-full border border-[#e0e0e0] py-2 px-3";
+                    // workCell.appendChild(workTextarea); // Append the textarea to the cell
+                    // row.appendChild(workCell);
+
+
+
+
+
                     // Off Duty Date input cell
                     const offDutyCell = document.createElement("td");
                     const offDutyInput = document.createElement("input");
@@ -261,7 +275,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         //flag
         $success_export_duty = "";
-        $success_off_date="";
+        $success_off_date = "";
         $error_dates = "";
 
         foreach ($duty_data as $duty) {
@@ -291,8 +305,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $error_dates .= "$extra_duty, ";
                 }
             }
-
-           
         }
 
         // Trim trailing commas and spaces from dates
@@ -301,22 +313,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error_dates = rtrim($error_dates, ', ');
 
         // Display the combined alert message
-       
+
         if (!empty($error_dates)) {
             $message .= "\nFailed to apply Off Pay Leave for dates: $error_dates.";
             echo "<script>alert('$message');</script>";
+            echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_OFF_PAY.php">';
             
-        }elseif(!empty($success_off_date)){
+        } elseif (!empty($success_off_date)) {
 
             $message = "Off Pay Leave applied successfully for dates: $success_off_date.";
             echo "<script>alert('$message');</script>";
-       
+            echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_OFF_PAY.php">';
+            
         }
-
-      
-
-
     }
 }
 ?>
-
