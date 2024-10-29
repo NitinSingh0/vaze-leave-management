@@ -176,21 +176,21 @@
                     offDutyInput.name = `off_pay_date_${i + 1}`;
                     offDutyInput.required = true;
                     offDutyInput.className = "w-full border border-[#e0e0e0] py-2 px-3";
-                    // Get today's date
-                    const today = new Date();
+                    // // Get today's date
+                    // const today = new Date();
 
-                    // Add one day to the current date
-                    const tomorrow = new Date(today);
-                    tomorrow.setDate(today.getDate() + 1);
+                    // // Add one day to the current date
+                    // const tomorrow = new Date(today);
+                    // tomorrow.setDate(today.getDate() + 1);
 
-                    // Format the date as 'YYYY-MM-DD'
-                    const minDate = tomorrow.toISOString().split('T')[0];
+                    // // Format the date as 'YYYY-MM-DD'
+                    // const minDate = tomorrow.toISOString().split('T')[0];
 
-                    // Set the min attribute for your date input
-                    offDutyInput.min = minDate;
+                    // // Set the min attribute for your date input
+                    // offDutyInput.min = minDate;
 
-                    // const today = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
-                    // offDutyInput.min = today;
+                    const today = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
+                    offDutyInput.min = today;
                     offDutyCell.appendChild(offDutyInput);
                     row.appendChild(offDutyCell);
 
@@ -246,11 +246,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Process or display duty_data as needed
-        foreach ($duty_data as $duty) {
-            //     echo "Date of Duty: " . $duty['date_of_duty'] . "<br>";
-            //     echo "Date of Duty: " . $duty['off_pay_date'] . "<br>";
-            //     echo "Nature of Work: " . $duty['nature_of_work'] . "<br><br>";
-        }
+        // foreach ($duty_data as $duty) {
+        //     //     echo "Date of Duty: " . $duty['date_of_duty'] . "<br>";
+        //     //     echo "Date of Duty: " . $duty['off_pay_date'] . "<br>";
+        //     //     echo "Nature of Work: " . $duty['nature_of_work'] . "<br><br>";
+        // }
 
 
         //  echo "
@@ -259,167 +259,64 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // </script>
         // ";
 
-
+        //flag
+        $success_export_duty = "";
+        $success_off_date="";
+        $error_dates = "";
 
         foreach ($duty_data as $duty) {
             $extra_duty = $duty['date_of_duty'];
             $off_date = $duty['off_pay_date'];
             $nature = $duty['nature_of_work'];
 
-            $sql = "INSERT INTO n_off_pay_leave (Staff_id, Date_of_application, Extra_duty_date, Nature_of_work, Off_leave_date, leave_approval_status, A_year) 
+            // Check for duplicate entry
+            $checkSql = "SELECT * FROM n_off_pay_leave WHERE Staff_id = '$staff_id' AND Extra_Duty_date = '$extra_duty'";
+            $checkResult = $conn->query($checkSql);
+
+
+            if ($checkResult->num_rows > 0) {
+                // Duplicate found
+                echo "<script>alert('Duplicate Entry:Off Pay Leave has already been applied for $extra_duty!');</script>";
+            } else {
+                // No duplicate, proceed with insertion
+                $sql = "INSERT INTO n_off_pay_leave (Staff_id, Date_of_application, Extra_duty_date, Nature_of_work, Off_leave_date, leave_approval_status, A_year) 
                 VALUES ('$staff_id', '$application_date ', '$extra_duty', '$nature', '$off_date', 'P', $year)";
 
-            if ($res = $conn->query($sql)) {
-                echo "<script>alert('Off Pay Leave Applied Successfully!');</script>";
-                echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_OFF_PAY.php">';
-            } else {
-                echo "<script>alert('ERROR!!');</script>";
+                if ($res = $conn->query($sql)) {
+                    $success_export_duty .= "$extra_duty, ";
+                    $success_off_date .= "$off_date, ";
+                    // echo "<script>alert('Off Pay Leave Applied Successfully!');</script>";
+                    // echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_OFF_PAY.php">';
+                } else {
+                    $error_dates .= "$extra_duty, ";
+                }
             }
+
+           
         }
+
+        // Trim trailing commas and spaces from dates
+        $success_export_duty = rtrim($success_export_duty, ', ');
+        $success_off_date = rtrim($success_off_date, ', ');
+        $error_dates = rtrim($error_dates, ', ');
+
+        // Display the combined alert message
+       
+        if (!empty($error_dates)) {
+            $message .= "\nFailed to apply Off Pay Leave for dates: $error_dates.";
+            echo "<script>alert('$message');</script>";
+            
+        }elseif(!empty($success_off_date)){
+
+            $message = "Off Pay Leave applied successfully for dates: $success_off_date.";
+            echo "<script>alert('$message');</script>";
+       
+        }
+
+      
+
+
     }
 }
 ?>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-select Date Field</title>
-    <script src="https://cdn.tailwindcss.com"></scrip>
-</head>
-
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white rounded-lg shadow-md p-6 w-full max-w-md">
-        <h2 class="text-2xl font-bold mb-4">Select Dates</h2>
-        <div id="datePickerContainer" class="mb-4">
-            <div id="selectedDates" class="flex flex-wrap gap-2 mb-2"></div>
-            <input type="text" id="dateInput" placeholder="Click to select dates" readonly
-                class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
-        </div>
-        <div id="calendar" class="grid grid-cols-7 gap-1"></div>
-
-    </div>
-        <input type="submit" value="submit2" >
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const dateInput = document.getElementById('dateInput');
-            const calendar = document.getElementById('calendar');
-            const selectedDatesContainer = document.getElementById('selectedDates');
-            let currentDate = new Date();
-            let selectedDates = [];
-
-            function generateCalendar(year, month) {
-                calendar.innerHTML = '';
-                const daysInMonth = new Date(year, month + 1, 0).getDate();
-                const firstDay = new Date(year, month, 1).getDay();
-
-                // Add day names
-                const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-                dayNames.forEach(day => {
-                    const dayNameElement = document.createElement('div');
-                    dayNameElement.textContent = day;
-                    dayNameElement.className = 'text-center font-bold text-gray-500';
-                    calendar.appendChild(dayNameElement);
-                });
-
-                // Add empty cells for days before the 1st
-                for (let i = 0; i < firstDay; i++) {
-                    calendar.appendChild(document.createElement('div'));
-                }
-
-                // Add date cells
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const dateCell = document.createElement('div');
-                    dateCell.textContent = day;
-                    dateCell.className = 'text-center p-2 cursor-pointer hover:bg-blue-100 rounded-full';
-
-                    const cellDate = new Date(year, month, day);
-                    if (isDateSelected(cellDate)) {
-                        dateCell.classList.add('bg-blue-500', 'text-white');
-                    }
-
-                    dateCell.addEventListener('click', () => toggleDateSelection(cellDate));
-                    calendar.appendChild(dateCell);
-                }
-            }
-
-            function toggleDateSelection(date) {
-                const index = selectedDates.findIndex(d => d.toDateString() === date.toDateString());
-                if (index > -1) {
-                    selectedDates.splice(index, 1);
-                } else {
-                    selectedDates.push(date);
-                }
-                updateSelectedDatesDisplay();
-                generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
-            }
-
-            function isDateSelected(date) {
-                return selectedDates.some(d => d.toDateString() === date.toDateString());
-            }
-
-            function updateSelectedDatesDisplay() {
-                selectedDatesContainer.innerHTML = '';
-                selectedDates.forEach(date => {
-                    const dateTag = document.createElement('span');
-                    dateTag.textContent = date.toLocaleDateString();
-                    dateTag.className = 'bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded';
-                    selectedDatesContainer.appendChild(dateTag);
-                });
-            }
-
-            dateInput.addEventListener('click', () => {
-                calendar.classList.toggle('hidden');
-            });
-
-            // Initialize calendar
-            generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
-        });
-    </script>
-</body>
-
-</html>
--->
