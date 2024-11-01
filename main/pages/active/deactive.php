@@ -143,7 +143,7 @@
                     </td>
                     <td class="px-4 py-2 text-center">${staff.doj}</td>
                     <td class="px-4 py-2 text-center">
-                        <button class="text-sm ${staff.status === 'Active' ? 'text-red-500' : 'text-green-500'} hover:underline">
+                        <button class=" w-full p-6 text-sm ${staff.status === 'Active' ? 'bg-red-500 text-white px-4 py-2 rounded-lg' : ' bg-green-500 text-white px-4 py-2 rounded-lg'} hover:underline ">
                             ${staff.status === 'Active' ? 'Deactivate' : 'Activate'}
                         </button>
                     </td>
