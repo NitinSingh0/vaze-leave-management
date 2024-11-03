@@ -16,20 +16,22 @@
     NAVBAR 
     ****************/
     -->
+    <?php include('../Layouts/header.php'); ?>
 
     <!--
     /***************
     MAIN CONTENTS 
     ****************/
     -->
-    <?php include('../Components/forgot.php'); ?>
+    <?php include('../Components/login.php'); ?>
 
     <!--
     /***************
     FOOTER
     ****************/
     -->
- 
+    <?php include('../layouts/footer.php'); ?>
+    <script src="../../js/common/header.js"></script>
 </body>
 <?php include('../../library/AOS.php'); ?>
 

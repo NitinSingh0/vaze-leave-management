@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 //error_reporting(0);
 
 $Staff_id = $_SESSION['Staff_id'];
@@ -71,19 +71,16 @@ if ($result) {
 
             } else {
                 // Reason Textarea onchange Professor aja
-
-                $.ajax({
-                    url: "action.php",
-                    type: "POST",
-                    cache: false,
-                    data: {
-                        pId: p_id
-                    },
-                    success: function(data) {
-                        $("#prof_name").html(data);
-                    }
-                });
-
+                   
+                    $.ajax({
+                        url: "chgPass.php",
+                        type: "POST",
+                        data: {Pass:npass},
+                        success: function(data) {
+                            alert(data);
+                        }
+                    });
+               
             }
         });
 
