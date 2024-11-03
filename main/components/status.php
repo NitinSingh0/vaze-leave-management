@@ -10,7 +10,7 @@ $staff_id = $_SESSION['staff_id'];
 $status_query = "SELECT From_date AS from_date, To_date AS to_date, No_of_days AS no_of_days, 
                         Reason AS reason, Application_date AS application_date, 
                         leave_approval_status, A_year 
-                 FROM d_cl_leave 
+                 FROM d_cl_leave, d_dl_leave 
                  WHERE Staff_id = $staff_id";
 
 $status_result = $conn->query($status_query);
