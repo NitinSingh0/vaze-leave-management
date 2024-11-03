@@ -1,7 +1,7 @@
 <?php
 
 //error_reporting(0);
-session_start();
+
 if (isset($_POST['submit'])) {
   $u_name = $_POST['u_name'];
   $pass = $_POST['pass'];
