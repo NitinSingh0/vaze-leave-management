@@ -1,5 +1,5 @@
 <!-- Main Container -->
-<div class=" mt-11  flex h-screen">
+<div class="mt-11 flex h-screen">
     <!-- Sidebar -->
     <aside class="fixed flex flex-col w-1/5 bg-white border-r h-full px-4 py-6">
         <ul class="space-y-4">
@@ -9,20 +9,49 @@
                         Apply Leave
                         <span class="transition duration-300 transform group-open:-rotate-180">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4-4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
                         </span>
                     </summary>
                     <ul class="mt-2 pl-4 space-y-2">
-                        <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('cl')">CL</a></li>
+                        <!-- Leave options based on job role -->
                         <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('dl')">DL</a></li>
-                        <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">Medical Leave</a></li>
+                        <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('cl')">CL</a></li>
+                        <!-- Conditional rendering for MHM, EHM, OFF pay, etc. -->
+                        <?php if ($jobRole == 'TD'): ?>
+                            <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('mhm')">MHM</a></li>
+                        <?php elseif ($jobRole == 'TJ'): ?>
+                            <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('ehm')">EHM</a></li>
+                        <?php elseif ($jobRole == 'NL'): ?>
+                            <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('mhm')">MHM</a></li>
+                            <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('offpay')">OFF Pay</a></li>
+                        <?php elseif ($jobRole == 'NO'): ?>
+                            <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('offpay')">OFF Pay</a></li>
+                            <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('mhme')">MHME</a></li>
+                        <?php elseif ($jobRole == 'OO'): ?>
+                            <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('offpay')">OFF Pay</a></li>
+                            <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('mhme')">MHME</a></li>
+                        <?php endif; ?>
                     </ul>
                 </details>
             </li>
             <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('status')">Check Status</a></li>
             <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('summary')">Summary</a></li>
         </ul>
+
+        <!-- Additional options only for job role OO -->
+        <?php if ($jobRole == 'OO'): ?>
+            <div class="mt-6">
+                <h3 class="font-medium text-gray-800">Admin Options</h3>
+                <ul class="mt-2 space-y-2">
+                    <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('leaveRequest')">Leave Request</a></li>
+                    <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('newRegistration')">New Registration</a></li>
+                    <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('assignLeave')">Assign Leave</a></li>
+                    <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('updateDetails')">Update Details</a></li>
+                    <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('deactivateUsers')">Deactivate Users</a></li>
+                </ul>
+            </div>
+        <?php endif; ?>
     </aside>
 
     <!-- Main Content Area with margin for sidebar -->
@@ -70,6 +99,9 @@
 
 <!-- PHP Leave Data -->
 <?php
+// Sample job role for demonstration purposes
+$jobRole = $_SESSION['job_role']; // Assume job_role is stored in session
+
 $casualLeavesTotal = 12;
 $casualLeavesUsed = 5;
 $casualLeavesRemaining = $casualLeavesTotal - $casualLeavesUsed;
