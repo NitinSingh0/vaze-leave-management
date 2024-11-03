@@ -13,10 +13,10 @@ $Staff_id = $_SESSION['Staff_id'];
       $s = "UPDATE Staff set Password='$hash' WHERE Staff_id='$Staff_id'";
       $q = $conn->query($s);
       echo "Password Updated Successfully";
-     // if ($conn->query($s) === TRUE) {
-     //   echo "Password Updated Successfully";
-    //} else {
-    //    echo "Error updating password: " . $conn->error;
-    //}
+     if ($conn->query($s) === TRUE) {
+       echo "Password Updated Successfully";
+    } else {
+       echo "Error updating password: " . $conn->error;
+    }
     }
     ?>

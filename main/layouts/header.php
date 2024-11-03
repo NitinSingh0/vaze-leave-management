@@ -33,45 +33,108 @@
                     role="menu">
                     <div class="p-2">
                         <a
-                            href="#"
+                            id="showProfile"
                             class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
                             role="menuitem">
                             My Profile
                         </a>
                         <a
-                            href="#"
+                            href="changepass.php"
                             class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
                             role="menuitem">
                             Change Password
                         </a>
                     </div>
                     <div class="p-2">
-                        <form method="POST" action="#">
-                            <button
-                                type="submit"
-                                class="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-50"
-                                role="menuitem">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    stroke="currentColor"
-                                    class="h-4 w-4">
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-                                </svg>
-                                Logout
-                            </button>
-                        </form>
+                        <a
+                            href="logout.php"
+                            class="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-50"
+                            role="menuitem">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="h-4 w-4">
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                            </svg>
+                            Logout
+                        </a>
+                       
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </header>
+
+
+<!-- Profile Card -->
+<div id="profileCard" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 hidden z-50">
+    <div class="relative bg-white dark:bg-gray-900 w-96 p-8 rounded-lg shadow-2xl border border-gray-300 dark:border-gray-700 transition-all duration-300 z-50">
+        <!-- Close Button -->
+        <button id="closeCard" class="absolute top-4 right-4 text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 text-3xl transition-colors duration-200 focus:outline-none">
+            &times;
+        </button>
+
+        <h2 class="text-2xl font-semibold text-center mb-6 text-gray-800 dark:text-white">Profile Information</h2>
+        <div id="profileContent" class="space-y-4">
+            <!-- Profile Information -->
+            <p class="text-gray-800 dark:text-gray-300"><strong>Name:</strong> <span id="name" class="font-medium"></span></p>
+            <p class="text-gray-800 dark:text-gray-300"><strong>Username:</strong> <span id="username" class="font-medium"></span></p>
+            <p class="text-gray-800 dark:text-gray-300"><strong>Department:</strong> <span id="department" class="font-medium"></span></p>
+            <p class="text-gray-800 dark:text-gray-300"><strong>Role:</strong> <span id="role" class="font-medium"></span></p>
+            <p class="text-gray-800 dark:text-gray-300"><strong>Date of Joining:</strong> <span id="dateOfJoining" class="font-medium"></span></p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Show profile card on button click
+        $('#showProfile').click(function() {
+            // Fetch profile data via AJAX
+            $.ajax({
+                url: 'profile.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        // Populate profile data in the card
+                        $('#name').text(data.Name);
+                        $('#username').text(data.Username);
+                        $('#department').text(data.Department_name);
+                        $('#role').text(data.Role);
+                        $('#dateOfJoining').text(data.Date_of_Joining);
+                        $('#profileCard').removeClass('hidden'); // Show the card
+                    }
+                },
+                error: function() {
+                    alert('Error fetching profile data.');
+                }
+            });
+        });
+
+        // Hide profile card on close button click
+        $('#closeCard').click(function() {
+            $('#profileCard').addClass('hidden'); // Hide the card
+        });
+    });
+</script>
+
+
 <script>
     // JavaScript to toggle the profile dropdown menu
     const profileButton = document.getElementById('profileButton');
