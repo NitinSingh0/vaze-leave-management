@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 //error_reporting(0);
 
 $Staff_id = $_SESSION['Staff_id'];

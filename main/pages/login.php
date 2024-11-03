@@ -8,6 +8,7 @@
 
     <?php include('../../config/connect.php'); ?>
     <link rel="stylesheet" href="../../css/common/header.css" />
+    <?php include('../../library/library.php'); ?>
 </head>
 
 <body class="bg-white dark:bg-black">
@@ -32,6 +33,6 @@
 
 </body>
 <?php include('../../library/AOS.php'); ?>
-<?php include('../../library/library.php'); ?>
+
 
 </html>
