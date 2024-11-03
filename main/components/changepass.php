@@ -73,14 +73,11 @@ if ($result) {
                 // Reason Textarea onchange Professor aja
                    
                     $.ajax({
-                        url: "action.php",
+                        url: "chgPass.php",
                         type: "POST",
-                        cache: false,
-                        data: {
-                            pId: p_id
-                        },
+                        data: {Pass:npass},
                         success: function(data) {
-                            $("#prof_name").html(data);
+                            alert(data);
                         }
                     });
                
