@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 26, 2024 at 10:25 PM
+-- Generation Time: Oct 29, 2024 at 06:31 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,8 +30,16 @@ SET time_zone = "+00:00";
 CREATE TABLE `department` (
   `D_id` int(11) NOT NULL,
   `Name` varchar(100) NOT NULL,
-  `College` enum('D','J') NOT NULL
+  `College` enum('D','J','O','L') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `department`
+--
+
+INSERT INTO `department` (`D_id`, `Name`, `College`) VALUES
+(1, 'Information technology', 'D'),
+(2, 'Baf', 'D');
 
 -- --------------------------------------------------------
 
@@ -45,7 +53,7 @@ CREATE TABLE `d_cl_leave` (
   `To_date` date NOT NULL,
   `No_of_days` int(11) NOT NULL,
   `Reason` text NOT NULL,
-  `Application_date` date NOT NULL,
+  `Date_of_application` date NOT NULL,
   `HOD_remark` text NOT NULL,
   `Principal_remark` text NOT NULL,
   `Office_remark` text NOT NULL,
@@ -72,7 +80,7 @@ CREATE TABLE `d_dl_leave` (
   `Office_remark` text NOT NULL,
   `leave_approval_status` enum('P','HA','HD','PA','PD') NOT NULL,
   `A_year` year(4) NOT NULL,
-  `Application_date` date NOT NULL,
+  `Date_of_application` date NOT NULL,
   `Type` enum('SL','DL') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -170,7 +178,7 @@ CREATE TABLE `j_ehm_leave` (
 --
 
 CREATE TABLE `leaves` (
-  `Leave_type` enum('CL','DL','ME','HP','MA','EL','OL') NOT NULL,
+  `Leave_type` enum('CL','DL','ML','HP','MA','EL','OL') NOT NULL,
   `College` enum('D','J') NOT NULL,
   `No_of_leaves` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -219,6 +227,57 @@ CREATE TABLE `n_dl_leave` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `n_emhm_leave`
+--
+
+CREATE TABLE `n_emhm_leave` (
+  `Staff_id` int(11) NOT NULL,
+  `From_date` date NOT NULL,
+  `To_date` date NOT NULL,
+  `No_of_days` int(11) NOT NULL,
+  `Type` enum('EL','ML','HP','MA') NOT NULL,
+  `Reason` text NOT NULL,
+  `Prefix-suffix` varchar(50) NOT NULL,
+  `Date_of_application` date NOT NULL,
+  `Principal_remark` text NOT NULL,
+  `Office_remark` text NOT NULL,
+  `leave_approval_status` enum('P','PA','PD') NOT NULL,
+  `A_year` year(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `n_off_pay_leave`
+--
+
+CREATE TABLE `n_off_pay_leave` (
+  `Staff_id` int(11) NOT NULL,
+  `Date_of_application` date NOT NULL,
+  `Extra_duty_date` date NOT NULL,
+  `Nature_of_work` text NOT NULL,
+  `Off_leave_date` date NOT NULL,
+  `Principal_remark` text NOT NULL,
+  `Office_remark` text NOT NULL,
+  `leave_approval_status` enum('P','PA','PD') NOT NULL,
+  `A_year` year(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `n_off_pay_leave`
+--
+
+INSERT INTO `n_off_pay_leave` (`Staff_id`, `Date_of_application`, `Extra_duty_date`, `Nature_of_work`, `Off_leave_date`, `Principal_remark`, `Office_remark`, `leave_approval_status`, `A_year`) VALUES
+(1, '2024-10-29', '2024-10-01', '555', '2024-10-29', '', '', 'P', '2024'),
+(1, '2024-10-29', '2024-10-02', '555', '2024-10-30', '', '', 'P', '2024'),
+(1, '2024-10-29', '2024-10-18', '55', '2024-10-31', '', '', 'P', '2024'),
+(1, '2024-10-29', '2024-10-22', 'thdjdwjdjwdjwdjjdwjdwjdwjdwjdwdwdwd', '2024-10-30', '', '', 'P', '2025'),
+(1, '2024-10-29', '2024-10-25', '5', '2024-10-30', '', '', 'P', '2024'),
+(1, '2024-10-29', '2024-10-26', '55', '2024-10-31', '', '', 'P', '2024');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `staff`
 --
 
@@ -229,12 +288,19 @@ CREATE TABLE `staff` (
   `DOJ` date NOT NULL,
   `Staff_type` enum('T','N') NOT NULL,
   `Username` varchar(100) NOT NULL,
-  `Password` varchar(50) NOT NULL,
+  `Password` varchar(255) NOT NULL,
   `Gender` enum('M','F') NOT NULL,
   `Job_role` enum('TD','TJ','NL','NO','OO') NOT NULL,
   `D_id` int(11) NOT NULL,
   `status` enum('A','D') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `staff`
+--
+
+INSERT INTO `staff` (`Staff_id`, `Name`, `Designation`, `DOJ`, `Staff_type`, `Username`, `Password`, `Gender`, `Job_role`, `D_id`, `status`) VALUES
+(1, 'aniket', 'HOD', '2024-10-08', 'T', 'walfra52777@gmail.com', 'NEW', 'M', 'TD', 1, 'A');
 
 -- --------------------------------------------------------
 
@@ -244,7 +310,7 @@ CREATE TABLE `staff` (
 
 CREATE TABLE `staff_leaves` (
   `Staff_id` int(11) NOT NULL,
-  `Type` enum('CL','DL','ME','HP','MA','EL','OL') NOT NULL,
+  `Type` enum('CL','DL','ML','HP','MA','EL','OL') NOT NULL,
   `College` enum('D','J') NOT NULL,
   `A_year` year(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -314,6 +380,18 @@ ALTER TABLE `n_dl_leave`
   ADD PRIMARY KEY (`Staff_id`,`From_date`,`To_date`);
 
 --
+-- Indexes for table `n_emhm_leave`
+--
+ALTER TABLE `n_emhm_leave`
+  ADD PRIMARY KEY (`Staff_id`,`From_date`,`To_date`);
+
+--
+-- Indexes for table `n_off_pay_leave`
+--
+ALTER TABLE `n_off_pay_leave`
+  ADD PRIMARY KEY (`Staff_id`,`Extra_duty_date`);
+
+--
 -- Indexes for table `staff`
 --
 ALTER TABLE `staff`
@@ -325,7 +403,18 @@ ALTER TABLE `staff`
 --
 ALTER TABLE `staff_leaves`
   ADD KEY `Staff_id` (`Staff_id`),
-  ADD KEY `Type` (`Type`,`College`);
+  ADD KEY `Type` (`Type`,`College`),
+  ADD KEY `College` (`College`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `n_off_pay_leave`
+--
+ALTER TABLE `n_off_pay_leave`
+  MODIFY `Staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -380,6 +469,18 @@ ALTER TABLE `n_dl_leave`
   ADD CONSTRAINT `n_dl_leave_ibfk_1` FOREIGN KEY (`Staff_id`) REFERENCES `staff` (`Staff_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `n_emhm_leave`
+--
+ALTER TABLE `n_emhm_leave`
+  ADD CONSTRAINT `n_emhm_leave_ibfk_1` FOREIGN KEY (`Staff_id`) REFERENCES `staff` (`Staff_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `n_off_pay_leave`
+--
+ALTER TABLE `n_off_pay_leave`
+  ADD CONSTRAINT `n_off_pay_leave_ibfk_1` FOREIGN KEY (`Staff_id`) REFERENCES `staff` (`Staff_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `staff`
 --
 ALTER TABLE `staff`
@@ -390,7 +491,7 @@ ALTER TABLE `staff`
 --
 ALTER TABLE `staff_leaves`
   ADD CONSTRAINT `staff_leaves_ibfk_1` FOREIGN KEY (`Staff_id`) REFERENCES `staff` (`Staff_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `staff_leaves_ibfk_2` FOREIGN KEY (`Type`,`College`) REFERENCES `leaves` (`Leave_type`, `College`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `staff_leaves_ibfk_2` FOREIGN KEY (`Type`) REFERENCES `leaves` (`Leave_type`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
