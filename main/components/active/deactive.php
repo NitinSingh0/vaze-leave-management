@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 dark:text-black">
 
     <div class=" bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-4xl">
         <h1 class="text-2xl font-bold text-center mb-6">Deactivate Staff</h1>

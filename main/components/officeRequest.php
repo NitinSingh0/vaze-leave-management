@@ -4,30 +4,31 @@ include('../../config/connect.php');
 
 $message = ""; // Message to display for success or error
 
-// Check if the logged-in user is the Principal
+// Check if the logged-in user is in the office role (e.g., "Office Staff")
+// Assuming office staff ID and role check are stored in session
 $staff_id = $_SESSION['staff_id'];
+$staff_id=120;
+$office_query = "SELECT * FROM staff WHERE Staff_id = $staff_id AND Job_role = 'OO'";
+$office_result = $conn->query($office_query);
 
-$principal_query = "SELECT * FROM staff WHERE Staff_id = $staff_id AND Designation = 'Principal'";
-$principal_result = $conn->query($principal_query);
-
-if ($principal_result && $principal_result->num_rows > 0) {
-    // Fetch leave requests approved by HOD (leave_approval_status = 'HA') for all departments
+if ($office_result && $office_result->num_rows > 0) {
+    // Fetch leave requests approved by the Principal (leave_approval_status = 'PA')
     $leave_queries = [
-        "Casual Leave" => "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Application_date, l.HOD_remark, l.leave_approval_status, s.Name, d.Name AS Department
+        "Casual Leave" => "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Application_date, l.HOD_remark, l.leave_approval_status, l.Principal_remark, s.Name, d.Name AS Department
                            FROM d_cl_leave AS l
                            JOIN staff AS s ON l.Staff_id = s.Staff_id
                            JOIN department AS d ON s.D_id = d.D_id
-                           WHERE l.leave_approval_status = 'HA'",
-        "Duty Leave" => "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Nature AS Reason, l.Type, l.Application_date, l.HOD_remark, l.leave_approval_status, s.Name, d.Name AS Department
+                           WHERE l.leave_approval_status = 'PA'",
+        "Duty Leave" => "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Nature AS Reason, l.Type, l.Application_date, l.HOD_remark, l.leave_approval_status, l.Principal_remark, s.Name, d.Name AS Department
                          FROM d_dl_leave AS l
                          JOIN staff AS s ON l.Staff_id = s.Staff_id
                          JOIN department AS d ON s.D_id = d.D_id
-                         WHERE l.leave_approval_status = 'HA'",
-        "Medical Half Pay Maternity Leave" => "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Date_of_application AS Application_date, l.HOD_remark, l.leave_approval_status, l.Principal_remark,   s.Name, d.Name AS Department
+                         WHERE l.leave_approval_status = 'PA'",
+        "Medical Half Pay Maternity Leave" => "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Date_of_application AS Application_date, l.HOD_remark, l.leave_approval_status, l.Principal_remark, s.Name, d.Name AS Department
                                                FROM d_mhm_leave AS l
                                                JOIN staff AS s ON l.Staff_id = s.Staff_id
                                                JOIN department AS d ON s.D_id = d.D_id
-                                               WHERE l.leave_approval_status = 'HA'"
+                                               WHERE l.leave_approval_status = 'PA'"
     ];
 
     $leave_results = [];
@@ -39,7 +40,7 @@ if ($principal_result && $principal_result->num_rows > 0) {
         $leave_results[$leave_type] = $result;
     }
 } else {
-    die("Access Denied: Only Principals can access this page.");
+    die("Access Denied: Only Office Staff can access this page.");
 }
 
 // Handle form submission
@@ -47,15 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $leave_id = $_POST['leave_id'];
     $from_date = $_POST['from_date'];
     $to_date = $_POST['to_date'];
-    $principal_remark = $_POST['principal_remark'];
-    $status = $_POST['status']; // 'PA' for approve, 'PD' for decline
+    $office_remark = $_POST['office_remark'];
     $leave_table = $_POST['leave_table']; // Dynamic table name for update query
 
-    // Update leave record
-    $update_query = "UPDATE $leave_table SET Principal_remark = '$principal_remark', leave_approval_status = '$status' 
+    // Update leave record with Office remark
+    $update_query = "UPDATE $leave_table SET Office_remark = '$office_remark' 
                      WHERE Staff_id = $leave_id AND From_date = '$from_date' AND To_date = '$to_date'";
     if ($conn->query($update_query)) {
-        $message = "Leave request updated successfully.";
+        $message = "Office remark updated successfully.";
         $messageType = "success";
     } else {
         $message = "Error updating record: " . $conn->error;
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Principal Leave Requests</title>
+    <title>Office Leave Requests</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         <?php endif; ?>
 
-        <h2 class="text-2xl font-semibold text-center mb-6 text-gray-700">Pending Leave Requests for Principal</h2>
+        <h2 class="text-2xl font-semibold text-center mb-6 text-gray-700">Office Review of Approved Leave Requests</h2>
 
         <?php foreach ($leave_results as $leave_type => $leave_result): ?>
             <h3 class="text-xl font-semibold mb-4 text-gray-600"><?= $leave_type ?></h3>
@@ -100,15 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <th class="py-3 px-4 border-b">Reason</th>
                                 <th class="py-3 px-4 border-b">Application Date</th>
                                 <th class="py-3 px-4 border-b">HOD Remark</th>
-                                <?php if ($leave_type === "Duty Leave"): ?>
-                                    <th class="py-3 px-4 border-b">Type</th>
-                                <?php endif; ?>
-                                <!-- <?php if ($leave_type === "Medical Half Pay Maternity Leave"): ?>
-                                    <th class="py-3 px-4 border-b">Medical Certificate</th>
-                                    <th class="py-3 px-4 border-b">Half Pay</th>
-                                <?php endif; ?> -->
                                 <th class="py-3 px-4 border-b">Principal Remark</th>
-                                <!-- <th class="py-3 px-4 border-b">Action</th> -->
+                                <th class="py-3 px-4 border-b">Office Remark</th>
                             </tr>
                         </thead>
                         <tbody class="text-sm text-gray-600">
@@ -119,29 +112,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['From_date']) ?></td>
                                     <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['To_date']) ?></td>
                                     <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['No_of_days']) ?></td>
-                                    <td class="py-3 px-4 border-b w-40 truncate">
-                                        <div class="overflow-y-auto h-12"><?= htmlspecialchars($row['Reason']) ?></div>
-                                    </td>
+                                    <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['Reason']) ?></td>
                                     <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['Application_date']) ?></td>
                                     <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['HOD_remark']) ?></td>
-                                    <?php if ($leave_type === "Duty Leave"): ?>
-                                        <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['Type']) ?></td>
-                                    <?php endif; ?>
-                                    <!-- <?php if ($leave_type === "Medical Half Pay Maternity Leave"): ?>
-                                        <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['Medical_certificate']) ?></td>
-                                        <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['Half_pay']) ?></td>
-                                    <?php endif; ?> --> 
+                                    <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['Principal_remark']) ?></td>
                                     <td class="py-3 px-4 border-b">
                                         <form method="post" class="flex flex-col space-y-2">
                                             <input type="hidden" name="leave_id" value="<?= $row['Staff_id'] ?>">
                                             <input type="hidden" name="from_date" value="<?= $row['From_date'] ?>">
                                             <input type="hidden" name="to_date" value="<?= $row['To_date'] ?>">
                                             <input type="hidden" name="leave_table" value="<?= strtolower(str_replace(' ', '_', $leave_type)) ?>">
-                                            <textarea name="principal_remark" class="border border-gray-300 rounded-md p-2" placeholder="Principal Remark"></textarea>
-                                            <div class="flex space-x-2">
-                                                <button type="submit" name="status" value="PA" class="bg-green-500 text-white rounded-md px-4 py-2">Approve</button>
-                                                <button type="submit" name="status" value="PD" class="bg-red-500 text-white rounded-md px-4 py-2">Decline</button>
-                                            </div>
+                                            <textarea name="office_remark" class="border border-gray-300 rounded-md p-2" placeholder="Office Remark"></textarea>
+                                            <button type="submit" class="bg-blue-500 text-white rounded-md px-4 py-2">Save</button>
                                         </form>
                                     </td>
                                 </tr>

@@ -9,7 +9,7 @@ if (!$Staff_id) {
     exit;
 }
 
-include 'db_connection.php'; // Include your DB connection file
+//include '../../config/connect.php'; // Include your DB connection file
 
 // Fetch the existing password for the staff
 $sql = "SELECT * FROM staff WHERE Staff_id = '$Staff_id'";
@@ -72,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($conn->query($sql) === TRUE) {
             echo "<script>alert('Password Updated Successfully');</script>";
+            header("refresh:0.5; url=../pages/Main.php");
         } else {
             echo "<script>alert('Error updating password: " . $conn->error . "');</script>";
         }
