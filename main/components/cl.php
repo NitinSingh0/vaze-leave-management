@@ -1,3 +1,12 @@
+<?php
+session_start();
+$Staff_id = $_SESSION['Staff_id'];
+
+if (!$Staff_id) {
+    echo "<script>alert('User not logged in.'); window.location.href='login.php';</script>";
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,13 +18,13 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
-<body>
+<body class="dark:bg-white dark:text-black pd-25">
     <?php include("../../config/connect.php"); ?>
     <div class="flex items-center justify-center p-12">
         <!--Casual Leave Form-->
 
         <div class="mx-auto w-full max-w-[550px] bg-white">
-            <div class=" text-center align-middle text-2xl font-semibold m-5">Casual Leave Form</div>
+            <div class=" text-center align-middle text-2xl font-semibold m-5 text-black">Casual Leave Form</div>
             <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
                 <!--Acedamic year-->
@@ -74,7 +83,7 @@
                             </label>
                             <select name="department" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
                                 <?php
-                                $query = "SELECT D_id,Name FROM department where D_id=(select D_id from staff where Staff_id=1)";
+                                $query = "SELECT D_id,Name FROM department where D_id=(select D_id from staff where Staff_id=$Staff_id)";
                                 $result = $conn->query($query);
                                 if ($result->num_rows > 0) {
                                     if ($row = $result->fetch_assoc()) {
@@ -201,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // alert('$name $application_date $department $from_date $to_date $reason');
         // </script>
         // ";
-        $staff_id = 1;
+        $staff_id = $Staff_id;
         $type = "TD";
 
         if ($type == 'TD') {
@@ -219,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 if ($res = $conn->query($sql)) {
                     echo "<script>alert('Casual Leave Applied Successfully!');</script>";
-                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_CL.php">';
+                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=cl.php">';
                 } else {
                     echo "<script>alert('ERROR!!');</script>";
                 }
@@ -239,7 +248,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 if ($res = $conn->query($sql)) {
                     echo "<script>alert('Casual Leave Applied Successfully!');</script>";
-                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_CL.php">';
+                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=cl.php">';
                 } else {
                     echo "<script>alert('ERROR!!');</script>";
                 }
@@ -259,7 +268,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 if ($res = $conn->query($sql)) {
                     echo "<script>alert('Casual Leave Applied Successfully!');</script>";
-                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_CL.php">';
+                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=cl.php">';
                 } else {
                     echo "<script>alert('ERROR!!');</script>";
                 }

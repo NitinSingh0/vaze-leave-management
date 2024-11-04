@@ -1,3 +1,12 @@
+<?php
+session_start();
+$Staff_id = $_SESSION['Staff_id'];
+
+if (!$Staff_id) {
+    echo "<script>alert('User not logged in.'); window.location.href='login.php';</script>";
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +24,7 @@
         <!--Casual Leave Form-->
 
         <div class="mx-auto w-full max-w-[550px] bg-white">
-            <div class=" text-center align-middle text-2xl font-semibold m-5">Off Pay Leave Form</div>
+            <div class=" text-center align-middle text-2xl font-semibold m-5 dark:text-black text-black">Off Pay Leave Form</div>
             <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
                 <!--Acedamic year-->
@@ -74,7 +83,7 @@
                             </label>
                             <select name="department" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
                                 <?php
-                                $query = "SELECT D_id,Name FROM department where D_id=(select D_id from staff where Staff_id=1)";
+                                $query = "SELECT D_id,Name FROM department where D_id=(select D_id from staff where Staff_id=$Staff_id)";
                                 $result = $conn->query($query);
                                 if ($result->num_rows > 0) {
                                     if ($row = $result->fetch_assoc()) {
@@ -226,14 +235,14 @@
 
 </html>
 <?php
-error_reporting(0);
+//error_reporting(0);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['year']) && !empty($_POST['application_date']) && !empty($_POST['department']) && !empty($_POST['no_of_days'])) {
         $year = $_POST["year"];
         $application_date = $_POST["application_date"];
         $department = $_POST["department"];
 
-        $staff_id = 1;
+        $staff_id = $Staff_id;
         $type = "NO";
 
 
@@ -318,13 +327,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $message .= "\nFailed to apply Off Pay Leave for dates: $error_dates.";
             echo "<script>alert('$message');</script>";
             echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_OFF_PAY.php">';
-            
         } elseif (!empty($success_off_date)) {
 
             $message = "Off Pay Leave applied successfully for dates: $success_off_date.";
             echo "<script>alert('$message');</script>";
             echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_OFF_PAY.php">';
-            
         }
     }
 }

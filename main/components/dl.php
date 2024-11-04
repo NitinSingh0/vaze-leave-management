@@ -1,3 +1,12 @@
+<?php
+session_start();
+$Staff_id = $_SESSION['Staff_id'];
+
+if (!$Staff_id) {
+    echo "<script>alert('User not logged in.'); window.location.href='login.php';</script>";
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,8 +24,8 @@
         <!--Casual Leave Form-->
 
         <div class="mx-auto w-full max-w-[550px] bg-white">
-            <div class=" text-center align-middle text-2xl font-semibold m-5">Duty/Special Leave Form</div>
-            <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+            <div class=" text-center align-middle text-2xl font-semibold m-5 dark:text-black text-black">Duty/Special Leave Form</div>
+            <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="dark:text-black">
 
                 <div class="-mx-3 flex flex-wrap">
                     <!--Academic year -->
@@ -96,7 +105,7 @@
                             </label>
                             <select required name="department" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
                                 <?php
-                                $query = "SELECT D_id,Name FROM department where D_id=(select D_id from staff where Staff_id=1)";
+                                $query = "SELECT D_id,Name FROM department where D_id=(select D_id from staff where Staff_id=$Staff_id)";
                                 $result = $conn->query($query);
                                 if ($result->num_rows > 0) {
                                     if ($row = $result->fetch_assoc()) {
@@ -264,7 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // alert('$name $application_date $department $from_date $to_date $reason');
         // </script>
         // ";
-        $staff_id = 1;
+        $staff_id = $Staff_id;
         $type = "TD";
 
         if ($type == 'TD') {
@@ -282,7 +291,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 if ($res = $conn->query($sql)) {
                     echo "<script>alert('Duty Leave Applied Successfully!');</script>";
-                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_DL.php">';
+                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=dl.php">';
                 } else {
                     echo "<script>alert('ERROR!!');</script>";
                 }
@@ -303,7 +312,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 if ($res = $conn->query($sql)) {
                     echo "<script>alert('Duty Leave Applied Successfully!');</script>";
-                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_DL.php">';
+                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=dl.php">';
                 } else {
                     echo "<script>alert('ERROR!!');</script>";
                 }
@@ -324,7 +333,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 if ($res = $conn->query($sql)) {
                     echo "<script>alert('Duty Leave Applied Successfully!');</script>";
-                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_DL.php">';
+                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=dl.php">';
                 } else {
                     echo "<script>alert('ERROR!!');</script>";
                 }

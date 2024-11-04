@@ -15,7 +15,7 @@
         <!--Casual Leave Form-->
 
         <div class="mx-auto w-full max-w-[550px] bg-white">
-            <div class=" text-center align-middle text-2xl font-semibold m-5">
+            <div class=" text-center align-middle text-2xl font-semibold m-5 dark:text-black text-black">
                 <?php
                 $type = "NO";
                 if ($type === "TJ") {

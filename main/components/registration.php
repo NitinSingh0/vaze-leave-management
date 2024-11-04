@@ -13,8 +13,8 @@
     <?php include("../../config/connect.php"); ?>
 
     <div class="bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-2xl">
-        <h2 class="text-2xl font-medium mb-4 text-center">Staff Registration</h2>
-        <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+        <h2 class="text-2xl font-medium mb-4 text-center dark:text-black text-black">Staff Registration</h2>
+        <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="dark:text-black text-black">
 
             <!--Name-->
             <div class="mb-4">
@@ -141,13 +141,13 @@
 <?php
 //error_reporting(0);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['name']) && !empty($_POST['department']) && !empty($_POST['designation']) && !empty($_POST['date_of_joining']) && !empty($_POST['gender']) && !empty($_POST['username'])&& !empty($_POST['type'])) {
+    if (isset($_POST['name']) && !empty($_POST['department']) && !empty($_POST['designation']) && !empty($_POST['date_of_joining']) && !empty($_POST['gender']) && !empty($_POST['username']) && !empty($_POST['type'])) {
         $name = $_POST["name"];
         $department = $_POST["department"];
-        $desig= $_POST["designation"];
+        $desig = $_POST["designation"];
         $date = $_POST["date_of_joining"];
-        $gender=$_POST["gender"];
-        $username=$_POST["username"];
+        $gender = $_POST["gender"];
+        $username = $_POST["username"];
         $type = $_POST["type"];
 
 
@@ -158,30 +158,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // </script>
         // ";
 
-        $staff_type = (($type === "TD" || $type=== "TJ")) ? "T" : "N";
+        $staff_type = (($type === "TD" || $type === "TJ")) ? "T" : "N";
 
-            // Check for duplicate entry
-            $checkSql = "SELECT * FROM staff WHERE  Name = '$name' AND  Designation = '$desig' AND DOJ = '$date' AND Gender='$gender' AND Job_role = '$type' AND D_id = '$department' ";
-            $checkResult = $conn->query($checkSql);
+        // Check for duplicate entry
+        $checkSql = "SELECT * FROM staff WHERE  Name = '$name' AND  Designation = '$desig' AND DOJ = '$date' AND Gender='$gender' AND Job_role = '$type' AND D_id = '$department' ";
+        $checkResult = $conn->query($checkSql);
 
 
-            if ($checkResult->num_rows > 0) {
-                // Duplicate found
-                echo "<script>alert('Duplicate Entry:User already Exist!');</script>";
-            } else {
-                // No duplicate, proceed with insertion
-                $sql = "INSERT INTO staff ( Name, Designation, DOJ, Staff_type, Username, Gender, Job_role, D_id, status, Password) 
+        if ($checkResult->num_rows > 0) {
+            // Duplicate found
+            echo "<script>alert('Duplicate Entry:User already Exist!');</script>";
+        } else {
+            // No duplicate, proceed with insertion
+            $sql = "INSERT INTO staff ( Name, Designation, DOJ, Staff_type, Username, Gender, Job_role, D_id, status, Password) 
                 VALUES ('$name', '$desig ', '$date', '$staff_type', '$username', '$gender', '$type','$department','A', 'NEW')";
 
-                if ($res = $conn->query($sql)) {
-                    echo "<script>alert('New Staff Added Successfully!');</script>";
-                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=registration.php">';
-                } else {
-                    $error_dates .= "$extra_duty, ";
-                }
+            if ($res = $conn->query($sql)) {
+                echo "<script>alert('New Staff Added Successfully!');</script>";
+                //echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=registration.php">';
+            } else {
+                $error_dates .= "$extra_duty, ";
             }
-   
-
+        }
     }
 }
 ?>
