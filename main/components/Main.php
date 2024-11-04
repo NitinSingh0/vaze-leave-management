@@ -34,8 +34,8 @@
                      </summary>
                      <ul class="mt-2 pl-4 space-y-2">
                          <!-- Leave options based on job role -->
-                         <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('dl')">DL</a></li>
-                         <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('cl')">CL</a></li>
+                         <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('dl')">Duty Leave</a></li>
+                         <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('cl')">Casual Leave</a></li>
                          <!-- Conditional rendering for MHM, EHM, OFF pay, etc. -->
                          <?php if ($jobRole == 'TD'): ?>
                              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHM</a></li>
