@@ -1,114 +1,225 @@
 <?php
+// Start the session
 session_start();
-$_SESSION['staff_id'] = 123; // Example staff_id; replace with actual session data
+$staff_id = $_SESSION['Staff_id']; // Use session data for the logged-in staff ID
 
+if (!isset($_SESSION['Staff_id'])) {
+    // Redirect to login page if not logged in
+    header("Location: login.php");
+    exit();
+}
 // Database connection
 include('../../config/connect.php');
 
-// Fetch all leave applications initially
-$staff_id = $_SESSION['staff_id'];
-$status_query = "SELECT From_date AS from_date, To_date AS to_date, No_of_days AS no_of_days, 
-                        Reason AS reason, Application_date AS application_date, 
-                        leave_approval_status, A_year 
-                 FROM d_cl_leave, d_dl_leave 
-                 WHERE Staff_id = $staff_id";
+// Default query to fetch all leave applications
+$query = "SELECT From_date AS from_date, To_date AS to_date, No_of_days AS no_of_days, 
+                 Reason AS reason, Application_date AS application_date, 
+                 leave_approval_status, A_year, 'CL' AS leave_type
+          FROM d_cl_leave 
+          WHERE Staff_id = $staff_id
+          UNION ALL
+          SELECT From_date, To_date, No_of_days, Application_date, Nature AS reason, 
+                 leave_approval_status, A_year, 'DL' AS leave_type 
+          FROM d_dl_leave 
+          WHERE Staff_id = $staff_id";
 
-$status_result = $conn->query($status_query);
+// Fetch the results based on filters (if any)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $leave_status = isset($_POST['leave_status']) ? $_POST['leave_status'] : '';
+    $academic_year = isset($_POST['academic_year']) ? $_POST['academic_year'] : '';
+    $leave_type = isset($_POST['leave_type']) ? $_POST['leave_type'] : '';
+    $from_date = isset($_POST['from_date']) ? $_POST['from_date'] : '';
+
+    // Build query with filters
+    if ($leave_status) {
+        $query .= " AND leave_approval_status = '$leave_status'";
+    }
+    if ($academic_year) {
+        $query .= " AND A_year = '$academic_year'";
+    }
+    if ($leave_type) {
+        $query .= " AND leave_type = '$leave_type'";
+    }
+    if ($from_date) {
+        $query .= " AND From_date >= '$from_date'";
+    }
+}
+
+$result = $conn->query($query);
 $leave_applications = [];
-if ($status_result) {
-    while ($row = $status_result->fetch_assoc()) {
+
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
         $leave_applications[] = $row;
     }
 }
 
+// Close the database connection
 $conn->close();
 ?>
 
-<div class="container mx-auto text-black">
-    <h2 class="text-xl font-semibold text-gray-800 mb-4">Leave Application Status</h2>
+<!DOCTYPE html>
+<html lang="en">
 
-    <!-- Filter Form -->
-    <form id="filter-form" class="mb-4">
-        <label for="leave_status" class="mr-2">Filter by Status:</label>
-        <select name="leave_status" id="leave_status" class="border border-gray-300 rounded p-2">
-            <option value="">All Applications</option>
-            <option value="P">Pending</option>
-            <option value="HD">HOD Declined</option>
-            <option value="HA">HOD Approved</option>
-            <option value="PA">Principal Approved</option>
-            <option value="PD">Principal Declined</option>
-        </select>
-        <button type="submit" class="ml-2 bg-blue-500 text-white rounded px-4 py-2">Filter</button>
-    </form>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Status</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        #error-message {
+            display: none;
+            color: red;
+        }
+    </style>
+</head>
 
-    <!-- Leave Applications Table -->
-    <div class="overflow-y-scroll bg-white shadow rounded-lg p-4">
-        <table class="min-w-full bg-white" id="leave-table">
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="py-2 px-4 text-left text-xs font-medium text-gray-600 uppercase">From Date</th>
-                    <th class="py-2 px-4 text-left text-xs font-medium text-gray-600 uppercase">To Date</th>
-                    <th class="py-2 px-4 text-left text-xs font-medium text-gray-600 uppercase">No. of Days</th>
-                    <th class="py-2 px-4 text-left text-xs font-medium text-gray-600 uppercase">Reason</th>
-                    <th class="py-2 px-4 text-left text-xs font-medium text-gray-600 uppercase">Application Date</th>
-                    <th class="py-2 px-4 text-left text-xs font-medium text-gray-600 uppercase">Approval Status</th>
-                    <th class="py-2 px-4 text-left text-xs font-medium text-gray-600 uppercase">A Year</th>
-                </tr>
-            </thead>
-            <tbody id="leave-table-body">
-                <?php foreach ($leave_applications as $row): ?>
-                    <tr>
-                        <td class="py-2 px-4"><?= htmlspecialchars($row['from_date']) ?></td>
-                        <td class="py-2 px-4"><?= htmlspecialchars($row['to_date']) ?></td>
-                        <td class="py-2 px-4"><?= htmlspecialchars($row['no_of_days']) ?></td>
-                        <td class="py-2 px-4"><?= htmlspecialchars($row['reason']) ?></td>
-                        <td class="py-2 px-4"><?= htmlspecialchars($row['application_date']) ?></td>
-                        <td class="py-2 px-4"><?= htmlspecialchars($row['leave_approval_status']) ?></td>
-                        <td class="py-2 px-4"><?= htmlspecialchars($row['A_year']) ?></td>
+<body class="bg-gray-100 ">
+
+    <div class="container mx-auto mt-6 p-4 bg-white shadow rounded-lg">
+
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Leave Application Status</h2>
+
+        <!-- Error message -->
+        <div id="error-message"></div>
+
+        <!-- Filters Section -->
+        <div id="filters" class="mb-6 text-gray-800">
+            <label for="leave_status" class="mr-4">Status:</label>
+            <select id="leave_status" class="border rounded p-2">
+                <option value="">All</option>
+                <option value="P">Pending</option>
+                <option value="HD">HOD Declined</option>
+                <option value="HA">HOD Approved</option>
+                <option value="PA">Principal Approved</option>
+                <option value="PD">Principal Declined</option>
+            </select>
+
+            <label for="academic_year" class="ml-4 mr-4">Academic Year:</label>
+            <select id="academic_year" class="border rounded p-2">
+                <option value="">All</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+            </select>
+
+            <label for="leave_type" class="ml-4 mr-4">Leave Type:</label>
+            <select id="leave_type" class="border rounded p-2">
+                <option value="">All</option>
+                <option value="CL">Casual Leave</option>
+                <option value="DL">Duty Leave</option>
+            </select>
+
+            <label for="from_date" class="ml-4">From Date:</label>
+            <input type="date" id="from_date" class="border rounded p-2">
+        </div>
+
+        <!-- Table for Leave Applications -->
+        <div class="overflow-x-auto text-gray-800">
+            <table class="min-w-full table-auto" id="leave-table">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="py-2 px-4 text-left">From Date</th>
+                        <th class="py-2 px-4 text-left">To Date</th>
+                        <th class="py-2 px-4 text-left">No. of Days</th>
+                        <th class="py-2 px-4 text-left">Reason</th>
+                        <th class="py-2 px-4 text-left">Application Date</th>
+                        <th class="py-2 px-4 text-left">Approval Status</th>
+                        <th class="py-2 px-4 text-left">A Year</th>
+                        <th class="py-2 px-4 text-left">Leave Type</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody id="leave-table-body">
+                    <?php foreach ($leave_applications as $row): ?>
+                        <tr>
+                            <td class="py-2 px-4"><?= htmlspecialchars($row['from_date']) ?></td>
+                            <td class="py-2 px-4"><?= htmlspecialchars($row['to_date']) ?></td>
+                            <td class="py-2 px-4"><?= htmlspecialchars($row['no_of_days']) ?></td>
+                            <td class="py-2 px-4"><?= htmlspecialchars($row['reason']) ?></td>
+                            <td class="py-2 px-4"><?= htmlspecialchars($row['application_date']) ?></td>
+                            <td class="py-2 px-4"><?= htmlspecialchars($row['leave_approval_status']) ?></td>
+                            <td class="py-2 px-4"><?= htmlspecialchars($row['A_year']) ?></td>
+                            <td class="py-2 px-4"><?= htmlspecialchars($row['leave_type']) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-<script>
-    document.getElementById('filter-form').addEventListener('submit', function(e) {
-        e.preventDefault(); // Prevent the form from submitting the traditional way
+    <script>
+        // Function to handle filter changes
+        function applyFilters() {
+            const leaveStatus = document.getElementById('leave_status').value;
+            const academicYear = document.getElementById('academic_year').value;
+            const leaveType = document.getElementById('leave_type').value;
+            const fromDate = document.getElementById('from_date').value;
 
-        const leaveStatus = document.getElementById('leave_status').value;
+            const data = new FormData();
+            data.append('leave_status', leaveStatus);
+            data.append('academic_year', academicYear);
+            data.append('leave_type', leaveType);
+            data.append('from_date', fromDate);
 
-        // Create an AJAX request
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'filter_status.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-        // Send the leave status filter
-        xhr.send('leave_status=' + leaveStatus);
+            // Handle the response
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
 
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                const leaveApplications = JSON.parse(xhr.responseText);
-                const tableBody = document.getElementById('leave-table-body');
-                tableBody.innerHTML = ''; // Clear existing table body
+                        if (response.error) {
+                            document.getElementById('error-message').textContent = response.error;
+                            document.getElementById('error-message').style.display = 'block';
+                        } else {
+                            // Populate the table with the new data
+                            const tableBody = document.getElementById('leave-table-body');
+                            tableBody.innerHTML = '';
 
-                // Populate the table with new data
-                leaveApplications.forEach(function(row) {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                    <td class="py-2 px-4">${row.from_date}</td>
-                    <td class="py-2 px-4">${row.to_date}</td>
-                    <td class="py-2 px-4">${row.no_of_days}</td>
-                    <td class="py-2 px-4">${row.reason}</td>
-                    <td class="py-2 px-4">${row.application_date}</td>
-                    <td class="py-2 px-4">${row.leave_approval_status}</td>
-                    <td class="py-2 px-4">${row.A_year}</td>
-                `;
-                    tableBody.appendChild(tr);
-                });
-            } else {
-                console.error('Error fetching data: ' + xhr.statusText);
-            }
-        };
-    });
-</script>
+                            response.forEach(function(row) {
+                                const tr = document.createElement('tr');
+                                tr.innerHTML = `
+                                <td class="py-2 px-4">${row.from_date}</td>
+                                <td class="py-2 px-4">${row.to_date}</td>
+                                <td class="py-2 px-4">${row.no_of_days}</td>
+                                <td class="py-2 px-4">${row.reason}</td>
+                                <td class="py-2 px-4">${row.application_date}</td>
+                                <td class="py-2 px-4">${row.leave_approval_status}</td>
+                                <td class="py-2 px-4">${row.A_year}</td>
+                                <td class="py-2 px-4">${row.leave_type}</td>
+                            `;
+                                tableBody.appendChild(tr);
+                            });
+
+                            // Hide error message if data is loaded
+                            document.getElementById('error-message').style.display = 'none';
+                        }
+                    } catch (error) {
+                        document.getElementById('error-message').textContent = 'An error occurred while processing the data.';
+                        document.getElementById('error-message').style.display = 'block';
+                    }
+                } else {
+                    document.getElementById('error-message').textContent = 'Error fetching data: ' + xhr.statusText;
+                    document.getElementById('error-message').style.display = 'block';
+                }
+            };
+
+            // Send the request
+            xhr.send(new URLSearchParams(new FormData(data)).toString());
+        }
+
+        // Attach event listeners to filter inputs
+        document.getElementById('leave_status').addEventListener('change', applyFilters);
+        document.getElementById('academic_year').addEventListener('change', applyFilters);
+        document.getElementById('leave_type').addEventListener('change', applyFilters);
+        document.getElementById('from_date').addEventListener('change', applyFilters);
+
+        // Initial load of data
+        window.onload = applyFilters;
+    </script>
+
+</body>
+
+</html>

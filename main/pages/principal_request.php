@@ -5,9 +5,13 @@ include('../../config/connect.php');
 $message = ""; // Message to display for success or error
 
 // Check if the logged-in user is the Principal
-$staff_id = $_SESSION['staff_id'];
+$staff_id = $_SESSION['Staff_id'];
 $staff_id = 125;
-
+if (!isset($staff_id)) {
+    // Redirect to login page if not logged in
+    header("Location: login.php");
+    exit();
+}
 $principal_query = "SELECT * FROM staff WHERE Staff_id = $staff_id AND Designation = 'Principal'";
 $principal_result = $conn->query($principal_query);
 

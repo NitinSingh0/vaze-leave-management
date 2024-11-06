@@ -1,12 +1,17 @@
 <?php
 session_start();
-$_SESSION['staff_id'] = 123; // Example staff_id; replace with actual session data
+
 
 // Database connection
 include('../../config/connect.php');
 
 // Fetch CL, DL, and Medical leave records for the logged-in staff
-$staff_id = $_SESSION['staff_id'];
+$staff_id = $_SESSION['Staff_id'];
+if (!isset($_SESSION['Staff_id'])) {
+    // Redirect to login page if not logged in
+    header("Location: login.php");
+    exit();
+}
 
 // Query for Casual Leave (CL) records
 $cl_query = "SELECT From_date AS from_date, To_date AS to_date, No_of_days AS no_of_days, 

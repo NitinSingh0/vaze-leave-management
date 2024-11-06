@@ -5,6 +5,11 @@ include '../../config/connect.php'; // Include your DB connection file
 // Check if staff_id is in the session
 if (isset($_SESSION['Staff_id'])) {
     $staff_id = $_SESSION['Staff_id'];
+    if (!isset($_SESSION['Staff_id'])) {
+        // Redirect to login page if not logged in
+        header("Location: login.php");
+        exit();
+    }
 
     // Query to fetch staff data
     $sql = "SELECT s.Name, s.Username, s.Job_role Role, s.DOJ Date_of_Joining, d.Name Department_name 
