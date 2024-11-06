@@ -1,17 +1,17 @@
 <?php
 session_start();
 
-
 // Database connection
 include('../../config/connect.php');
 
 // Fetch CL, DL, and Medical leave records for the logged-in staff
-$staff_id = $_SESSION['Staff_id'];
 if (!isset($_SESSION['Staff_id'])) {
     // Redirect to login page if not logged in
     header("Location: login.php");
     exit();
 }
+
+$staff_id = $_SESSION['Staff_id'];
 
 // Query for Casual Leave (CL) records
 $cl_query = "SELECT From_date AS from_date, To_date AS to_date, No_of_days AS no_of_days, 
@@ -20,32 +20,32 @@ $cl_query = "SELECT From_date AS from_date, To_date AS to_date, No_of_days AS no
              FROM d_cl_leave 
              WHERE leave_approval_status = 'PA' AND Staff_id = $staff_id";
 $cl_result = $conn->query($cl_query);
+if (!$cl_result) {
+    die("CL Query failed: " . $conn->error);
+}
 
-                    // Query for Duty Leave (DL) records
-                    $dl_query = "SELECT From_date AS from_date, To_date AS to_date, No_of_days AS no_of_days, 
+// Query for Duty Leave (DL) records
+$dl_query = "SELECT From_date AS from_date, To_date AS to_date, No_of_days AS no_of_days, 
                     Nature AS reason, Application_date AS application_date, 
                     Reference_no AS reference_no, Date_of_letter AS date_of_letter,
                     leave_approval_status, A_year 
              FROM d_dl_leave 
              WHERE leave_approval_status = 'PA' AND Staff_id = $staff_id";
+$dl_result = $conn->query($dl_query);
+if (!$dl_result) {
+    die("DL Query failed: " . $conn->error);
+}
 
-                    $dl_result = $conn->query($dl_query);
-                    if (!$dl_result) {
-                        die("DL Query failed: " . $conn->error);
-                    }
-
-                    // Query for Medical Leave records
-                    $medical_query = "SELECT From_date AS from_date, To_date AS to_date, No_of_days AS no_of_days, 
+// Query for Medical Leave records
+$medical_query = "SELECT From_date AS from_date, To_date AS to_date, No_of_days AS no_of_days, 
                          Reason AS reason, Date_of_application AS application_date, 
                          leave_approval_status, A_year 
                   FROM d_mhm_leave 
                   WHERE leave_approval_status = 'PA' AND Staff_id = $staff_id";
-
-                    $medical_result = $conn->query($medical_query);
-                    if (!$medical_result) {
-                        die("Medical Query failed: " . $conn->error);
-                    }
-
+$medical_result = $conn->query($medical_query);
+if (!$medical_result) {
+    die("Medical Query failed: " . $conn->error);
+}
 
 $conn->close();
 ?>
@@ -69,17 +69,23 @@ $conn->close();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $cl_result->fetch_assoc()): ?>
+                    <?php if ($cl_result->num_rows > 0): ?>
+                        <?php while ($row = $cl_result->fetch_assoc()): ?>
+                            <tr>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['from_date']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['to_date']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['no_of_days']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['reason']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['application_date']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['leave_approval_status']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['A_year']) ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
                         <tr>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['from_date']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['to_date']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['no_of_days']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['reason']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['application_date']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['leave_approval_status']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['A_year']) ?></td>
+                            <td colspan="7" class="py-2 px-4 text-center">No Casual Leave Records Found</td>
                         </tr>
-                    <?php endwhile; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -104,19 +110,25 @@ $conn->close();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $dl_result->fetch_assoc()): ?>
+                    <?php if ($dl_result->num_rows > 0): ?>
+                        <?php while ($row = $dl_result->fetch_assoc()): ?>
+                            <tr>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['from_date']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['to_date']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['no_of_days']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['reason']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['application_date']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['reference_no']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['date_of_letter']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['leave_approval_status']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['A_year']) ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
                         <tr>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['from_date']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['to_date']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['no_of_days']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['reason']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['application_date']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['reference_no']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['date_of_letter']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['leave_approval_status']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['A_year']) ?></td>
+                            <td colspan="9" class="py-2 px-4 text-center">No Duty Leave Records Found</td>
                         </tr>
-                    <?php endwhile; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -139,17 +151,23 @@ $conn->close();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $medical_result->fetch_assoc()): ?>
+                    <?php if ($medical_result->num_rows > 0): ?>
+                        <?php while ($row = $medical_result->fetch_assoc()): ?>
+                            <tr>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['from_date']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['to_date']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['no_of_days']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['reason']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['application_date']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['leave_approval_status']) ?></td>
+                                <td class="py-2 px-4"><?= htmlspecialchars($row['A_year']) ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
                         <tr>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['from_date']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['to_date']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['no_of_days']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['reason']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['application_date']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['leave_approval_status']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($row['A_year']) ?></td>
+                            <td colspan="7" class="py-2 px-4 text-center">No Medical Leave Records Found</td>
                         </tr>
-                    <?php endwhile; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
