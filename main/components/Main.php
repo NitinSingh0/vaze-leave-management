@@ -1,4 +1,4 @@
- <?php 
+ <?php
     error_reporting(0);
 
     $Staff_id = $_SESSION['Staff_id'];
@@ -15,13 +15,14 @@
     $result = $conn->query($sql);
     if ($result && $row = $result->fetch_assoc()) {
         $jobRole = $row['Job_role'];
+        $designation = $row['Designation'];
     }
- ?>
+    ?>
  <!-- Main Container -->
  <div class="mt-11 flex h-screen">
      <!-- Sidebar -->
-     <aside class="fixed flex flex-col w-1/5 bg-white border-r h-full px-4 py-6">
-         <ul class="space-y-4">
+     <aside class="fixed flex flex-col w-1/5 bg-white border-r h-full px-4 py-6 overflow-y-auto">
+         <ul class="space-y-2">
              <li>
                  <details class="group">
                      <summary class="flex items-center justify-between px-4 py-2 text-gray-700 cursor-pointer font-medium">
@@ -32,7 +33,7 @@
                              </svg>
                          </span>
                      </summary>
-                     <ul class="mt-2 pl-4 space-y-2">
+                     <ul class="mt-2 pl-4 space-y-1">
                          <!-- Leave options based on job role -->
                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('dl')">Duty Leave</a></li>
                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('cl')">Casual Leave</a></li>
@@ -56,14 +57,31 @@
              </li>
              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('status')">Check Status</a></li>
              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('summary')">Summary</a></li>
-         </ul>
 
+             <!-- Additional options only for designation Principal , Vice Principal and HOD -->
+             <?php if ($designation == 'HOD'): ?>
+                 <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('HODLeaveRequest')">HOD Leave Request</a></li>
+             <?php endif; ?>
+             <?php if ($designation == 'Principal'): ?>
+
+                 <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('report')">Report</a></li>
+             <?php endif; ?>
+             <?php if ($designation == 'Vice Principal'): ?>
+                 <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('VicePrincipalLeaveRequest')">Vice Principal Leave Request</a></li>
+             <?php endif; ?>
+         </ul>
          <!-- Additional options only for job role OO -->
-         <?php if ($jobRole == 'OO'): ?>
+         <?php if ($jobRole == 'OO' or $designation == 'Principal'): ?>
              <div class="mt-6">
                  <h3 class="font-medium text-gray-800">Admin Options</h3>
                  <ul class="mt-2 space-y-2">
-                     <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('officeRequest')">Leave Request</a></li>
+                     <?php if ($jobRole == 'OO'): ?>
+                         <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('officeRequest')">Leave Request</a></li>
+                     <?php endif ?>
+
+                     <?php if ($designation == 'Principal'): ?>
+                         <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('PrincipalLeaveRequest')">Principal Leave Request</a></li>
+                     <?php endif ?>
                      <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('registration')">New Registration</a></li>
                      <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('assign')">Assign Leave</a></li>
                      <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('update')">Update Details</a></li>

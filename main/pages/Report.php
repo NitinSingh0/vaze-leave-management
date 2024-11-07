@@ -4,13 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Principal Report Page</title>
-    
+
     <link rel="stylesheet" href="./output.css">
     <?php include('../../library/library.php'); ?>
     <!-- <script src="scripts.js"></script> -->
 </head>
+<?php include('../layouts/header.php'); ?>
 
-<body class="bg-gray-100 p-6">
+<body class="bg-gray-100 p-6 mt-12 pl-0">
+
+
+
 
     <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow-lg">
         <h1 class="text-2xl font-bold mb-4">Principal Report Page</h1>
@@ -119,6 +123,7 @@
             });
         });
     </script>
+
 </body>
 
 </html>
