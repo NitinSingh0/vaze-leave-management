@@ -96,7 +96,7 @@
                     <label class="mb-3 block text-base font-medium text-[#07074D]">
                         No. Of Days
                     </label>
-                    <input type="number" name="no_of_days" id="no_of_days" required
+                    <input type="number" name="no_of_days" id="no_of_days" min="0" required
                         class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                         onchange="generateDutyTable()"
                         placeholder="Select No. Of Days" />
