@@ -29,7 +29,7 @@ $pdf->AddPage();
 $pdf->SetFont('Times', 'B', 18);
 
 // College Header with Logo
-$pdf->Image('logo.jpg', 10, 10, 20); // College logo at top left corner
+$pdf->Image('../assets/logos/logo.jpg', 10, 10, 20); // College logo at top left corner
 $pdf->Cell(0, 10, "V.G. Vaze College of Arts, Science and Commerce", 0, 1, 'C');
 $pdf->SetFont('Times', '', 14);
 $pdf->Cell(0, 10, "Affiliated to the University of Mumbai", 0, 1, 'C');

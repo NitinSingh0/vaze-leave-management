@@ -19,19 +19,19 @@ if ($hod_result && $hod_result->num_rows > 0) {
     $D_id = $hod_result->fetch_assoc()['D_id'];
 
     // Fetch pending leave requests for the department
-    $leave_query_cl = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Application_date, l.leave_approval_status, s.Name 
+    $leave_query_cl = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Date_of_application, l.leave_approval_status, s.Name 
                     FROM d_cl_leave AS l
                     JOIN staff AS s ON l.Staff_id = s.Staff_id
                     WHERE s.D_id = $D_id AND l.leave_approval_status = 'P'";
     $leave_result_cl = $conn->query($leave_query_cl);
 
-    $leave_query_dl = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Nature AS Reason, l.Application_date, l.leave_approval_status, s.Name 
+    $leave_query_dl = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Nature AS Reason, l.Date_of_application, l.leave_approval_status, s.Name 
                     FROM d_dl_leave AS l
                     JOIN staff AS s ON l.Staff_id = s.Staff_id
                     WHERE s.D_id = $D_id AND l.leave_approval_status = 'P'";
     $leave_result_dl = $conn->query($leave_query_dl);
 
-    $leave_query_mhm = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Date_of_application AS Application_date, l.leave_approval_status, s.Name 
+    $leave_query_mhm = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Date_of_application AS Date_of_application, l.leave_approval_status, s.Name 
                     FROM d_mhm_leave AS l
                     JOIN staff AS s ON l.Staff_id = s.Staff_id
                     WHERE s.D_id = $D_id AND l.leave_approval_status = 'P'";
@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <td class="py-3 px-4 border-b w-40 truncate">
                                         <div class="overflow-y-auto h-12"><?= htmlspecialchars($row['Reason']) ?></div>
                                     </td>
-                                    <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['Application_date']) ?></td>
+                                    <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['Date_of_application']) ?></td>
                                     <td class="py-3 px-4 border-b">
                                         <form method="POST" action="">
                                             <input type="hidden" name="leave_id" value="<?= $row['Staff_id'] ?>">

@@ -22,7 +22,7 @@ session_start();
         <!-- Sidebar -->
         <?php include('../layouts/sidebar.php');
         ?>
-        <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow-lg">
+        <div class="bg-white border rounded-lg px-8 py-6 mx-auto my-8 justify-items-center">
             <h1 class="text-2xl font-bold mb-4">Principal Report Page</h1>
 
             <!-- Tabs for Department and Individual Teacher -->

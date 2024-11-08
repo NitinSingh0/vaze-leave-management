@@ -58,13 +58,15 @@
           <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('summary')">Summary</a></li>
 
           <!-- Additional options only for designation Principal , Vice Principal and HOD -->
-          <?php if ($designation == 'HOD'): ?>
-              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('HOD_request')">HOD Leave Request</a></li>
-         
-          <?php endif; ?>
+
           <?php if ($designation == 'Principal'): ?>
 
               <li><a href="Report.php" class="block px-4 py-2 text-gray-700">Report</a></li>
+
+          <?php endif; ?>
+
+          <?php if ($designation == 'HOD'): ?>
+              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('HOD_request')">HOD Leave Request</a></li>
           
           <?php endif; ?>
           <?php if ($designation == 'Vice Principal'): ?>

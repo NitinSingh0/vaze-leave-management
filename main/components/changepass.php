@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo "<script>
                         showAlert('Password Updated Successfully', 'green');
                         setTimeout(function() {
-                            window.location.href = '../pages/Main.php';
+                            window.location.href = '../pages/index.php';
                         }, 2000);
                       </script>";
             } else {

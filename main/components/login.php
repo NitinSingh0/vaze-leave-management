@@ -9,11 +9,15 @@ if (isset($_POST['submit'])) {
   $result = mysqli_query($conn, $sql);
   $val = 0;  // 0 -> user not exist  1-> correct password  2-> incorrect password   3-> for new user  
   if ($result) {
+    
     while ($row = mysqli_fetch_assoc($result)) {
+      
       if ($row['Username'] == $u_name) {
-
+       
         if ($pass == 'NEW') {
-          if ($row['Password'] == $pass) {
+          $hashedpass = $row['Password'];
+          if
+          (password_verify($pass, $hashedpass)) {
 
             $_SESSION['Staff_id'] = $row['Staff_id'];
             echo $_SESSION['Staff_id'];

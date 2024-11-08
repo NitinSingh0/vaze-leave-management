@@ -17,7 +17,7 @@ session_start();
 
 </head>
 
-<body class="bg-white dark:bg-black text-white">
+<body class="bg-white dark:bg-gray-100 text-white">
     <?php include('../layouts/header.php'); ?>
 
     <?php include('../components/Main.php'); ?>

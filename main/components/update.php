@@ -43,13 +43,12 @@ $conn->close();
 ?>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    
-        alert("JavaScript is running!");
+    alert("JavaScript is running!");
     console.log("Testing inline jQuery...");
 </script>
 
-<body class="bg-gray-100 text-gray-900 dark:text-white">
-    <div class="container mx-auto mt-10 text-gray-900 dark:text-white">
+<body class="bg-white border rounded-lg px-8 py-6 mx-auto my-8 justify-items-center">
+    <div class="container  mt-10 text-gray-900 bg-white border rounded-lg px-8 py-6 mx-auto my-8 justify-items-center">
         <h1 class="text-2xl font-bold mb-5">Update Staff Job Role</h1>
 
         <!-- Staff Selection Dropdown -->

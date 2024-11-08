@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         //  echo "
         // <script>
-        // alert('$name $application_date $department $from_date $to_date $reason');
+        // alert('$name $Date_of_application $department $from_date $to_date $reason');
         // </script>
         // ";
 
@@ -121,15 +121,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Duplicate found
             echo "<script>alert('Duplicate Entry:User already Exist!');</script>";
         } else {
+            //hashing password
+            $hashed_password = password_hash('NEW', PASSWORD_DEFAULT);
             // No duplicate, proceed with insertion
             $sql = "INSERT INTO staff ( Name, Designation, DOJ, Staff_type, Username, Gender, Job_role, D_id, status, Password) 
-                VALUES ('$name', '$desig ', '$date', '$staff_type', '$username', '$gender', '$type','$department','A', 'NEW')";
+                VALUES ('$name', '$desig ', '$date', '$staff_type', '$username', '$gender', '$type','$department','A', '$hashed_password')";
 
             if ($res = $conn->query($sql)) {
                 echo "<script>alert('New Staff Added Successfully!');</script>";
                 //echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=registration.php">';
             } else {
-                $error_dates .= "$extra_duty, ";
+                echo "<script>alert('Unable to add!');</script>";
             }
         }
     }

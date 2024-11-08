@@ -63,7 +63,7 @@ if ($result && $row = $result->fetch_assoc()) {
                             Application Date
                         </label>
                         <input
-                            name="application_date"
+                            name="Date_of_application"
                             type="date"
                             class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                             value="<?php echo date('Y-m-d'); ?>"
@@ -143,9 +143,9 @@ if ($result && $row = $result->fetch_assoc()) {
 <?php
 //error_reporting(0);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['year']) && !empty($_POST['application_date']) && !empty($_POST['department']) && !empty($_POST['no_of_days'])) {
+    if (isset($_POST['year']) && !empty($_POST['Date_of_application']) && !empty($_POST['department']) && !empty($_POST['no_of_days'])) {
         $year = $_POST["year"];
-        $application_date = $_POST["application_date"];
+        $Date_of_application = $_POST["Date_of_application"];
         $department = $_POST["department"];
 
         $staff_id = $Staff_id;
@@ -184,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         //  echo "
         // <script>
-        // alert('$name $application_date $department $from_date $to_date $reason');
+        // alert('$name $Date_of_application $department $from_date $to_date $reason');
         // </script>
         // ";
 
@@ -209,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                 // No duplicate, proceed with insertion
                 $sql = "INSERT INTO n_off_pay_leave (Staff_id, Date_of_application, Extra_duty_date, Nature_of_work, Off_leave_date, leave_approval_status, A_year) 
-                VALUES ('$staff_id', '$application_date ', '$extra_duty', '$nature', '$off_date', 'P', $year)";
+                VALUES ('$staff_id', '$Date_of_application ', '$extra_duty', '$nature', '$off_date', 'P', $year)";
 
                 if ($res = $conn->query($sql)) {
                     $success_export_duty .= "$extra_duty, ";

@@ -18,17 +18,17 @@ $principal_result = $conn->query($principal_query);
 if ($principal_result && $principal_result->num_rows > 0) {
     // Fetch leave requests approved by HOD (leave_approval_status = 'HA') for all departments
     $leave_queries = [
-        "Casual Leave" => "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Application_date, l.HOD_remark, l.leave_approval_status, s.Name, d.Name AS Department
+        "Casual Leave" => "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Date_of_application, l.HOD_remark, l.leave_approval_status, s.Name, d.Name AS Department
                            FROM d_cl_leave AS l
                            JOIN staff AS s ON l.Staff_id = s.Staff_id
                            JOIN department AS d ON s.D_id = d.D_id
                            WHERE l.leave_approval_status = 'HA'",
-        "Duty Leave" => "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Nature AS Reason, l.Type, l.Application_date, l.HOD_remark, l.leave_approval_status, s.Name, d.Name AS Department
+        "Duty Leave" => "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Nature AS Reason, l.Type, l.Date_of_application, l.HOD_remark, l.leave_approval_status, s.Name, d.Name AS Department
                          FROM d_dl_leave AS l
                          JOIN staff AS s ON l.Staff_id = s.Staff_id
                          JOIN department AS d ON s.D_id = d.D_id
                          WHERE l.leave_approval_status = 'HA'",
-        "Medical Half Pay Maternity Leave" => "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Date_of_application AS Application_date, l.HOD_remark, l.leave_approval_status, l.Principal_remark,   s.Name, d.Name AS Department
+        "Medical Half Pay Maternity Leave" => "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Date_of_application AS Date_of_application, l.HOD_remark, l.leave_approval_status, l.Principal_remark,   s.Name, d.Name AS Department
                                                FROM d_mhm_leave AS l
                                                JOIN staff AS s ON l.Staff_id = s.Staff_id
                                                JOIN department AS d ON s.D_id = d.D_id
@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <td class="py-3 px-4 border-b w-40 truncate">
                                         <div class="overflow-y-auto h-12"><?= htmlspecialchars($row['Reason']) ?></div>
                                     </td>
-                                    <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['Application_date']) ?></td>
+                                    <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['Date_of_application']) ?></td>
                                     <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['HOD_remark']) ?></td>
                                     <?php if ($leave_type === "Duty Leave"): ?>
                                         <td class="py-3 px-4 border-b"><?= htmlspecialchars($row['Type']) ?></td>
