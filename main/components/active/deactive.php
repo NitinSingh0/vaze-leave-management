@@ -1,7 +1,9 @@
+
+
 <?php include("connect.php"); ?>
 
 <div class=" bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-4xl">
-    <h1 class="text-2xl font-bold text-center mb-6 dark:text-black">Deactivate Staff</h1>
+    <h1 class="text-2xl font-bold text-center mb-6 text-black ">Deactivate Staff</h1>
     <!-- Tabs -->
     <div class="flex border-b">
         <button id="teaching-tab" class="px-4 py-2 text-blue-500 font-semibold focus:outline-none border-b-2 border-blue-500" onclick="click1()">Teaczzhing</button>
