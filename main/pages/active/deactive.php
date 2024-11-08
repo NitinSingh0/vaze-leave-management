@@ -228,12 +228,6 @@
         });
 
 
-
-
-
-
-
-        
         $("#submit2").on("click", function() {
             var n_dept = document.getElementById('nonteaching-type').value;
 
