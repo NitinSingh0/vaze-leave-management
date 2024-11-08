@@ -240,7 +240,7 @@
 
 
 
-    <!--OFF PAY-->
+ <!--OFF PAY-->
  <script>
      function generateDutyTable() {
          const noOfDays = document.getElementById("no_of_days").value;
@@ -334,7 +334,7 @@
 
 
 
-    <!--MEDICAL-->
+ <!--MEDICAL-->
  <script>
      function setMinToDate() {
          const fromDate = document.getElementById("from_date").value;
@@ -359,7 +359,7 @@
      }
 
 
-//DL
+     //DL
 
      function toggleDateField() {
          const referenceNumber = document.getElementById('reference_number').value;
