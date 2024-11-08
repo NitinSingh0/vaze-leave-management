@@ -12,7 +12,7 @@ if (isset($_SESSION['Staff_id'])) {
     }
 
     // Query to fetch staff data
-    $sql = "SELECT s.Name, s.Username, s.Job_role Role, s.DOJ Date_of_Joining, d.Name Department_name 
+    $sql = "SELECT s.Name, s.Username, s.Job_role Role, s.Designation, s.DOJ Date_of_Joining, d.Name Department_name 
             FROM staff s
             INNER JOIN department d ON s.D_id = d.D_id
             WHERE s.Staff_id = ?";

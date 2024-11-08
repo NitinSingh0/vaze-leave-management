@@ -1,77 +1,11 @@
  <?php
     error_reporting(0);
 
-    $Staff_id = $_SESSION['Staff_id'];
-
-    if (!$Staff_id) {
-        echo "<script>alert('User not logged in.'); window.location.href='login.php';</script>";
-        exit;
-    }
-
-    include('../../config/connect.php'); // Include your DB connection file
-
-    // Fetch the existing password for the staff
-    $sql = "SELECT * FROM staff WHERE Staff_id = '$Staff_id'";
-    $result = $conn->query($sql);
-    if ($result && $row = $result->fetch_assoc()) {
-        $jobRole = $row['Job_role'];
-    }
     ?>
  <!-- Main Container -->
  <div class="mt-11 flex h-screen">
      <!-- Sidebar -->
-     <aside class="fixed flex flex-col w-1/5 bg-white border-r h-full px-4 py-6">
-         <ul class="space-y-4">
-             <li>
-                 <details class="group">
-                     <summary class="flex items-center justify-between px-4 py-2 text-gray-700 cursor-pointer font-medium">
-                         Apply Leave
-                         <span class="transition duration-300 transform group-open:-rotate-180">
-                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                             </svg>
-                         </span>
-                     </summary>
-                     <ul class="mt-2 pl-4 space-y-2">
-                         <!-- Leave options based on job role -->
-                         <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('dl')">Duty Leave</a></li>
-                         <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('cl')">Casual Leave</a></li>
-                         <!-- Conditional rendering for MHM, EHM, OFF pay, etc. -->
-                         <?php if ($jobRole == 'TD'): ?>
-                             <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHM</a></li>
-                         <?php elseif ($jobRole == 'TJ'): ?>
-                             <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">EHM</a></li>
-                         <?php elseif ($jobRole == 'NL'): ?>
-                             <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('mediacl')">MHM</a></li>
-                             <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
-                         <?php elseif ($jobRole == 'NO'): ?>
-                             <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
-                             <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHME</a></li>
-                         <?php elseif ($jobRole == 'OO'): ?>
-                             <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
-                             <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHME</a></li>
-                         <?php endif; ?>
-                     </ul>
-                 </details>
-             </li>
-             <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('status')">Check Status</a></li>
-             <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('summary')">Summary</a></li>
-         </ul>
-
-         <!-- Additional options only for job role OO -->
-         <?php if ($jobRole == 'OO'): ?>
-             <div class="mt-6">
-                 <h3 class="font-medium text-gray-800">Admin Options</h3>
-                 <ul class="mt-2 space-y-2">
-                     <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('officeRequest')">Leave Request</a></li>
-                     <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('registration')">New Registration</a></li>
-                     <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('assign')">Assign Leave</a></li>
-                     <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('update')">Update Details</a></li>
-                     <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('active/deactive')">Deactivate Users</a></li>
-                 </ul>
-             </div>
-         <?php endif; ?>
-     </aside>
+     <?php include('../layouts/sidebar.php') ?>
 
      <!-- Main Content Area with margin for sidebar -->
      <main id="mainContent" class="flex-1 p-8 ml-[20%] overflow-auto">

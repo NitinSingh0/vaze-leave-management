@@ -8,6 +8,7 @@ if (!isset($_SESSION['Staff_id'])) {
     header("Location: login.php");
     exit();
 }
+
 // Database connection
 include('../../config/connect.php');
 
@@ -18,17 +19,17 @@ $query = "SELECT From_date AS from_date, To_date AS to_date, No_of_days AS no_of
           FROM d_cl_leave 
           WHERE Staff_id = $staff_id
           UNION ALL
-          SELECT From_date, To_date, No_of_days, Application_date, Nature AS reason, 
+          SELECT From_date, To_date, No_of_days, Nature AS reason, Application_date, 
                  leave_approval_status, A_year, 'DL' AS leave_type 
           FROM d_dl_leave 
           WHERE Staff_id = $staff_id";
 
-// Fetch the results based on filters (if any)
+// Fetch filtered results if POST request is made
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $leave_status = isset($_POST['leave_status']) ? $_POST['leave_status'] : '';
-    $academic_year = isset($_POST['academic_year']) ? $_POST['academic_year'] : '';
-    $leave_type = isset($_POST['leave_type']) ? $_POST['leave_type'] : '';
-    $from_date = isset($_POST['from_date']) ? $_POST['from_date'] : '';
+    $leave_status = $_POST['leave_status'] ?? '';
+    $academic_year = $_POST['academic_year'] ?? '';
+    $leave_type = $_POST['leave_type'] ?? '';
+    $from_date = $_POST['from_date'] ?? '';
 
     // Build query with filters
     if ($leave_status) {
@@ -45,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+// Execute the query
 $result = $conn->query($query);
 $leave_applications = [];
 
@@ -56,6 +58,12 @@ if ($result) {
 
 // Close the database connection
 $conn->close();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-Type: application/json');
+    echo json_encode($leave_applications);
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -74,7 +82,7 @@ $conn->close();
     </style>
 </head>
 
-<body class="bg-gray-100 ">
+<body class="bg-gray-100">
 
     <div class="container mx-auto mt-6 p-4 bg-white shadow rounded-lg">
 
@@ -147,67 +155,55 @@ $conn->close();
     </div>
 
     <script>
-        // Function to handle filter changes
         function applyFilters() {
             const leaveStatus = document.getElementById('leave_status').value;
             const academicYear = document.getElementById('academic_year').value;
             const leaveType = document.getElementById('leave_type').value;
             const fromDate = document.getElementById('from_date').value;
 
-            const data = new FormData();
+            const data = new URLSearchParams();
             data.append('leave_status', leaveStatus);
             data.append('academic_year', academicYear);
             data.append('leave_type', leaveType);
             data.append('from_date', fromDate);
 
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', '', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            fetch(window.location.href, {
+                    method: 'POST',
+                    body: data
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Filtered data:', data); // Debug: Check if the server returns the filtered data
 
-            // Handle the response
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    try {
-                        const response = JSON.parse(xhr.responseText);
+                    const tableBody = document.getElementById('leave-table-body');
+                    tableBody.innerHTML = '';
 
-                        if (response.error) {
-                            document.getElementById('error-message').textContent = response.error;
-                            document.getElementById('error-message').style.display = 'block';
-                        } else {
-                            // Populate the table with the new data
-                            const tableBody = document.getElementById('leave-table-body');
-                            tableBody.innerHTML = '';
-
-                            response.forEach(function(row) {
-                                const tr = document.createElement('tr');
-                                tr.innerHTML = `
-                                <td class="py-2 px-4">${row.from_date}</td>
-                                <td class="py-2 px-4">${row.to_date}</td>
-                                <td class="py-2 px-4">${row.no_of_days}</td>
-                                <td class="py-2 px-4">${row.reason}</td>
-                                <td class="py-2 px-4">${row.application_date}</td>
-                                <td class="py-2 px-4">${row.leave_approval_status}</td>
-                                <td class="py-2 px-4">${row.A_year}</td>
-                                <td class="py-2 px-4">${row.leave_type}</td>
-                            `;
-                                tableBody.appendChild(tr);
-                            });
-
-                            // Hide error message if data is loaded
-                            document.getElementById('error-message').style.display = 'none';
-                        }
-                    } catch (error) {
-                        document.getElementById('error-message').textContent = 'An error occurred while processing the data.';
-                        document.getElementById('error-message').style.display = 'block';
+                    if (data.length === 0) {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `<td colspan="8" class="py-2 px-4 text-center">No records found</td>`;
+                        tableBody.appendChild(tr);
+                    } else {
+                        data.forEach(row => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                            <td class="py-2 px-4">${row.from_date}</td>
+                            <td class="py-2 px-4">${row.to_date}</td>
+                            <td class="py-2 px-4">${row.no_of_days}</td>
+                            <td class="py-2 px-4">${row.reason}</td>
+                            <td class="py-2 px-4">${row.application_date}</td>
+                            <td class="py-2 px-4">${row.leave_approval_status}</td>
+                            <td class="py-2 px-4">${row.A_year}</td>
+                            <td class="py-2 px-4">${row.leave_type}</td>
+                        `;
+                            tableBody.appendChild(tr);
+                        });
                     }
-                } else {
-                    document.getElementById('error-message').textContent = 'Error fetching data: ' + xhr.statusText;
-                    document.getElementById('error-message').style.display = 'block';
-                }
-            };
-
-            // Send the request
-            xhr.send(new URLSearchParams(new FormData(data)).toString());
+                })
+                .catch(error => {
+                    const errorMessage = document.getElementById('error-message');
+                    errorMessage.textContent = 'Error fetching data';
+                    errorMessage.style.display = 'block';
+                });
         }
 
         // Attach event listeners to filter inputs
@@ -215,9 +211,6 @@ $conn->close();
         document.getElementById('academic_year').addEventListener('change', applyFilters);
         document.getElementById('leave_type').addEventListener('change', applyFilters);
         document.getElementById('from_date').addEventListener('change', applyFilters);
-
-        // Initial load of data
-        window.onload = applyFilters;
     </script>
 
 </body>
