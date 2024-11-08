@@ -50,7 +50,7 @@ if (isset($_POST['submit'])) {
 
       $_SESSION['Staff_id'] = $row['Staff_id'];
       echo '<script>alert("LOGIN SUCCESSFULL.....");</script>';
-      echo '<META HTTP-EQUIV="Refresh" Content="0.5; URL=Main.php">';
+      echo '<META HTTP-EQUIV="Refresh" Content="0.5; URL=index.php">';
     } elseif ($val == 2) {
       echo '<script>alert("WRONG PASSWORd !!");</script>';
     } elseif ($val == 0) {

@@ -63,7 +63,7 @@ if (isset($_GET['page'])) {
 <!-- PHP Leave Data -->
 <?php
 // Sample job role for demonstration purposes
-$jobRole = $_SESSION['job_role']; // Assume job_role is stored in session
+//$jobRole = $_SESSION['Job_role']; // Assume job_role is stored in session
 
 $casualLeavesTotal = 12;
 $casualLeavesUsed = 5;

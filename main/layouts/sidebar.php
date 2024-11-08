@@ -1,5 +1,5 @@
   <?php
-    error_reporting(0);
+    //error_reporting(0);
 
     $Staff_id = $_SESSION['Staff_id'];
 
@@ -80,6 +80,7 @@
                   <?php if ($designation == 'Principal'): ?>
                       <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('principal_request')">Principal Leave Request</a></li>
                   <?php endif ?>
+                  
                   <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('registration')">New Registration</a></li>
                   <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('assign')">Assign Leave</a></li>
                   <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('update')">Update Details</a></li>
@@ -91,11 +92,11 @@
   <script>
       function loadContent(page) {
           // Check if the current page is 'Main.php'
-          const isMainPage = window.location.pathname.includes("Main.php");
+          const isMainPage = window.location.pathname.includes("index.php");
 
           if (!isMainPage) {
               // Redirect to Main.php with the 'page' parameter
-              window.location.href = `Main.php?page=${page}`;
+              window.location.href = `index.php?page=${page}`;
           } else {
               // If already on Main.php, load the content dynamically
               fetch(`../components/${page}.php`)
