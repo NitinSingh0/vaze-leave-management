@@ -178,7 +178,7 @@ session_start();
 
 
         }
-        
+
 
         // Using event delegation for dynamically added elements
         document.addEventListener('click', function(e) {
@@ -250,7 +250,77 @@ session_start();
     </script>
 
 
+
+
     <!--Deactivae/ activate-->
+
+    <!-- Update details -->
+    <script>
+        function fetchDetails(selectElement) {
+            alert("okk");
+            const staffId = selectElement.value;
+            const staffDetails = document.getElementById("staff_details");
+            const noRecordMessage = document.getElementById("no_record");
+            const staffIdInput = document.getElementById("staff_id");
+            const staffName = document.getElementById("staff_name");
+            const staffEmail = document.getElementById("staff_email");
+            const jobRoleSelect = document.getElementById("job_role");
+
+
+            // Alert to check if values are captured correctly
+            // alert("Department: " + t_dept);
+            if (staffId) {
+
+                // Get the values 
+                $.ajax({
+                    url: "staff_ajax.php",
+                    type: "POST",
+                    cache: false,
+                    data: {
+
+                        Staff: staffId
+                    },
+                    success: function(data) {
+                        $("#staff_details").html(data);
+                    }
+                });
+                staffDetails.classList.remove("hidden");
+            }
+
+
+        }
+
+        function updateDetail() {
+            // Prevent form submission behavior and handle AJAX submission manually
+            const staffId = $("#staff_id").val();
+            const jobRole = $("#job_role").val();
+
+            $.ajax({
+                url: "staff_ajax.php",
+                type: "POST",
+                data: {
+                    staff_id: staffId,
+                    job_role: jobRole
+                },
+                success: function(response) {
+                    const res = JSON.parse(response);
+                    if (res.success) {
+                        alert('Job role updated successfully');
+                        $("#staff_details").html(''); // Clear the form contents
+                        $("#staff_select").val("");
+                    } else {
+                        alert('Failed to update job role');
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while updating the job role.');
+                }
+            });
+        }
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </body>
 <?php include('../../library/AOS.php'); ?>
