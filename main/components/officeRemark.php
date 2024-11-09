@@ -12,8 +12,8 @@ if (!isset($staff_id)) {
     exit();
 }
 
-        $office_query = "SELECT * FROM staff WHERE Staff_id = $staff_id AND Job_role = 'OO'";
-        $office_result = $conn->query($office_query);
+$office_query = "SELECT * FROM staff WHERE Staff_id = $staff_id AND Job_role = 'OO'";
+$office_result = $conn->query($office_query);
 
 
 if ($office_result && $office_result->num_rows > 0) {
@@ -74,7 +74,7 @@ if ($office_result && $office_result->num_rows > 0) {
                                 FROM n_off_pay_leave AS l
                                 JOIN staff AS s ON l.Staff_id = s.Staff_id
                                 JOIN department AS d ON s.D_id = d.D_id
-                                WHERE l.Office_remark = '' AND l.leave_approval_status = 'PA' AND d.Name = 'office_lab'"                   
+                                WHERE l.Office_remark = '' AND l.leave_approval_status = 'PA' AND d.Name = 'office_lab'"
         ]
     ];
 
@@ -99,6 +99,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $to_date = $_POST['to_date'];
     $office_remark = $_POST['office_remark'];
     $leave_table = $_POST['leave_table']; // Dynamic table name for update query
+
+    // Debugging: Output the leave_table to ensure it's being passed correctly
+    echo "Leave Table: " . $leave_table; // Remove this in production!
 
     switch ($leave_table) {
         case 'd_c_leave':
@@ -136,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             die("Error: Invalid leave table.");
     }
 
-    // Table mapping adjustment for office request
+    // After checking if leave_table is valid, run the update query
     $update_query = "UPDATE $leave_table SET Office_remark = '$office_remark' 
                      WHERE Staff_id = $leave_id AND From_date = '$from_date' AND To_date = '$to_date'";
     if ($conn->query($update_query)) {
@@ -147,6 +150,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $messageType = "error";
     }
 }
+
+
 ?>
 
 <!-- HTML and JavaScript part -->
@@ -157,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <?= htmlspecialchars($message) ?>
             </div>
             <script>
-                setTimeout(() => document.getElementById("alert-box").style.display = "none", 30000);
+                setTimeout(() => document.getElementById("alert-box").style.display = "none", 3000);
             </script>
         <?php endif; ?>
 
@@ -207,7 +212,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                     <input type="hidden" name="leave_id" value="<?= $row['Staff_id'] ?>">
                                                     <input type="hidden" name="from_date" value="<?= $row['From_date'] ?>">
                                                     <input type="hidden" name="to_date" value="<?= $row['To_date'] ?>">
-                                                    <input type="hidden" name="leave_table" value="<?= htmlspecialchars($leave_table) ?>">
+                                                    <input type="hidden" name="leave_table" value="<?= strtolower($tab[0]) . "_" . strtolower($leave_type[0]) . "_leave" ?>">
+
                                                     <textarea name="office_remark" class="p-1 border rounded" placeholder="Add Office Remark"></textarea>
                                                     <button type="submit" class="bg-blue-500 text-white px-2 py-1 rounded mt-2">Submit</button>
                                                 </form>
