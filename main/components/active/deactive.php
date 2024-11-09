@@ -6,7 +6,7 @@
     <h1 class="text-2xl font-bold text-center mb-6 text-black ">Deactivate Staff</h1>
     <!-- Tabs -->
     <div class="flex border-b">
-        <button id="teaching-tab" class="px-4 py-2 text-blue-500 font-semibold focus:outline-none border-b-2 border-blue-500" onclick="click1()">Teaczzhing</button>
+        <button id="teaching-tab" class="px-4 py-2 text-blue-500 font-semibold focus:outline-none border-b-2 border-blue-500" onclick="click1()">Teaching</button>
         <button id="nonteaching-tab" class="px-4 py-2 text-gray-500 font-semibold focus:outline-none border-b-2 border-transparent hover:text-blue-500" onclick="click2()">Non-Teaching</button>
     </div>
 

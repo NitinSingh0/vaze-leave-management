@@ -65,6 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $success_export_duty = "";
         $success_off_date = "";
         $error_dates = "";
+        $duplicate_dates="";
 
         foreach ($duty_data as $duty) {
             $extra_duty = $duty['date_of_duty'];
@@ -79,7 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($checkResult->num_rows > 0) {
                 // Duplicate found
                 //echo "<script>alert('Duplicate Entry:Off Pay Leave has already been applied for $extra_duty!');</script>";
-                $error_dates .= "$extra_duty,";
+                $duplicate_dates .= "$extra_duty,"; // Collect duplicate dates
+      
             } else {
                 // No duplicate, proceed with insertion
                 $sql = "INSERT INTO n_off_pay_leave (Staff_id, Date_of_application, Extra_duty_date, Nature_of_work, Off_leave_date, leave_approval_status, A_year) 
@@ -100,22 +102,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $success_export_duty = rtrim($success_export_duty, ',');
         $success_off_date = rtrim($success_off_date, ',');
         $error_dates = rtrim($error_dates, ',');
-
+        $message="";
         // Display the combined alert message
 
         if (!empty($error_dates)) {
-            $message .= "\nFailed to apply Off Pay Leave for dates: $error_dates.";
+            $message .= "Failed to apply Off Pay Leave for dates: $error_dates. ";
             //echo "<script>alert('$message');</script>";
             //echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_OFF_PAY.php">';
-            echo json_encode(['status' => 'error', 'message' => 'Failed to apply Off Pay Leave for dates: '.$error_dates.'.']);
+            //echo json_encode(['status' => 'error', 'message' => 'Failed to apply Off Pay Leave for dates: '.$error_dates.'!']);
         
-        } elseif (!empty($success_off_date)) {
+        }
+        if (!empty($success_off_date)) {
 
-            $message = "Off Pay Leave applied successfully for dates: $success_off_date.";
-            echo json_encode(['status' => 'success', 'message' => 'Off Pay Leave applied successfully for dates: '.$success_off_date.'.']);
+            $message .= " \n Off Pay Leave applied successfully for dates: $success_off_date. ";
+            //echo json_encode(['status' => 'success', 'message' => 'Off Pay Leave applied successfully for dates: '.$success_off_date.'.']);
                
             //echo "<script>alert('$message');</script>";
             //echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_OFF_PAY.php">';
         }
+       if(!empty($duplicate_dates)){
+            $message .= " \n Duplicate Entry:Off Pay Leave has already been applied for: $duplicate_dates. ";
+          
+            //echo json_encode(['status' => 'error', 'message' => 'Duplicate Entry:Off Pay Leave has already been applied for ' . $duplicate_dates . '']);
+         
+        }
+        echo json_encode(['status' => 'error', 'message' => '' . $message . '']);
+
     }
 }

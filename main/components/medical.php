@@ -30,12 +30,12 @@ if ($result && $row = $result->fetch_assoc()) {
                 echo 'Medical Leave/Half Pay/Meternity <BR>Leave Form';
             } elseif ($type === "NL") {
                 echo 'Medical Leave/Half Pay/Meternity <BR>Leave Form';
-            } elseif ($type === "NO") {
+            } elseif ($type === "NO" || $type === "OO") {
                 echo 'Earned/Medical Leave/Half Pay/Meternity <BR>Leave Form';
             }
             ?>
         </div>
-        <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+        <form id="yourFormID4">
 
             <div class="-mx-3 flex ">
                 <!--Academic year -->
@@ -92,7 +92,7 @@ if ($result && $row = $result->fetch_assoc()) {
                                 echo '<option value="ML">Medical Leave</option>';
                                 echo '<option value="HP">Half Pay Leave</option>';
                                 echo '<option value="MA">Maternity Leave</option>';
-                            } elseif ($type === "NO") {
+                            } elseif ($type === "NO" || $type === "OO") {
                                 echo '<option value="ML">Medical Leave</option>';
                                 echo '<option value="HP">Half Pay Leave</option>';
                                 echo '<option value="MA">Maternity Leave</option>';
@@ -133,7 +133,7 @@ if ($result && $row = $result->fetch_assoc()) {
                         </label>
                         <select required name="department" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
                             <?php
-$Staff_id = $_SESSION['Staff_id'];
+                            $Staff_id = $_SESSION['Staff_id'];
                             $query = "SELECT D_id,Name FROM department where D_id=(select D_id from staff where Staff_id='$Staff_id')";
                             $result = $conn->query($query);
                             if ($result->num_rows > 0) {
@@ -210,129 +210,13 @@ $Staff_id = $_SESSION['Staff_id'];
 
 
             <div class="bg-slate-600 rounded-lg">
-                <Input type="submit" value="Apply" name="submit"
+                <Input type="submit" value="Apply" name="submit" onclick="emhm()"
                     class="hover:shadow-form w-full rounded-md bg-[#55a0e7] py-3 px-8 text-center text-base font-semibold text-white outline-none hover:bg-blue-800"
                     Apply />
             </div>
         </form>
     </div>
 </div>
-
-
-<?php
-//error_reporting(0);
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['year']) && !empty($_POST['application_date']) && !empty($_POST['department']) && !empty($_POST['from_date']) && !empty($_POST['to_date']) && !empty($_POST['reason'])) {
-        $year = $_POST["year"];
-        $application_date = $_POST["application_date"];
-        $department = $_POST["department"];
-        $from_date = $_POST["from_date"];
-        $to_date = $_POST["to_date"];
-        $reason = $_POST["reason"];
-        $leave_type = $_POST["type"];
-        $prefix_suffix = $_POST["prefix_suffix"];
-
-
-        $start = new DateTime($from_date);
-        $end = new DateTime($to_date);
-
-        // Calculate the difference
-        $interval = $start->diff($end);
-
-        // Get the number of days
-        $days = ($interval->days) + 1;
-
-        // echo "Number of days: " . $days;
-
-
-        //  echo "
-        // <script>
-        // alert('$name $application_date $department $from_date $to_date $reason');
-        // </script>
-        // ";
-
-        if ($leave_type == "EL") {
-            $leave = "EARNED Leave";
-        } elseif ($leave_type == "ML") {
-            $leave = "Medical Leave";
-        } elseif ($leave_type == "HP") {
-            $leave = "Half Pay Leave";
-        } elseif ($leave_type == "MA") {
-            $leave = "Maternity Leave";
-        }
-
-
-        $staff_id = $Staff_id;
-        $type =$jobRole;
-
-        if ($type == 'TD') {
-            // Check for duplicate entry
-            $checkSql = "SELECT * FROM d_mhm_leave WHERE Staff_id = '$staff_id' AND From_date = '$from_date' AND To_date = '$to_date'";
-            $checkResult = $conn->query($checkSql);
-
-            if ($checkResult->num_rows > 0) {
-                // Duplicate found
-                echo "<script>alert('Duplicate Entry: $leave has already been applied for these dates!');</script>";
-            } else {
-                // No duplicate, proceed with insertion
-                $sql = "INSERT INTO d_mhm_leave (Staff_id, From_date, To_date, No_of_days, Type, Reason, `Prefix-Suffix`, Date_of_application, leave_approval_status, A_year) 
-        VALUES ('$staff_id', '$from_date', '$to_date', '$days', '$leave_type', '$reason', '$prefix_suffix', '$application_date', 'P', $year)";
-
-                if ($res = $conn->query($sql)) {
-                    echo "<script>alert('$leave Applied Successfully!');</script>";
-                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_EMHM.php">';
-                } else {
-                    echo "<script>alert('ERROR!!');</script>";
-                }
-            }
-        } elseif ($type == 'TJ') {
-
-            // Check for duplicate entry
-            $checkSql = "SELECT * FROM j_ehm_leave WHERE Staff_id = '$staff_id' AND From_date = '$from_date' AND To_date = '$to_date'";
-            $checkResult = $conn->query($checkSql);
-
-            if ($checkResult->num_rows > 0) {
-                // Duplicate found
-                echo "<script>alert('Duplicate Entry:$leave has already been applied for these dates!');</script>";
-            } else {
-                // No duplicate, proceed with insertion
-                $sql = "INSERT INTO d_mhm_leave (Staff_id, From_date, To_date, No_of_days, Type, Reason, `Prefix-Suffix`, Date_of_application, leave_approval_status, A_year) 
-        VALUES ('$staff_id', '$from_date', '$to_date', '$days', '$leave_type', '$reason', '$prefix_suffix', '$application_date', 'P', $year)";
-
-                if ($res = $conn->query($sql)) {
-                    echo "<script>alert('$leave Applied Successfully!');</script>";
-                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_EMHM.php">';
-                } else {
-                    echo "<script>alert('ERROR!!');</script>";
-                }
-            }
-        } elseif ($type == 'NL' || $type == 'NO' || $type == 'OO') {
-
-            // Check for duplicate entry
-            $checkSql = "SELECT * FROM n_emhm_leave WHERE Staff_id = '$staff_id' AND From_date = '$from_date' AND To_date = '$to_date'";
-            $checkResult = $conn->query($checkSql);
-
-            if ($checkResult->num_rows > 0) {
-                // Duplicate found
-                echo "<script>alert('Duplicate Entry: $leave has already been applied for these dates!');</script>";
-            } else {
-                // No duplicate, proceed with insertion
-                $sql = "INSERT INTO n_emhm_leave (Staff_id, From_date, To_date, No_of_days, Type, Reason, `Prefix-Suffix`, Date_of_application, leave_approval_status, A_year) 
-        VALUES ('$staff_id', '$from_date', '$to_date', '$days', '$leave_type', '$reason', '$prefix_suffix', '$application_date', 'P', $year)";
-
-                if ($res = $conn->query($sql)) {
-                    echo "<script>alert('$leave Applied Successfully!');</script>";
-                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_EMHM.php">';
-                } else {
-                    echo "<script>alert('ERROR!!');</script>";
-                }
-            }
-        }
-    }
-}
-
-
-?>
 
 
 

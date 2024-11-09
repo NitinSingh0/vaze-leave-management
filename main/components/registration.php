@@ -2,7 +2,7 @@
 
 <div class="bg-white border rounded-lg px-8 py-6 mx-auto my-8 justify-items-center">
     <h2 class="text-2xl font-medium mb-4 text-center dark:text-black text-black">Staff Registration</h2>
-    <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="dark:text-black text-black w-3/4">
+    <form id="yourFormID5" class="dark:text-black text-black w-3/4">
 
         <!--Name-->
         <div class="mb-4">
@@ -84,54 +84,8 @@
 
         <!-- Centered Submit Button -->
         <div class="w-full flex justify-center mt-6">
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full ">Submit</button>
+            <button type="submit" onclick="reg1()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full ">Submit</button>
         </div>
 
     </form>
 </div>
-
-<?php
-//error_reporting(0);
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['name']) && !empty($_POST['department']) && !empty($_POST['designation']) && !empty($_POST['date_of_joining']) && !empty($_POST['gender']) && !empty($_POST['username']) && !empty($_POST['type'])) {
-        $name = $_POST["name"];
-        $department = $_POST["department"];
-        $desig = $_POST["designation"];
-        $date = $_POST["date_of_joining"];
-        $gender = $_POST["gender"];
-        $username = $_POST["username"];
-        $type = $_POST["type"];
-
-
-
-        //  echo "
-        // <script>
-        // alert('$name $application_date $department $from_date $to_date $reason');
-        // </script>
-        // ";
-
-        $staff_type = (($type === "TD" || $type === "TJ")) ? "T" : "N";
-
-        // Check for duplicate entry
-        $checkSql = "SELECT * FROM staff WHERE  Name = '$name' AND  Designation = '$desig' AND DOJ = '$date' AND Gender='$gender' AND Job_role = '$type' AND D_id = '$department' ";
-        $checkResult = $conn->query($checkSql);
-
-
-        if ($checkResult->num_rows > 0) {
-            // Duplicate found
-            echo "<script>alert('Duplicate Entry:User already Exist!');</script>";
-        } else {
-            // No duplicate, proceed with insertion
-            $sql = "INSERT INTO staff ( Name, Designation, DOJ, Staff_type, Username, Gender, Job_role, D_id, status, Password) 
-                VALUES ('$name', '$desig ', '$date', '$staff_type', '$username', '$gender', '$type','$department','A', 'NEW')";
-
-            if ($res = $conn->query($sql)) {
-                echo "<script>alert('New Staff Added Successfully!');</script>";
-                //echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=registration.php">';
-            } else {
-                $error_dates .= "$extra_duty, ";
-            }
-        }
-    }
-}
-?>

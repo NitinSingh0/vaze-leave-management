@@ -230,7 +230,7 @@ session_start();
             if (username.length > 0) {
 
                 $.ajax({
-                    url: "../pages/check_username.php", // PHP file to check username
+                    url: "../components/registration/check_username.php", // PHP file to check username
                     method: "POST",
                     data: {
                         username: username
@@ -276,10 +276,10 @@ session_start();
                         success: function(response) {
                             if (response.status === 'success') {
                                 alert(response.message); // Show success message
-                                loadContent('dl')
+                                loadContent('dl');
                             } else {
                                 alert(response.message); // Show error message if any
-                                loadContent('dl')
+                                // loadContent('dl');
                             }
                         },
                         error: function(xhr, status, error) {
@@ -323,10 +323,10 @@ session_start();
                         success: function(response) {
                             if (response.status === 'success') {
                                 alert(response.message); // Show success message
-                                loadContent('cl')
+                                loadContent('cl');
                             } else {
                                 alert(response.message); // Show error message if any
-                                loadContent('cl')
+                                //loadContent('cl');
                             }
                         },
                         error: function(xhr, status, error) {
@@ -371,10 +371,103 @@ session_start();
                         success: function(response) {
                             if (response.status === 'success') {
                                 alert(response.message); // Show success message
-                                loadContent('APPLY_OFF_PAY')
+                                loadContent('APPLY_OFF_PAY');
                             } else {
                                 alert(response.message); // Show error message if any
-                                loadContent('APPLY_OFF_PAY')
+                                // loadContent('APPLY_OFF_PAY');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert("AJAX Error: " + status + " " + error);
+                        }
+                    });
+                });
+
+                // Mark the form as having a listener to avoid adding multiple times
+                form.hasListener = true;
+            }
+
+            // Manually trigger form submission for demonstration purposes if needed
+            form.submit();
+        }
+
+        //EMHM Submit function prevenydefault to send data only pnce using ajax
+        function emhm() {
+
+
+            // Check if the listener has already been added to prevent duplication
+            const form = document.getElementById("yourFormID4");
+
+            if (!form.hasListener) {
+                form.addEventListener("submit", function(event) {
+
+                    event.preventDefault(); // Prevent the default form submission
+
+                    let formData = new FormData(form);
+
+                    // Send AJAX request
+                    $.ajax({
+                        url: "../components/Apply/emhm.php", // Update with your correct path to dl.php
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        processData: false, // Prevent jQuery from processing data
+                        contentType: false, // Let browser set the correct content type
+                        dataType: 'json', // Expect a JSON response
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                alert(response.message); // Show success message
+                                loadContent('medical');
+                            } else {
+                                alert(response.message); // Show error message if any
+                                //loadContent('medical');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert("AJAX Error: " + status + " " + error);
+                        }
+                    });
+                });
+
+                // Mark the form as having a listener to avoid adding multiple times
+                form.hasListener = true;
+            }
+
+            // Manually trigger form submission for demonstration purposes if needed
+            form.submit();
+        }
+
+
+        //NEW STAFF REGISTRATION Submit function prevenydefault to send data only pnce using ajax
+        function reg1() {
+
+
+            // Check if the listener has already been added to prevent duplication
+            const form = document.getElementById("yourFormID5");
+
+            if (!form.hasListener) {
+                form.addEventListener("submit", function(event) {
+
+                    event.preventDefault(); // Prevent the default form submission
+
+                    let formData = new FormData(form);
+
+                    // Send AJAX request
+                    $.ajax({
+                        url: "../components/registration/register.php", // Update with your correct path to dl.php
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        processData: false, // Prevent jQuery from processing data
+                        contentType: false, // Let browser set the correct content type
+                        dataType: 'json', // Expect a JSON response
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                alert(response.message); // Show success message
+                                loadContent('registration');
+                            } else {
+                                alert(response.message); // Show error message if any
+                                //loadContent('registration');
                             }
                         },
                         error: function(xhr, status, error) {
