@@ -76,14 +76,14 @@
       <!-- Additional options only for job role OO -->
       <?php if ($jobRole == 'OO' or $designation == 'Principal'): ?>
           <div class="mt-6">
-              <h3 class="font-medium text-gray-800">Admin Options <?php $designation ?></h3>
+              <h3 class="font-medium text-gray-800">Admin Options </h3>
               <ul class="mt-2 space-y-2">
                   <?php if ($jobRole == 'OO'): ?>
-                      <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('officeRequest')">Leave Request</a></li>
+                      <li><a href="officeRemark.php" class="block px-4 py-2 text-gray-700">Leave Request</a></li>
                   <?php endif ?>
 
                   <?php if ($designation == 'Principal'): ?>
-                      <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('principal_request')">Principal Leave Request</a></li>
+                      <li><a href="principalRequest.php" class="block px-4 py-2 text-gray-700" >Principal Leave Request</a></li>
                   <?php endif ?>
 
                   <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('registration')">New Registration</a></li>
