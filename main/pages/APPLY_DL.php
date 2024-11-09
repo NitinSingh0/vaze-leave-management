@@ -16,7 +16,7 @@
 
         <div class="mx-auto w-full max-w-[550px] bg-white">
             <div class=" text-center align-middle text-2xl font-semibold m-5">Duty/Special Leave Form</div>
-            <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+            <form id="yourFormID">
 
                 <div class="-mx-3 flex flex-wrap">
                     <!--Academic year -->
@@ -96,7 +96,7 @@
                             </label>
                             <select required name="department" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
                                 <?php
-                                $query = "SELECT D_id,Name FROM department where D_id=(select D_id from staff where Staff_id=1)";
+                                $query = "SELECT D_id,Name FROM department where D_id=(select D_id from staff where Staff_id=0)";
                                 $result = $conn->query($query);
                                 if ($result->num_rows > 0) {
                                     if ($row = $result->fetch_assoc()) {
@@ -228,111 +228,37 @@
                 document.getElementById("no_of_days").value = "";
             }
         }
+
+
+        $(document).ready(function() {
+            $("#yourFormID").submit(function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Collect form data
+                let formData = $(this).serialize(); // Serialize the form data
+
+                // Send AJAX request
+                $.ajax({
+                    url: "d1.php", // Update with your correct path to dl.php
+                    type: "POST",
+                    cache: false,
+                    data: formData,
+                    dataType: 'json', // Expect a JSON response
+                    success: function(response) {
+                        // Check if the response is successful
+                        if (response.status === 'success') {
+                            alert(response.message); // Show success alert
+                        } else {
+                            alert(response.message); // Show error message if any
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert("AJAX Error: " + status + " " + error);
+                    }
+                });
+            });
+        });
     </script>
 </body>
 
 </html>
-<?php
-//error_reporting(0);
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['year']) && !empty($_POST['application_date']) && !empty($_POST['department']) && !empty($_POST['from_date']) && !empty($_POST['to_date']) && !empty($_POST['reason'])) {
-        $year = $_POST["year"];
-        $application_date = $_POST["application_date"];
-        $department = $_POST["department"];
-        $from_date = $_POST["from_date"];
-        $to_date = $_POST["to_date"];
-        $reason = $_POST["reason"];
-        $ref_no = isset($_POST["reference_no"]) ? $_POST["reference_no"] : null;
-        $date_of_letter = isset($_POST["date_of_letter"]) ? $_POST["date_of_letter"] : null;
-        $leave_type = $_POST["type"];
-
-
-        $start = new DateTime($from_date);
-        $end = new DateTime($to_date);
-
-        // Calculate the difference
-        $interval = $start->diff($end);
-
-        // Get the number of days
-        $days = ($interval->days) + 1;
-
-        // echo "Number of days: " . $days;
-
-
-        //  echo "
-        // <script>
-        // alert('$name $application_date $department $from_date $to_date $reason');
-        // </script>
-        // ";
-        $staff_id = 1;
-        $type = "TD";
-
-        if ($type == 'TD') {
-            // Check for duplicate entry
-            $checkSql = "SELECT * FROM d_dl_leave WHERE Staff_id = '$staff_id' AND From_date = '$from_date' AND To_date = '$to_date'";
-            $checkResult = $conn->query($checkSql);
-
-            if ($checkResult->num_rows > 0) {
-                // Duplicate found
-                echo "<script>alert('Duplicate Entry: Duty Leave has already been applied for these dates!');</script>";
-            } else {
-                // No duplicate, proceed with insertion
-                $sql = "INSERT INTO d_dl_leave (Staff_id, From_date, To_date, No_of_days, Nature, Reference_no, Date_of_letter, Date_of_application, leave_approval_status, A_year, Type) 
-                VALUES ('$staff_id', '$from_date', '$to_date', '$days', '$reason', '$ref_no' , '$date_of_letter' , '$application_date', 'P', $year, '$leave_type')";
-
-                if ($res = $conn->query($sql)) {
-                    echo "<script>alert('Duty Leave Applied Successfully!');</script>";
-                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_DL.php">';
-                } else {
-                    echo "<script>alert('ERROR!!');</script>";
-                }
-            }
-        } elseif ($type == 'TJ') {
-
-            // Check for duplicate entry
-            $checkSql = "SELECT * FROM j_dl_leave WHERE Staff_id = '$staff_id' AND From_date = '$from_date' AND To_date = '$to_date'";
-            $checkResult = $conn->query($checkSql);
-
-            if ($checkResult->num_rows > 0) {
-                // Duplicate found
-                echo "<script>alert('Duplicate Entry: Duty Leave has already been applied for these dates!');</script>";
-            } else {
-                // No duplicate, proceed with insertion
-                $sql = "INSERT INTO j_dl_leave (Staff_id, From_date, To_date, No_of_days, Nature, Reference_no, Date_of_letter, Date_of_application, leave_approval_status, A_year, Type) 
-                VALUES ('$staff_id', '$from_date', '$to_date', '$days', '$reason', '$ref_no' , '$date_of_letter' , '$application_date', 'P', $year, '$leave_type')";
-
-                if ($res = $conn->query($sql)) {
-                    echo "<script>alert('Duty Leave Applied Successfully!');</script>";
-                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_DL.php">';
-                } else {
-                    echo "<script>alert('ERROR!!');</script>";
-                }
-            }
-        } elseif ($type == 'NL' || $type == 'NO' || $type == 'OO') {
-
-            // Check for duplicate entry
-            $checkSql = "SELECT * FROM n_dl_leave WHERE Staff_id = '$staff_id' AND From_date = '$from_date' AND To_date = '$to_date'";
-            $checkResult = $conn->query($checkSql);
-
-            if ($checkResult->num_rows > 0) {
-                // Duplicate found
-                echo "<script>alert('Duplicate Entry: Duty Leave has already been applied for these dates!');</script>";
-            } else {
-                // No duplicate, proceed with insertion
-                $sql = "INSERT INTO n_dl_leave (Staff_id, From_date, To_date, No_of_days, Nature, Reference_no, Date_of_letter, Date_of_application, leave_approval_status, A_year, Type) 
-                VALUES ('$staff_id', '$from_date', '$to_date', '$days', '$reason', '$ref_no' , '$date_of_letter' , '$application_date', 'P', $year, '$leave_type')";
-
-                if ($res = $conn->query($sql)) {
-                    echo "<script>alert('Duty Leave Applied Successfully!');</script>";
-                    echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_DL.php">';
-                } else {
-                    echo "<script>alert('ERROR!!');</script>";
-                }
-            }
-        }
-    }
-}
-
-
-?>
-
