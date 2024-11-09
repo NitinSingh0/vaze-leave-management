@@ -7,7 +7,7 @@ $message = ""; // Message to display for success or error
 // Check if the logged-in user is in the office role (e.g., "Office Staff")
 // Assuming office staff ID and role check are stored in session
 $staff_id = $_SESSION['Staff_id'];
-$staff_id=120;
+
 $office_query = "SELECT * FROM staff WHERE Staff_id = $staff_id AND Job_role = 'OO'";
 $office_result = $conn->query($office_query);
 
