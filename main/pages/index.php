@@ -152,11 +152,11 @@ session_start();
 
 
         function table2() {
-            var n_dept = document.getElementById('nonteaching-type').value;
+            var n_type = document.getElementById('nonteaching-type').value;
 
             // Alert to check if values are captured correctly
             // alert("Department: " + n_dept);
-            if (n_dept === "") {
+            if (n_type === "") {
                 alert("Please Select the Values");
 
             } else {
@@ -167,7 +167,7 @@ session_start();
                     cache: false,
                     data: {
 
-                        ndept: n_dept
+                        ntype: n_type
                     },
                     success: function(data) {
                         $("#nonteaching-staff-list").html(data);
@@ -230,7 +230,7 @@ session_start();
             if (username.length > 0) {
 
                 $.ajax({
-                    url: "../pages/check_username.php", // PHP file to check username
+                    url: "../components/registration/check_username.php", // PHP file to check username
                     method: "POST",
                     data: {
                         username: username
@@ -247,6 +247,277 @@ session_start();
                 warning.classList.add("hidden"); // Hide warning if input is empty
             }
         }
+
+
+        //DL Submit function prevenydefault to send data only pnce using ajax
+
+        function d1() {
+
+
+            // Check if the listener has already been added to prevent duplication
+            const form = document.getElementById("yourFormID");
+
+            if (!form.hasListener) {
+                form.addEventListener("submit", function(event) {
+
+                    event.preventDefault(); // Prevent the default form submission
+
+                    let formData = new FormData(form);
+
+                    // Send AJAX request
+                    $.ajax({
+                        url: "../components/Apply/dl.php", // Update with your correct path to dl.php
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        processData: false, // Prevent jQuery from processing data
+                        contentType: false, // Let browser set the correct content type
+                        dataType: 'json', // Expect a JSON response
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                alert(response.message); // Show success message
+                                loadContent('dl');
+                            } else {
+                                alert(response.message); // Show error message if any
+                                // loadContent('dl');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert("AJAX Error: " + status + " " + error);
+                        }
+                    });
+                });
+
+                // Mark the form as having a listener to avoid adding multiple times
+                form.hasListener = true;
+            }
+
+            // Manually trigger form submission for demonstration purposes if needed
+            form.submit();
+        }
+
+        //CL Submit function prevenydefault to send data only pnce using ajax
+
+        function c1() {
+
+
+            // Check if the listener has already been added to prevent duplication
+            const form = document.getElementById("yourFormID2");
+
+            if (!form.hasListener) {
+                form.addEventListener("submit", function(event) {
+
+                    event.preventDefault(); // Prevent the default form submission
+
+                    let formData = new FormData(form);
+
+                    // Send AJAX request
+                    $.ajax({
+                        url: "../components/Apply/Cl.php", // Update with your correct path to dl.php
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        processData: false, // Prevent jQuery from processing data
+                        contentType: false, // Let browser set the correct content type
+                        dataType: 'json', // Expect a JSON response
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                alert(response.message); // Show success message
+                                loadContent('cl');
+                            } else {
+                                alert(response.message); // Show error message if any
+                                //loadContent('cl');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert("AJAX Error: " + status + " " + error);
+                        }
+                    });
+                });
+
+                // Mark the form as having a listener to avoid adding multiple times
+                form.hasListener = true;
+            }
+
+            // Manually trigger form submission for demonstration purposes if needed
+            form.submit();
+        }
+
+
+        //OFF PAY Submit function prevenydefault to send data only pnce using ajax
+
+        function off1() {
+
+
+            // Check if the listener has already been added to prevent duplication
+            const form = document.getElementById("yourFormID3");
+
+            if (!form.hasListener) {
+                form.addEventListener("submit", function(event) {
+
+                    event.preventDefault(); // Prevent the default form submission
+
+                    let formData = new FormData(form);
+
+                    // Send AJAX request
+                    $.ajax({
+                        url: "../components/Apply/offPay.php", // Update with your correct path to dl.php
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        processData: false, // Prevent jQuery from processing data
+                        contentType: false, // Let browser set the correct content type
+                        dataType: 'json', // Expect a JSON response
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                alert(response.message); // Show success message
+                                loadContent('APPLY_OFF_PAY');
+                            } else {
+                                alert(response.message); // Show error message if any
+                                 loadContent('APPLY_OFF_PAY');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert("AJAX Error: " + status + " " + error);
+                        }
+                    });
+                });
+
+                // Mark the form as having a listener to avoid adding multiple times
+                form.hasListener = true;
+            }
+
+            // Manually trigger form submission for demonstration purposes if needed
+            form.submit();
+        }
+
+        //EMHM Submit function prevenydefault to send data only pnce using ajax
+        function emhm() {
+
+
+            // Check if the listener has already been added to prevent duplication
+            const form = document.getElementById("yourFormID4");
+
+            if (!form.hasListener) {
+                form.addEventListener("submit", function(event) {
+
+                    event.preventDefault(); // Prevent the default form submission
+
+                    let formData = new FormData(form);
+
+                    // Send AJAX request
+                    $.ajax({
+                        url: "../components/Apply/emhm.php", // Update with your correct path to dl.php
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        processData: false, // Prevent jQuery from processing data
+                        contentType: false, // Let browser set the correct content type
+                        dataType: 'json', // Expect a JSON response
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                alert(response.message); // Show success message
+                                loadContent('medical');
+                            } else {
+                                alert(response.message); // Show error message if any
+                                //loadContent('medical');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert("AJAX Error: " + status + " " + error);
+                        }
+                    });
+                });
+
+                // Mark the form as having a listener to avoid adding multiple times
+                form.hasListener = true;
+            }
+
+            // Manually trigger form submission for demonstration purposes if needed
+            form.submit();
+        }
+
+
+        //NEW STAFF REGISTRATION Submit function prevenydefault to send data only pnce using ajax
+        function reg1() {
+
+
+            // Check if the listener has already been added to prevent duplication
+            const form = document.getElementById("yourFormID5");
+
+            if (!form.hasListener) {
+                form.addEventListener("submit", function(event) {
+
+                    event.preventDefault(); // Prevent the default form submission
+
+                    let formData = new FormData(form);
+
+                    // Send AJAX request
+                    $.ajax({
+                        url: "../components/registration/register.php", // Update with your correct path to dl.php
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        processData: false, // Prevent jQuery from processing data
+                        contentType: false, // Let browser set the correct content type
+                        dataType: 'json', // Expect a JSON response
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                alert(response.message); // Show success message
+                                loadContent('registration');
+                            } else {
+                                alert(response.message); // Show error message if any
+                                //loadContent('registration');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert("AJAX Error: " + status + " " + error);
+                        }
+                    });
+                });
+
+                // Mark the form as having a listener to avoid adding multiple times
+                form.hasListener = true;
+            }
+
+            // Manually trigger form submission for demonstration purposes if needed
+            form.submit();
+        }
+
+
+
+
+
+        /*function d1() {
+            console.log("outer");
+            document.getElementById("yourFormID").addEventListener("submit", function(event) {
+                console.log("inner");
+                event.preventDefault(); // Prevent the default form submission
+                let form1 = document.getElementById("yourFormID")
+                let formData = new FormData(form1);
+                //alert(form1);
+                // Send AJAX request
+                $.ajax({
+                    url: "Apply/dl.php", // Update with your correct path to dl.php
+                    type: "POST",
+                    data: formData,
+                    cache: false,
+                    processData: false, // Prevent jQuery from processing data
+                    contentType: false, // Let browser set the correct content type
+                    dataType: 'json', // Expect a JSON response
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            alert(response.message); // Show success message
+                        } else {
+                            alert(response.message); // Show error message if any
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert("AJAX Error: " + status + " " + error);
+                    }
+                });
+            });
+        }*/
     </script>
 
 

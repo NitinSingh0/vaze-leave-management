@@ -256,7 +256,7 @@
              }
 
              document.getElementById("submit123").innerHTML = `
-    <input type="submit" value="Apply" name="submit"
+    <input type="submit" value="Apply" name="submit"  onclick="off1()"
            class="hover:shadow-form w-full rounded-md bg-[#55a0e7] py-3 px-8 text-center text-base font-semibold text-white outline-none hover:bg-blue-800" />
 `;
          } else {

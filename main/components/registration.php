@@ -2,7 +2,7 @@
 
 <div class="bg-white border rounded-lg px-8 py-6 mx-auto my-8 justify-items-center">
     <h2 class="text-2xl font-medium mb-4 text-center dark:text-black text-black">Staff Registration</h2>
-    <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="dark:text-black text-black w-3/4">
+    <form id="yourFormID5" class="dark:text-black text-black w-3/4">
 
         <!--Name-->
         <div class="mb-4">
@@ -84,7 +84,7 @@
 
         <!-- Centered Submit Button -->
         <div class="w-full flex justify-center mt-6">
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full ">Submit</button>
+            <button type="submit" onclick="reg1()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full ">Submit</button>
         </div>
 
     </form>

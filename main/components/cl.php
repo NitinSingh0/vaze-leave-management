@@ -22,7 +22,7 @@ if ($result && $row = $result->fetch_assoc()) {
 
     <div class="mx-auto w-full max-w-[550px] bg-white">
         <div class=" text-center align-middle text-2xl font-semibold m-5 text-black">Casual Leave Form</div>
-        <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+        <form id="yourFormID2">
 
             <!--Acedamic year-->
             <div class="mb-5">
@@ -144,7 +144,7 @@ if ($result && $row = $result->fetch_assoc()) {
 
 
             <div class="bg-slate-600 rounded-lg">
-                <Input type="submit" value="Apply" name="submit"
+                <Input type="submit" value="Apply" name="submit" onclick="c1()"
                     class="hover:shadow-form w-full rounded-md bg-[#55a0e7] py-3 px-8 text-center text-base font-semibold text-white outline-none hover:bg-blue-800"
                     Apply />
             </div>
@@ -178,9 +178,9 @@ if ($result && $row = $result->fetch_assoc()) {
 <?php
 error_reporting(0);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['year']) && !empty($_POST['Date_of_application']) && !empty($_POST['department']) && !empty($_POST['from_date']) && !empty($_POST['to_date']) && !empty($_POST['reason'])) {
+    if (isset($_POST['year']) && !empty($_POST['application_date']) && !empty($_POST['department']) && !empty($_POST['from_date']) && !empty($_POST['to_date']) && !empty($_POST['reason'])) {
         $year = $_POST["year"];
-        $Date_of_application = $_POST["Date_of_application"];
+        $application_date = $_POST["application_date"];
         $department = $_POST["department"];
         $from_date = $_POST["from_date"];
         $to_date = $_POST["to_date"];
@@ -202,7 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         //  echo "
         // <script>
-        // alert('$name $Date_of_application $department $from_date $to_date $reason');
+        // alert('$name $application_date $department $from_date $to_date $reason');
         // </script>
         // ";
         $staff_id = $Staff_id;
@@ -219,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                 // No duplicate, proceed with insertion
                 $sql = "INSERT INTO d_cl_leave (Staff_id, From_date, To_date, No_of_days, Reason, Date_of_application, leave_approval_status, A_year) 
-                VALUES ('$staff_id', '$from_date', '$to_date', '$days', '$reason', '$Date_of_application', 'P', $year)";
+                VALUES ('$staff_id', '$from_date', '$to_date', '$days', '$reason', '$application_date', 'P', $year)";
 
                 if ($res = $conn->query($sql)) {
                     echo "<script>alert('Casual Leave Applied Successfully!');</script>";
@@ -239,7 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                 // No duplicate, proceed with insertion
                 $sql = "INSERT INTO j_cl_leave (Staff_id, From_date, To_date, No_of_days, Reason, Date_of_application, leave_approval_status, A_year) 
-                VALUES ('$staff_id', '$from_date', '$to_date', '$days', '$reason', '$Date_of_application', 'P', $year)";
+                VALUES ('$staff_id', '$from_date', '$to_date', '$days', '$reason', '$application_date', 'P', $year)";
 
                 if ($res = $conn->query($sql)) {
                     echo "<script>alert('Casual Leave Applied Successfully!');</script>";
@@ -259,7 +259,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                 // No duplicate, proceed with insertion
                 $sql = "INSERT INTO n_cl_leave (Staff_id, From_date, To_date, No_of_days, Reason, Date_of_application, leave_approval_status, A_year) 
-                VALUES ('$staff_id', '$from_date', '$to_date', '$days', '$reason', '$Date_of_application', 'P', $year)";
+                VALUES ('$staff_id', '$from_date', '$to_date', '$days', '$reason', '$application_date', 'P', $year)";
 
                 if ($res = $conn->query($sql)) {
                     echo "<script>alert('Casual Leave Applied Successfully!');</script>";

@@ -116,7 +116,7 @@ if (isset($_POST['submit'])) {
           </div>
         </div>
 
-        <button type="submit" name="submit" id="submit" class="block w-full font-medium rounded-lg bg-black px-5 py-3 text-sm font-medium text-white hover:bg-white hover:text-black hover:font-medium hover:duration-300 hover:border-2 hover:border-black">
+        <button type="submit" name="submit" id="submit" class="bg-blue-800 block w-full font-medium rounded-lg bg-black px-5 py-3 text-sm font-medium text-white hover:bg-white hover:text-black hover:font-medium hover:duration-300 hover:border-2 hover:border-black">
           Login
         </button>
 
