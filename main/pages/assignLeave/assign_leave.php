@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,106 +10,114 @@
     <title>Assign Leave</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <?php include('../../../library/library.php'); ?>
 
 </head>
 
 <body class="bg-gray-100">
+
     <?php include("../../../config/connect.php"); ?>
+    <?php include('../../layouts/header.php'); ?>
 
-    <div class=" bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-4xl">
-        <h1 class="text-2xl font-bold text-center mb-6">Assign Leave</h1>
+    <div class="mt-11 flex h-screen">
+        <!-- Sidebar -->
+        <?php include('../../layouts/sidebar.php');
+        ?>
+         <main class=" bg-gray-100 min-h-screen flex flex-col items-center p-6 ml-[20vw]">
+            <div class=" bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-4xl ">
+                <h1 class="text-2xl font-bold text-center mb-6">Assign Leave</h1>
 
-        <!-- Tabs -->
-        <div class="flex border-b">
-            <button id="teaching-tab" class="px-4 py-2 text-blue-500 font-semibold focus:outline-none border-b-2 border-blue-500">Teaching</button>
-            <button id="nonteaching-tab" class="px-4 py-2 text-gray-500 font-semibold focus:outline-none border-b-2 border-transparent hover:text-blue-500">Non-Teaching</button>
-        </div>
-        <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-
-
-            <!-- Teaching Section -->
-            <div id="teaching-section" class="mt-6">
-
-                <div class="mx-auto w-full max-w-[550px] bg-white">
-                    <!-- Type Selection -->
-                    <div class="mb-5">
-                        <label class="mb-3 block text-base text-gray-700 font-semibold">
-                            Academic Year
-                        </label>
-                        <select name="t_year" id="teaching_year" class="focus:ring-blue-500 w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700 outline-none focus:border-[#6A64F1] focus:shadow-md">
-                            <option value="" disabled selected>Select a Year</option>
-                            <?php
-                            $currentMonth = date('n'); // Get the current month (1-12)
-                            $currentYear = date('Y');  // Get the current year
-
-                            // Determine academic year based on the month
-                            if ($currentMonth >= 6) { // From June onwards, current academic year starts with this year
-                                $startYear = $currentYear;
-                            } else { // Before June, current academic year starts with last year
-                                $startYear = $currentYear - 1;
-                            }
-
-                            // Display the options
-                            echo '<option value="' . $startYear . '">' . $startYear . ' - ' . ($startYear + 1) . '</option>';
-                            echo '<option value="' . ($startYear + 1) . '">' . ($startYear + 1) . ' - ' . ($startYear + 2) . '</option>';
-
-                            // echo '<option selected value="' . (date('Y')) . '">' . date('Y') . ' - ' . (date('Y') + 1) . '</option>';
-                            // echo '<option  value="' . (date('Y') + 1) . '">' . date('Y') + 1 . ' - ' . (date('Y') + 2) . '</option>';
-
-                            ?>
-                        </select>
-
-                    </div>
-                    <!-- Department Selection -->
+                <!-- Tabs -->
+                <div class="flex border-b">
+                    <button id="teaching-tab" class="px-4 py-2 text-blue-500 font-semibold focus:outline-none border-b-2 border-blue-500">Teaching</button>
+                    <button id="nonteaching-tab" class="px-4 py-2 text-gray-500 font-semibold focus:outline-none border-b-2 border-transparent hover:text-blue-500">Non-Teaching</button>
+                </div>
+                <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
 
-                    <div class="-mx-3 flex flex-wrap">
-                        <!--Type Selection-->
-                        <div class="w-full px-3 sm:w-1/2">
+                    <!-- Teaching Section -->
+                    <div id="teaching-section" class="mt-6">
+
+                        <div class="mx-auto w-full max-w-[550px] bg-white">
+                            <!-- Type Selection -->
                             <div class="mb-5">
                                 <label class="mb-3 block text-base text-gray-700 font-semibold">
-                                    Type
+                                    Academic Year
                                 </label>
-                                <select name="t_type" onchange=" t_change()" id="teaching_type" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md">
-                                    <option value="" selected disabled>Select Type</option>
-                                    <option value="D">Degree</option>
-                                    <option value="J">Junior</option>
-                                </select>
-                            </div>
+                                <select name="t_year" id="teaching_year" class="focus:ring-blue-500 w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700 outline-none focus:border-[#6A64F1] focus:shadow-md">
+                                    <option value="" disabled selected>Select a Year</option>
+                                    <?php
+                                    $currentMonth = date('n'); // Get the current month (1-12)
+                                    $currentYear = date('Y');  // Get the current year
 
+                                    // Determine academic year based on the month
+                                    if ($currentMonth >= 6) { // From June onwards, current academic year starts with this year
+                                        $startYear = $currentYear;
+                                    } else { // Before June, current academic year starts with last year
+                                        $startYear = $currentYear - 1;
+                                    }
+
+                                    // Display the options
+                                    echo '<option value="' . $startYear . '">' . $startYear . ' - ' . ($startYear + 1) . '</option>';
+                                    echo '<option value="' . ($startYear + 1) . '">' . ($startYear + 1) . ' - ' . ($startYear + 2) . '</option>';
+
+                                    // echo '<option selected value="' . (date('Y')) . '">' . date('Y') . ' - ' . (date('Y') + 1) . '</option>';
+                                    // echo '<option  value="' . (date('Y') + 1) . '">' . date('Y') + 1 . ' - ' . (date('Y') + 2) . '</option>';
+
+                                    ?>
+                                </select>
+
+                            </div>
+                            <!-- Department Selection -->
+
+
+                            <div class="-mx-3 flex flex-wrap">
+                                <!--Type Selection-->
+                                <div class="w-full px-3 sm:w-1/2">
+                                    <div class="mb-5">
+                                        <label class="mb-3 block text-base text-gray-700 font-semibold">
+                                            Type
+                                        </label>
+                                        <select name="t_type" onchange=" t_change()" id="teaching_type" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md">
+                                            <option value="" selected disabled>Select Type</option>
+                                            <option value="D">Degree</option>
+                                            <option value="J">Junior</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <!--Department-->
+                                <div class="w-full px-3 sm:w-1/2">
+                                    <div class="mb-5">
+                                        <label class="mb-3 block text-base text-gray-700 font-semibold">
+                                            Department
+                                        </label>
+                                        <select onchange=" t_change()" name="t_department" id="teaching_department" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md">
+                                            <option value="" selected disabled>Select an Department</option>
+
+                                        </select>
+
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <!--Department-->
-                        <div class="w-full px-3 sm:w-1/2">
-                            <div class="mb-5">
-                                <label class="mb-3 block text-base text-gray-700 font-semibold">
-                                    Department
-                                </label>
-                                <select onchange=" t_change()" name="t_department" id="teaching_department" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md">
-                                    <option value="" selected disabled>Select an Department</option>
 
-                                </select>
-
-
-                            </div>
+                        <!-- Teaching Sub Tabs -->
+                        <div class="mb-4">
+                            <button type="button" id="teacherWiseTab" class="px-4 py-2 rounded-l-lg bg-gray-300 text-gray-700  focus:outline-none">Teacher Wise</button>
+                            <button type="button" id="departmentWiseTab" class="px-4 py-2 rounded-r-lg bg-gray-300 text-gray-700 focus:outline-none">Department Wise</button>
                         </div>
-                    </div>
-                </div>
 
 
-                <!-- Teaching Sub Tabs -->
-                <div class="mb-4">
-                    <button type="button" id="teacherWiseTab" class="px-4 py-2 rounded-l-lg bg-gray-300 text-gray-700  focus:outline-none">Teacher Wise</button>
-                    <button type="button" id="departmentWiseTab" class="px-4 py-2 rounded-r-lg bg-gray-300 text-gray-700 focus:outline-none">Department Wise</button>
-                </div>
+                        <hr class=" border-2 mb-2 border-blue-700">
 
 
-                <hr class=" border-2 mb-2 border-blue-700">
-
-
-                <!-- Teacher Wise Fields -->
-                <div id="teacherWiseFields" class="mb-4 hidden">
-                    <!-- <div class="mb-4">
+                        <!-- Teacher Wise Fields -->
+                        <div id="teacherWiseFields" class="mb-4 hidden">
+                            <!-- <div class="mb-4">
                         <label for="casualLeaveTeacher" class="block text-gray-700 font-semibold mb-2">Casual Leave</label>
                         <input type="number" id="casualLeaveTeacher" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" min="0">
                     </div>
@@ -114,11 +125,11 @@
                         <label for="medicalLeaveTeacher" class="block text-gray-700 font-semibold mb-2">Medical Leave</label>
                         <input type="number" id="medicalLeaveTeacher" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" min="0">
                     </div> -->
-                </div>
+                        </div>
 
-                <!-- Department Wise Fields (initially hidden) -->
-                <div id="departmentWiseFields" class="mb-4 hidden">
-                    <!-- <div class="mb-4">
+                        <!-- Department Wise Fields (initially hidden) -->
+                        <div id="departmentWiseFields" class="mb-4 hidden">
+                            <!-- <div class="mb-4">
                         <label for="casualLeaveDept" class="block text-gray-700 font-semibold mb-2">Casual Leave</label>
                         <input type="number" id="casualLeaveDept" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" min="0">
                     </div>
@@ -126,14 +137,14 @@
                         <label for="maternityLeaveDept" class="block text-gray-700 font-semibold mb-2">Maternity Leave</label>
                         <input type="number" id="maternityLeaveDept" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" min="0">
                     </div> -->
-                </div>
+                        </div>
 
 
 
 
 
-                <!-- Table -->
-                <!-- <div id="teaching-table" class="hidden overflow-x-auto">
+                        <!-- Table -->
+                        <!-- <div id="teaching-table" class="hidden overflow-x-auto">
                     <table class="w-full bg-white rounded-lg shadow-lg">
                         <thead>
                             <tr class="bg-gray-200 text-gray-700">
@@ -147,103 +158,103 @@
                     </table>
                 </div> -->
 
-            </div>
-
-
-
-
-            
-            <!-- Non-Teaching Section -->
-            <div id="nonteaching-section" class="mt-6 hidden">
-                <div class="mx-auto w-full max-w-[550px] bg-white">
-                    <!-- Type Selection -->
-
-                    <div class="mb-5">
-                        <label class="mb-3 block text-base text-gray-700 font-semibold">
-                            Academic Year
-                        </label>
-                        <select name="nt_year" id="nt_year" class="focus:ring-blue-500 w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700 outline-none focus:border-[#6A64F1] focus:shadow-md">
-                            <option value="" disabled selected>Select a Year</option>
-                            <?php
-                            $currentMonth = date('n'); // Get the current month (1-12)
-                            $currentYear = date('Y');  // Get the current year
-
-                            // Determine academic year based on the month
-                            if ($currentMonth >= 6) { // From June onwards, current academic year starts with this year
-                                $startYear = $currentYear;
-                            } else { // Before June, current academic year starts with last year
-                                $startYear = $currentYear - 1;
-                            }
-
-                            // Display the options
-                            echo '<option value="' . $startYear . '">' . $startYear . ' - ' . ($startYear + 1) . '</option>';
-                            echo '<option value="' . ($startYear + 1) . '">' . ($startYear + 1) . ' - ' . ($startYear + 2) . '</option>';
-
-                            // echo '<option selected value="' . (date('Y')) . '">' . date('Y') . ' - ' . (date('Y') + 1) . '</option>';
-                            // echo '<option  value="' . (date('Y') + 1) . '">' . date('Y') + 1 . ' - ' . (date('Y') + 2) . '</option>';
-
-                            ?>
-                        </select>
-
                     </div>
-                    <!-- Department Selection -->
 
 
-                    <div class="-mx-3 flex flex-wrap">
-                        <!--Type Selection-->
-                        <div class="w-full px-3 sm:w-1/2">
+
+
+
+                    <!-- Non-Teaching Section -->
+                    <div id="nonteaching-section" class="mt-6 hidden">
+                        <div class="mx-auto w-full max-w-[550px] bg-white">
+                            <!-- Type Selection -->
+
                             <div class="mb-5">
                                 <label class="mb-3 block text-base text-gray-700 font-semibold">
-                                    Type
+                                    Academic Year
                                 </label>
-                                <select name="nt_type" id="nt_type" onchange="nt_change()" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md">
-                                    <option value="" selected disabled>Select Type</option>
-                                    <option value="NO">Office</option>
-                                    <option value="NL">Labratory</option>
+                                <select name="nt_year" id="nt_year" class="focus:ring-blue-500 w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700 outline-none focus:border-[#6A64F1] focus:shadow-md">
+                                    <option value="" disabled selected>Select a Year</option>
                                     <?php
-                                    // $query = "SELECT * FROM `department` WHERE College IN ('L','O')";
-                                    // $result = $conn->query($query);
-                                    // if ($result->num_rows > 0) {
-                                    //     while ($row = $result->fetch_assoc()) {
-                                    //         echo '<option value="' . $row['D_id'] . '"> ' . ($row["College"] === 'L' ? 'Labratory' : 'Office') . '</option>';
-                                    //     }
-                                    // } else {
-                                    //     echo '<option value="" selected disabled>No Type</option>';
-                                    // }
+                                    $currentMonth = date('n'); // Get the current month (1-12)
+                                    $currentYear = date('Y');  // Get the current year
+
+                                    // Determine academic year based on the month
+                                    if ($currentMonth >= 6) { // From June onwards, current academic year starts with this year
+                                        $startYear = $currentYear;
+                                    } else { // Before June, current academic year starts with last year
+                                        $startYear = $currentYear - 1;
+                                    }
+
+                                    // Display the options
+                                    echo '<option value="' . $startYear . '">' . $startYear . ' - ' . ($startYear + 1) . '</option>';
+                                    echo '<option value="' . ($startYear + 1) . '">' . ($startYear + 1) . ' - ' . ($startYear + 2) . '</option>';
+
+                                    // echo '<option selected value="' . (date('Y')) . '">' . date('Y') . ' - ' . (date('Y') + 1) . '</option>';
+                                    // echo '<option  value="' . (date('Y') + 1) . '">' . date('Y') + 1 . ' - ' . (date('Y') + 2) . '</option>';
+
                                     ?>
                                 </select>
-                            </div>
-
-                        </div>
-
-                        <!--Department-->
-                        <div class="w-full px-3 sm:w-1/2">
-                            <div class="mb-5">
-                                <label class="mb-3 block text-base text-gray-700 font-semibold">
-                                    Department
-                                </label>
-                                <select name="nt_department" id="nt_department" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md">
-                                    <option value="" selected disabled>Office Laboratory</option>
-
-                                </select>
-
 
                             </div>
+                            <!-- Department Selection -->
+
+
+                            <div class="-mx-3 flex flex-wrap">
+                                <!--Type Selection-->
+                                <div class="w-full px-3 sm:w-1/2">
+                                    <div class="mb-5">
+                                        <label class="mb-3 block text-base text-gray-700 font-semibold">
+                                            Type
+                                        </label>
+                                        <select name="nt_type" id="nt_type" onchange="nt_change()" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md">
+                                            <option value="" selected disabled>Select Type</option>
+                                            <option value="NO">Office</option>
+                                            <option value="NL">Labratory</option>
+                                            <?php
+                                            // $query = "SELECT * FROM `department` WHERE College IN ('L','O')";
+                                            // $result = $conn->query($query);
+                                            // if ($result->num_rows > 0) {
+                                            //     while ($row = $result->fetch_assoc()) {
+                                            //         echo '<option value="' . $row['D_id'] . '"> ' . ($row["College"] === 'L' ? 'Labratory' : 'Office') . '</option>';
+                                            //     }
+                                            // } else {
+                                            //     echo '<option value="" selected disabled>No Type</option>';
+                                            // }
+                                            ?>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <!--Department-->
+                                <div class="w-full px-3 sm:w-1/2">
+                                    <div class="mb-5">
+                                        <label class="mb-3 block text-base text-gray-700 font-semibold">
+                                            Department
+                                        </label>
+                                        <select name="nt_department" id="nt_department" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md">
+                                            <option value="" selected disabled>Office Laboratory</option>
+
+                                        </select>
+
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Non Teaching Sub Tabs -->
-                <div class="mb-4">
-                    <button type="button" id="individualTab" class="px-4 py-2 rounded-l-lg bg-gray-300 text-gray-700 focus:outline-none">Individual</button>
-                    <button type="button" id="allTab" class="px-4 py-2 rounded-r-lg bg-gray-300 text-gray-700 focus:outline-none w-24">All</button>
-                </div>
+                        <!-- Non Teaching Sub Tabs -->
+                        <div class="mb-4">
+                            <button type="button" id="individualTab" class="px-4 py-2 rounded-l-lg bg-gray-300 text-gray-700 focus:outline-none">Individual</button>
+                            <button type="button" id="allTab" class="px-4 py-2 rounded-r-lg bg-gray-300 text-gray-700 focus:outline-none w-24">All</button>
+                        </div>
 
-                <hr class=" border-2 mb-2 border-blue-700">
+                        <hr class=" border-2 mb-2 border-blue-700">
 
-                <!-- Individual Fields -->
-                <div id="individualFields" class="mb-4 hidden">
-                    <!-- <div class="mb-4">
+                        <!-- Individual Fields -->
+                        <div id="individualFields" class="mb-4 hidden">
+                            <!-- <div class="mb-4">
                         <label for="casualLeaveIndividual" class="block text-gray-700 font-semibold mb-2">Casual Leave</label>
                         <input type="number" id="casualLeaveIndividual" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" min="0">
                     </div>
@@ -251,11 +262,11 @@
                         <label for="medicalLeaveIndividual" class="block text-gray-700 font-semibold mb-2">Medical Leave</label>
                         <input type="number" id="medicalLeaveIndividual" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" min="0">
                     </div> -->
-                </div>
+                        </div>
 
-                <!-- All Fields (initially hidden) -->
-                <div id="allFields" class="mb-4 hidden">
-                    <!-- <div class="mb-4">
+                        <!-- All Fields (initially hidden) -->
+                        <div id="allFields" class="mb-4 hidden">
+                            <!-- <div class="mb-4">
                         <label for="casualLeaveAll" class="block text-gray-700 font-semibold mb-2">Casual Leave</label>
                         <input type="number" id="casualLeaveAll" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" min="0">
                     </div>
@@ -263,18 +274,18 @@
                         <label for="maternityLeaveAll" class="block text-gray-700 font-semibold mb-2">Maternity Leave</label>
                         <input type="number" id="maternityLeaveAll" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" min="0">
                     </div> -->
-                </div>
+                        </div>
 
 
 
 
-                <!-- <div class=" mb-4  w-full flex justify-center">
+                        <!-- <div class=" mb-4  w-full flex justify-center">
                     <button type="button" id="nt_submit" class="hidden bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 hover:translate-y-[200px] w-full  ">Show</button>
                 </div>
                 <br> -->
 
-                <!-- Table -->
-                <!-- <div id="nonteaching-table" class="hidden overflow-x-auto">
+                        <!-- Table -->
+                        <!-- <div id="nonteaching-table" class="hidden overflow-x-auto">
                     <table class="w-full bg-white rounded-lg shadow-lg">
                         <thead>
                             <tr class="bg-gray-200 text-gray-700">
@@ -288,8 +299,10 @@
                     </table>
                 </div> -->
 
+                    </div>
+                </form>
             </div>
-        </form>
+        </main>
     </div>
 
     <script>
@@ -586,10 +599,6 @@
                 }
             });
         });
-
-        
-
-       
     </script>
 </body>
 

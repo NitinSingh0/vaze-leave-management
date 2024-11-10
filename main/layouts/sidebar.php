@@ -1,5 +1,5 @@
   <?php
-    //error_reporting(0);
+    error_reporting(0);
 
     $Staff_id = $_SESSION['Staff_id'];
 
@@ -8,7 +8,16 @@
         exit;
     }
 
-    include('../../config/connect.php'); // Include your DB connection file
+   
+// Check if the first file exists
+if (file_exists('../../config/connect.php')) {
+    include('../../config/connect.php');
+} else {
+    // If the first file doesn't exist, include the fallback file
+    include('../../../config/connect.php');
+}
+
+ // Include your DB connection file
 
     // Fetch the existing password for the staff
     $sql = "SELECT * FROM staff WHERE Staff_id = '$Staff_id'";
@@ -67,7 +76,7 @@
 
           <?php if ($designation == 'HOD'): ?>
               <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('HOD_request')">HOD Leave Request</a></li>
-          
+
           <?php endif; ?>
           <?php if ($designation == 'Vice Principal'): ?>
               <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('VicePrincipalLeaveRequest')">Vice Principal Leave Request</a></li>
@@ -83,11 +92,11 @@
                   <?php endif ?>
 
                   <?php if ($designation == 'Principal'): ?>
-                      <li><a href="principalRequest.php" class="block px-4 py-2 text-gray-700" >Principal Leave Request</a></li>
+                      <li><a href="principalRequest.php" class="block px-4 py-2 text-gray-700">Principal Leave Request</a></li>
                   <?php endif ?>
 
                   <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('registration')">New Registration</a></li>
-                  <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('assign')">Assign Leave</a></li>
+                  <li><a href="assignleave/assign_leave.php" class="block px-4 py-2 text-gray-700">Assign Leave</a></li>
                   <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('update')">Update Details</a></li>
                   <li><a href="#" class="block px-4 py-2 text-gray-700 mb-5" onclick="loadContent('active/deactive')">Deactivate Users</a></li>
               </ul>

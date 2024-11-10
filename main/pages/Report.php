@@ -16,7 +16,7 @@ session_start();
 <?php include('../layouts/header.php'); ?>
 
 <body class="bg-gray-100 p-6 pl-0">
-
+    
     <div class="mt-11 flex h-screen">
         <!-- Sidebar -->
         <?php include('../layouts/sidebar.php'); ?>
