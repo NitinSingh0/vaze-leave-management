@@ -73,16 +73,18 @@
                     <label for="nonteaching-type" class="block text-gray-700 p-2">Type</label>
                     <select id="nonteaching-type" class=" w-full border border-gray-300 p-2 rounded-lg focus:border-blue-400">
                         <option value="" selected disabled>Select Type</option>
+                        <option value="NO">Office</option>
+                        <option value="NL">Labratory</option>
                         <?php
-                        $query = "SELECT * FROM `department` WHERE College IN ('L','O')";
-                        $result = $conn->query($query);
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                echo '<option value="' . $row['D_id'] . '"> ' . ($row["College"] === 'L' ? 'Labratory' : 'Office') . '</option>';
-                            }
-                        } else {
-                            echo '<option value="" selected disabled>No Type</option>';
-                        }
+                        // $query = "SELECT * FROM `department` WHERE College IN ('L','O')";
+                        // $result = $conn->query($query);
+                        // if ($result->num_rows > 0) {
+                        //     while ($row = $result->fetch_assoc()) {
+                        //         echo '<option value="' . $row['D_id'] . '"> ' . ($row["College"] === 'L' ? 'Labratory' : 'Office') . '</option>';
+                        //     }
+                        // } else {
+                        //     echo '<option value="" selected disabled>No Type</option>';
+                        // }
                         ?>
                     </select>
                 </div>
@@ -229,11 +231,11 @@
 
 
         $("#submit2").on("click", function() {
-            var n_dept = document.getElementById('nonteaching-type').value;
+            var n_type = document.getElementById('nonteaching-type').value;
 
             // Alert to check if values are captured correctly
-            // alert("Department: " + n_dept);
-            if (n_dept === "") {
+             //alert("Department: " + n_type);
+            if (n_type === "") {
                 alert("Please Select the Values");
 
             } else {
@@ -244,7 +246,7 @@
                     cache: false,
                     data: {
 
-                        ndept: n_dept
+                        ntype: n_type
                     },
                     success: function(data) {
                         $("#nonteaching-staff-list").html(data);

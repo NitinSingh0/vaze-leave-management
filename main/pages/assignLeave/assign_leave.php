@@ -67,7 +67,7 @@
                                 <label class="mb-3 block text-base text-gray-700 font-semibold">
                                     Type
                                 </label>
-                                <select name="t_type" id="teaching_type" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md">
+                                <select name="t_type" onchange=" t_change()" id="teaching_type" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md">
                                     <option value="" selected disabled>Select Type</option>
                                     <option value="D">Degree</option>
                                     <option value="J">Junior</option>
@@ -82,8 +82,8 @@
                                 <label class="mb-3 block text-base text-gray-700 font-semibold">
                                     Department
                                 </label>
-                                <select name="t_department" id="teaching_department" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md">
-                                    <option value="" selected disabled>Select a Department</option>
+                                <select onchange=" t_change()" name="t_department" id="teaching_department" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md">
+                                    <option value="" selected disabled>Select an Department</option>
 
                                 </select>
 
@@ -147,10 +147,12 @@
                     </table>
                 </div> -->
 
-
-
             </div>
 
+
+
+
+            
             <!-- Non-Teaching Section -->
             <div id="nonteaching-section" class="mt-6 hidden">
                 <div class="mx-auto w-full max-w-[550px] bg-white">
@@ -194,18 +196,20 @@
                                 <label class="mb-3 block text-base text-gray-700 font-semibold">
                                     Type
                                 </label>
-                                <select name="nt_type" id="nt_type" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md">
+                                <select name="nt_type" id="nt_type" onchange="nt_change()" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md">
                                     <option value="" selected disabled>Select Type</option>
+                                    <option value="NO">Office</option>
+                                    <option value="NL">Labratory</option>
                                     <?php
-                                    $query = "SELECT * FROM `department` WHERE College IN ('L','O')";
-                                    $result = $conn->query($query);
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo '<option value="' . $row['D_id'] . '"> ' . ($row["College"] === 'L' ? 'Labratory' : 'Office') . '</option>';
-                                        }
-                                    } else {
-                                        echo '<option value="" selected disabled>No Type</option>';
-                                    }
+                                    // $query = "SELECT * FROM `department` WHERE College IN ('L','O')";
+                                    // $result = $conn->query($query);
+                                    // if ($result->num_rows > 0) {
+                                    //     while ($row = $result->fetch_assoc()) {
+                                    //         echo '<option value="' . $row['D_id'] . '"> ' . ($row["College"] === 'L' ? 'Labratory' : 'Office') . '</option>';
+                                    //     }
+                                    // } else {
+                                    //     echo '<option value="" selected disabled>No Type</option>';
+                                    // }
                                     ?>
                                 </select>
                             </div>
@@ -297,6 +301,12 @@
         // const teachingsubmit = document.getElementById('t_submit');
 
         teacherWiseTab.addEventListener('click', () => {
+            //sub_table(1);
+            // Call sub_table() and only proceed if it returns true
+            if (!sub_table(1)) {
+                return;
+            }
+
             teacherWiseTab.classList.add('subtab-active');
             departmentWiseTab.classList.remove('subtab-active');
             teacherWiseFields.classList.remove('hidden');
@@ -305,11 +315,15 @@
             teacherWiseTab.classList.remove('text-gray-700', 'bg-gray-300');
             teacherWiseTab.classList.add('bg-blue-500', 'text-white');
             //teachingsubmit.classList.remove('hidden');
-            sub_table(1);
+
 
         });
 
         departmentWiseTab.addEventListener('click', () => {
+
+            if (!sub_table(2)) {
+                return;
+            }
             departmentWiseTab.classList.add('subtab-active');
             teacherWiseTab.classList.remove('subtab-active');
             departmentWiseFields.classList.remove('hidden');
@@ -319,7 +333,7 @@
             teacherWiseTab.classList.remove('bg-blue-500', 'text-white');
             teacherWiseTab.classList.add('text-gray-700', 'bg-gray-300');
             //teachingsubmit.classList.remove('hidden');
-            sub_table(2);
+            //sub_table(2);
         });
 
 
@@ -332,6 +346,10 @@
         //const nteachingsubmit = document.getElementById('nt_submit');
 
         individualTab.addEventListener('click', () => {
+            if (!sub_table2(1)) {
+                return;
+            }
+
             individualTab.classList.add('subtab-active');
             allTab.classList.remove('subtab-active');
             individualFields.classList.remove('hidden');
@@ -340,11 +358,14 @@
             individualTab.classList.remove('text-gray-700', 'bg-gray-300');
             individualTab.classList.add('bg-blue-500', 'text-white');
             //nteachingsubmit.classList.remove('hidden');
-            sub_table2(1);
+            //sub_table2(1);
 
         });
 
         allTab.addEventListener('click', () => {
+            if (!sub_table2(2)) {
+                return;
+            }
             allTab.classList.add('subtab-active');
             individualTab.classList.remove('subtab-active');
             allFields.classList.remove('hidden');
@@ -354,7 +375,7 @@
             individualTab.classList.remove('bg-blue-500', 'text-white');
             individualTab.classList.add('text-gray-700', 'bg-gray-300');
             //nteachingsubmit.classList.remove('hidden');
-            sub_table2(2);
+            //sub_table2(2);
         });
 
 
@@ -386,12 +407,14 @@
         });
 
 
+        //Teaching staff form
         function sub_table(a) {
             var t_dept = document.getElementById('teaching_department').value;
             var t_year = document.getElementById('teaching_year').value;
             var t_type = document.getElementById('teaching_type').value;
             if (t_dept === "" || t_year === "" || t_type === "") {
                 alert("Please Select the Values");
+                return false; // Return false if values are missing
 
             } else {
                 // Get the values 
@@ -413,18 +436,21 @@
                         }
                     }
                 });
+                return true;
 
             }
 
         }
 
+        //Non-Teaching staff form
         function sub_table2(a) {
             //var nt_dept = document.getElementById('nt_department').value;
             var nt_year = document.getElementById('nt_year').value;
-            var nt_dept = document.getElementById('nt_type').value;
-            if (nt_dept === "" || nt_year === "") {
-                alert("Please Select the Values");
+            var nt_type = document.getElementById('nt_type').value;
 
+            if (nt_type === "" || nt_year === "") {
+                alert("Please Select the Values");
+                return false; // Return false if values are missing
             } else {
                 // Get the values 
                 $.ajax({
@@ -432,7 +458,7 @@
                     type: "POST",
                     cache: false,
                     data: {
-                        ndept: nt_dept,
+                        ntype: nt_type,
                         nyear: nt_year,
                         sub_table2: a
                     },
@@ -444,23 +470,109 @@
                         }
                     }
                 });
-
+                return true;
             }
 
         }
+
+        // To erase the Non teching form On change
+        function nt_change() {
+            individualFields.classList.add('hidden');
+            allFields.classList.add('hidden');
+
+        }
+        // To erase the Teaching form On change
+        function t_change() {
+            teacherWiseFields.classList.add('hidden');
+            departmentWiseFields.classList.add('hidden');
+
+        }
+
+
+        // function teachingSubmit() {
+        //     alert("teching_wiseyy");
+        //     var t_type = document.getElementById('teaching_type').value;
+        //     var teaching_wise_t = document.getElementById('teacher_wise_teacher').value;
+        //     var teaching_wise_cl = document.getElementById('teacher_wise_cl').value;
+        //     var teaching_wise_ma = document.getElementById('teacher_wise_ma').value;
+        //     var teaching_wise_hl = document.getElementById('teacher_wise_hl').value;
+        //     var teaching_wise_ml_el = document.getElementById('teacher_wise_ml_el').value;
+        //     var a_type = document.getElementById('teaching_year').value;
+        //     console.log({
+        //         year: a_type,
+        //         teaching_t: teaching_wise_t,
+        //         teaching_cl: teaching_wise_cl,
+        //         teaching_ma: teaching_wise_ma,
+        //         teaching_hl: teaching_wise_hl,
+        //         teaching_el: teaching_wise_ml_el // if applicable
+        //     });
+
+        //     if (teaching_wise_t === "" || teaching_wise_cl === "" || teaching_wise_ma === "" || teaching_wise_hl === "" || teaching_wise_ml_el === "") {
+        //         alert("Please Assign All the Leaves !!");
+
+        //     } else {
+        //         // console.log({
+        //         //     year: a_type,
+        //         //     teaching_t: teaching_wise_t,
+        //         //     teaching_cl: teaching_wise_cl,
+        //         //     teaching_ma: teaching_wise_ma,
+        //         //     teaching_hl: teaching_wise_hl,
+        //         //     teaching_el: teaching_wise_ml_el // if applicable
+        //         // });
+
+
+        //         $.ajax({
+        //             url: "action.php",
+        //             type: "POST",
+        //             dataType: 'json', // Expect a JSON response
+        //             data: {
+        //                 type: t_type,
+        //                 year: a_type,
+        //                 teaching_t: teaching_wise_t,
+        //                 teaching_cl: teaching_wise_cl,
+        //                 teaching_ma: teaching_wise_ma,
+        //                 teaching_hl: teaching_wise_hl,
+        //                 teaching_ml_el: teaching_wise_ml_el
+        //             },
+        //             success: function(response) {
+        //                 if (response.status === 'success') {
+        //                     alert(response.message); // Show success message
+        //                     //loadContent('dl');
+        //                 } else {
+        //                     alert(response.message); // Show error message if any
+        //                     // loadContent('dl');
+        //                 }
+        //             },
+        //             error: function(xhr, status, error) {
+        //                 //console.error("AJAX Error: ", status, error);
+        //                 //console.log("Response Text:", xhr.responseText);
+        //                 alert("AJAX Error: " + status + " " + error + "\nResponse Text: " + xhr.responseText);
+        //             }
+
+        //         });
+
+        //     }
+
+
+
+        // }
+
+
+
 
 
 
 
         // Reason Textarea onchange Professor ajax
         $("#teaching_type").on("change", function() {
+
             //var t_dept = document.getElementById('teaching_department').value;
             var t_type = this.value;
 
             // Alert to check if values are captured correctly
             // alert("Department: " + t_dept);
             // alert("Type: " + t_type);
-            document.getElementById(`teaching-table`).classList.add("hidden");
+            //document.getElementById(`teaching-table`).classList.add("hidden");
             // Get the values of the selected department and type
             $.ajax({
                 url: "dept_filter.php",
@@ -475,139 +587,9 @@
             });
         });
 
-        $("#submit").on("click", function() {
-            var t_dept = document.getElementById('teaching_department').value;
-            var t_type = document.getElementById('teaching_type').value;
+        
 
-            // Alert to check if values are captured correctly
-            // alert("Department: " + t_dept);
-            if (t_dept === "" || t_type === "") {
-                alert("Please Select the Values");
-
-            } else {
-                // Get the values 
-                $.ajax({
-                    url: "table.php",
-                    type: "POST",
-                    cache: false,
-                    data: {
-
-                        dept: t_dept
-                    },
-                    success: function(data) {
-                        $("#teaching-staff-list").html(data);
-                    }
-                });
-                document.getElementById(`teaching-table`).classList.remove("hidden");
-            }
-
-        });
-
-
-        // Using event delegation for dynamically added elements
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.classList.contains('toggle-status')) {
-                e.preventDefault(); // Prevents anchor default navigation
-
-                // Get the staff ID from data attribute
-                const staffId = e.target.getAttribute('data-staff-id');
-                const newStatus = e.target.getAttribute('data-new-status');
-
-
-                // alert("staff_id: " + staffId);
-                //  alert("newstatus: " + newStatus);
-
-
-                // Send AJAX request to update the status
-
-                $.ajax({
-                    url: "update_status.php", // URL for status update
-                    type: "POST",
-                    data: {
-                        staff_id: staffId,
-                        status: newStatus
-                        // other data as required
-                    },
-                    success: function(response) {
-                        // Update the UI or handle the response
-                        alert("Status updated!");
-                        $('#submit').trigger('click');
-                    },
-                    error: function() {
-                        alert("Error updating status.");
-                    }
-                });
-
-            }
-        });
-
-
-        $("#submit2").on("click", function() {
-            var n_dept = document.getElementById('nonteaching-type').value;
-
-            // Alert to check if values are captured correctly
-            // alert("Department: " + n_dept);
-            if (n_dept === "") {
-                alert("Please Select the Values");
-
-            } else {
-                // Get the values 
-                $.ajax({
-                    url: "table.php",
-                    type: "POST",
-                    cache: false,
-                    data: {
-
-                        ndept: n_dept
-                    },
-                    success: function(data) {
-                        $("#nonteaching-staff-list").html(data);
-                    }
-                });
-                document.getElementById(`nonteaching-table`).classList.remove("hidden");
-            }
-
-        });
-
-
-
-
-        // Using event delegation for dynamically added elements
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.classList.contains('toggle-status2')) {
-                e.preventDefault(); // Prevents anchor default navigation
-
-                // Get the staff ID from data attribute
-                const staffId = e.target.getAttribute('data-staff-id');
-                const newStatus = e.target.getAttribute('data-new-status');
-
-
-                // alert("staff_id: " + staffId);
-                //  alert("newstatus: " + newStatus);
-
-
-                // Send AJAX request to update the status
-
-                $.ajax({
-                    url: "update_status.php", // URL for status update
-                    type: "POST",
-                    data: {
-                        staff_id: staffId,
-                        status: newStatus
-                        // other data as required
-                    },
-                    success: function(response) {
-                        // Update the UI or handle the response
-                        alert("Status updated!");
-                        $('#submit2').trigger('click');
-                    },
-                    error: function() {
-                        alert("Error updating status.");
-                    }
-                });
-
-            }
-        });
+       
     </script>
 </body>
 

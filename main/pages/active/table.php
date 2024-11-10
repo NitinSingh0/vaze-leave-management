@@ -32,11 +32,11 @@ if (isset($_POST['dept']) && !empty($_POST['dept'])) {
     }
 }
 
-if (isset($_POST['ndept']) && !empty($_POST['ndept'])) {
+if (isset($_POST['ntype']) && !empty($_POST['ntype'])) {
 
 
-    $ndept = $_POST['ndept'];
-    $nquery = "SELECT * from staff where D_id='$ndept'";
+    $ntype = $_POST['ntype'];
+    $nquery = "SELECT * from staff where Job_role='$ntype'";
     $nresult = $conn->query($nquery);
     if ($nresult->num_rows > 0) {
         while ($row = $nresult->fetch_assoc()) {

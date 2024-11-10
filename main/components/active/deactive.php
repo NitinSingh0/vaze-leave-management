@@ -1,5 +1,3 @@
-
-
 <?php include("connect.php"); ?>
 
 <div class=" bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-4xl">
@@ -62,16 +60,18 @@
                 <label for="nonteaching-type" class="block text-gray-700 p-2">Type</label>
                 <select id="nonteaching-type" class="text-gray-800 w-full border border-gray-300 p-2 rounded-lg focus:border-blue-400">
                     <option value="" selected disabled>Select Type</option>
+                    <option value="NO">Office</option>
+                    <option value="NL">Labratory</option>
                     <?php
-                    $query = "SELECT * FROM `department` WHERE College IN ('L','O')";
-                    $result = $conn->query($query);
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            echo '<option value="' . $row['D_id'] . '"> ' . ($row["College"] === 'L' ? 'Labratory' : 'Office') . '</option>';
-                        }
-                    } else {
-                        echo '<option value="" selected disabled>No Type</option>';
-                    }
+                    // $query = "SELECT * FROM `department` WHERE College IN ('L','O')";
+                    // $result = $conn->query($query);
+                    // if ($result->num_rows > 0) {
+                    //     while ($row = $result->fetch_assoc()) {
+                    //         echo '<option value="' . $row['D_id'] . '"> ' . ($row["College"] === 'L' ? 'Labratory' : 'Office') . '</option>';
+                    //     }
+                    // } else {
+                    //     echo '<option value="" selected disabled>No Type</option>';
+                    // }
                     ?>
                 </select>
             </div>

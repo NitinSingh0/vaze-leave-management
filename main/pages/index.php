@@ -152,11 +152,11 @@ session_start();
 
 
         function table2() {
-            var n_dept = document.getElementById('nonteaching-type').value;
+            var n_type = document.getElementById('nonteaching-type').value;
 
             // Alert to check if values are captured correctly
             // alert("Department: " + n_dept);
-            if (n_dept === "") {
+            if (n_type === "") {
                 alert("Please Select the Values");
 
             } else {
@@ -167,7 +167,7 @@ session_start();
                     cache: false,
                     data: {
 
-                        ndept: n_dept
+                        ntype: n_type
                     },
                     success: function(data) {
                         $("#nonteaching-staff-list").html(data);
@@ -374,7 +374,7 @@ session_start();
                                 loadContent('APPLY_OFF_PAY');
                             } else {
                                 alert(response.message); // Show error message if any
-                                // loadContent('APPLY_OFF_PAY');
+                                 loadContent('APPLY_OFF_PAY');
                             }
                         },
                         error: function(xhr, status, error) {
