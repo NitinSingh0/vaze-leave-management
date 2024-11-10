@@ -176,6 +176,7 @@ if ($result && $row = $result->fetch_assoc()) {
 </script>
 
 <?php
+/*
 error_reporting(0);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['year']) && !empty($_POST['application_date']) && !empty($_POST['department']) && !empty($_POST['from_date']) && !empty($_POST['to_date']) && !empty($_POST['reason'])) {
@@ -271,6 +272,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
+    */
 ?>
 
 
