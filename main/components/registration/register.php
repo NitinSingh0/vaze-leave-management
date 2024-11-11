@@ -34,8 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       
         } else {
             // No duplicate, proceed with insertion
+            $hashed_password = password_hash('NEW', PASSWORD_DEFAULT);
             $sql = "INSERT INTO staff ( Name, Designation, DOJ, Staff_type, Username, Gender, Job_role, D_id, status, Password) 
-                VALUES ('$name', '$desig ', '$date', '$staff_type', '$username', '$gender', '$type','$department','A', 'NEW')";
+                VALUES ('$name', '$desig ', '$date', '$staff_type', '$username', '$gender', '$type','$department','A', '$hashed_password')";
 
             if ($res = $conn->query($sql)) {
                 //echo "<script>alert('New Staff Added Successfully!');</script>";

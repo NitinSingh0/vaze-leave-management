@@ -78,8 +78,9 @@
               <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('HOD_request')">HOD Leave Request</a></li>
 
           <?php endif; ?>
-          <?php if ($designation == 'Vice Principal'): ?>
+          <?php if (strcasecmp(trim($designation), 'Vice Principal') === 0): ?>
               <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('VicePrincipalLeaveRequest')">Vice Principal Leave Request</a></li>
+          
           <?php endif; ?>
       </ul>
       <!-- Additional options only for job role OO -->
