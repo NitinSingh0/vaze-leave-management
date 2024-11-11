@@ -8,16 +8,16 @@
         exit;
     }
 
-   
-// Check if the first file exists
-if (file_exists('../../config/connect.php')) {
-    include('../../config/connect.php');
-} else {
-    // If the first file doesn't exist, include the fallback file
-    include('../../../config/connect.php');
-}
 
- // Include your DB connection file
+    // Check if the first file exists
+    if (file_exists('../../config/connect.php')) {
+        include('../../config/connect.php');
+    } else {
+        // If the first file doesn't exist, include the fallback file
+        include('../../../config/connect.php');
+    }
+
+    // Include your DB connection file
 
     // Fetch the existing password for the staff
     $sql = "SELECT * FROM staff WHERE Staff_id = '$Staff_id'";
@@ -105,14 +105,17 @@ if (file_exists('../../config/connect.php')) {
   </aside>
   <script>
       function loadContent(page) {
-          // Check if the current page is 'Main.php'
+          // Get the base URL up to the directory containing index.php
+          const baseUrl = `${window.location.origin}/vaze-leave-management/main/pages/`;
+
+          // Check if the current page is 'index.php'
           const isMainPage = window.location.pathname.includes("index.php");
 
           if (!isMainPage) {
-              // Redirect to Main.php with the 'page' parameter
-              window.location.href = `index.php?page=${page}`;
+              // Redirect to index.php with the 'page' parameter, using the base URL
+              window.location.href = `${baseUrl}index.php?page=${page}`;
           } else {
-              // If already on Main.php, load the content dynamically
+              // If already on index.php, load the content dynamically
               fetch(`../components/${page}.php`)
                   .then(response => response.text())
                   .then(data => {
