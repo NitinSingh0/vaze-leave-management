@@ -75,11 +75,11 @@
           <?php endif; ?>
 
           <?php if ($designation == 'HOD'): ?>
-              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('HOD_request')">HOD Leave Request</a></li>
+              <li><a href="HOD.php" class="block px-4 py-2 text-gray-700" >HOD Leave Request</a></li>
 
           <?php endif; ?>
           <?php if (strcasecmp(trim($designation), 'Vice Principal') === 0): ?>
-              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('VicePrincipalLeaveRequest')">Vice Principal Leave Request</a></li>
+              <li><a href="vicePrincipal.php" class="block px-4 py-2 text-gray-700" onclick="loadContent('VicePrincipalLeaveRequest')">Vice Principal Leave Request</a></li>
           
           <?php endif; ?>
       </ul>
