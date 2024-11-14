@@ -12,32 +12,32 @@ if (!isset($staff_id)) {
     header("Location: login.php");
     exit();
 }
-$hod_query = "SELECT D_id FROM staff WHERE Staff_id = $staff_id AND Designation = 'HOD'";
+$hod_query = "SELECT * FROM staff WHERE Staff_id = $staff_id AND Designation = 'Vice Principal'";
 $hod_result = $conn->query($hod_query);
 
 if ($hod_result && $hod_result->num_rows > 0) {
-    $D_id = $hod_result->fetch_assoc()['D_id'];
+    
 
     // Fetch pending leave requests for the department
     $leave_query_cl = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Date_of_application, l.leave_approval_status, s.Name 
                     FROM d_cl_leave AS l
                     JOIN staff AS s ON l.Staff_id = s.Staff_id
-                    WHERE s.D_id = $D_id AND l.leave_approval_status = 'P'";
+                    WHERE s.Designation = 'HOD' AND l.leave_approval_status = 'P'";
     $leave_result_cl = $conn->query($leave_query_cl);
 
     $leave_query_dl = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Nature AS Reason, l.Date_of_application, l.leave_approval_status, s.Name 
                     FROM d_dl_leave AS l
                     JOIN staff AS s ON l.Staff_id = s.Staff_id
-                    WHERE s.D_id = $D_id AND l.leave_approval_status = 'P'";
+                    WHERE s.Designation = 'HOD' AND l.leave_approval_status = 'P'";
     $leave_result_dl = $conn->query($leave_query_dl);
 
     $leave_query_mhm = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Date_of_application AS Date_of_application, l.leave_approval_status, s.Name 
                     FROM d_mhm_leave AS l
                     JOIN staff AS s ON l.Staff_id = s.Staff_id
-                    WHERE s.D_id = $D_id AND l.leave_approval_status = 'P'";
+                    WHERE s.Designation = 'HOD' AND l.leave_approval_status = 'P'";
     $leave_result_mhm = $conn->query($leave_query_mhm);
 } else {
-    die("Access Denied: Only HODs can access this page.");
+    die("Access Denied: Only Vice Principal can access this page.");
 }
 
 // Handle form submission
