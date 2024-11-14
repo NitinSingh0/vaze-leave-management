@@ -4,7 +4,7 @@ include('../../config/connect.php');
 
 $message = ""; // Message to display for success or error
 
-// Check if the logged-in user is an HOD
+// Check if the logged-in user is an Vice principal
 $staff_id = $_SESSION['Staff_id'];
 
 if (!isset($staff_id)) {
@@ -16,26 +16,49 @@ $hod_query = "SELECT * FROM staff WHERE Staff_id = $staff_id AND Designation = '
 $hod_result = $conn->query($hod_query);
 
 if ($hod_result && $hod_result->num_rows > 0) {
-    
 
-    // Fetch pending leave requests for the department
-    $leave_query_cl = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Date_of_application, l.leave_approval_status, s.Name 
-                    FROM d_cl_leave AS l
-                    JOIN staff AS s ON l.Staff_id = s.Staff_id
-                    WHERE s.Designation = 'HOD' AND l.leave_approval_status = 'P'";
-    $leave_result_cl = $conn->query($leave_query_cl);
+    $hod_data = $hod_result->fetch_assoc();
+    $D_id = $hod_data['D_id'];
 
-    $leave_query_dl = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Nature AS Reason, l.Date_of_application, l.leave_approval_status, s.Name 
-                    FROM d_dl_leave AS l
-                    JOIN staff AS s ON l.Staff_id = s.Staff_id
-                    WHERE s.Designation = 'HOD' AND l.leave_approval_status = 'P'";
-    $leave_result_dl = $conn->query($leave_query_dl);
+    // Fetch the College for the department
+    $dept_query = "SELECT College FROM department WHERE D_id = $D_id";
+    $dept_result = $conn->query($dept_query);
 
-    $leave_query_mhm = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Date_of_application AS Date_of_application, l.leave_approval_status, s.Name 
-                    FROM d_mhm_leave AS l
-                    JOIN staff AS s ON l.Staff_id = s.Staff_id
-                    WHERE s.Designation = 'HOD' AND l.leave_approval_status = 'P'";
-    $leave_result_mhm = $conn->query($leave_query_mhm);
+    if ($dept_result && $dept_result->num_rows > 0) {
+        $college = $dept_result->fetch_assoc()['College'];
+
+        // Define leave tables based on College value
+        if ($college == 'D') {
+            $leave_table_cl = 'd_cl_leave';
+            $leave_table_dl = 'd_dl_leave';
+            $leave_table_mhm = 'd_mhm_leave';
+        } elseif ($college == 'J') {
+            $leave_table_cl = 'j_cl_leave';
+            $leave_table_dl = 'j_dl_leave';
+            $leave_table_mhm = 'j_ehm_leave';
+        }
+
+        // Fetch pending leave requests for the department
+        $leave_query_cl = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Date_of_application, l.leave_approval_status, s.Name 
+                           FROM $leave_table_cl AS l
+                           JOIN staff AS s ON l.Staff_id = s.Staff_id
+                           WHERE s.Designation = 'HOD' AND l.leave_approval_status = 'P'";
+        $leave_result_cl = $conn->query($leave_query_cl);
+
+        $leave_query_dl = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Nature AS Reason, l.Date_of_application, l.leave_approval_status, s.Name 
+                           FROM $leave_table_dl AS l
+                           JOIN staff AS s ON l.Staff_id = s.Staff_id
+                           WHERE s.Designation = 'HOD' AND l.leave_approval_status = 'P'";
+        $leave_result_dl = $conn->query($leave_query_dl);
+
+        $leave_query_mhm = "SELECT l.Staff_id, l.From_date, l.To_date, l.No_of_days, l.Reason, l.Date_of_application AS Date_of_application, l.leave_approval_status, s.Name 
+                            FROM $leave_table_mhm AS l
+                            JOIN staff AS s ON l.Staff_id = s.Staff_id
+                            WHERE s.Designation = 'HOD' AND l.leave_approval_status = 'P'";
+        $leave_result_mhm = $conn->query($leave_query_mhm);
+    } else {
+        die("Department not found for the Vice Principal.");
+    }
 } else {
     die("Access Denied: Only Vice Principal can access this page.");
 }
@@ -60,6 +83,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                              WHERE Staff_id = $leave_id AND From_date = '$from_date' AND To_date = '$to_date'";
         } elseif ($leave_table === 'd_mhm_leave') {
             $update_query = "UPDATE d_mhm_leave SET HOD_remark = '$hod_remark', leave_approval_status = '$status' 
+                             WHERE Staff_id = $leave_id AND From_date = '$from_date' AND To_date = '$to_date'";
+        }elseif ($leave_table === 'j_cl_leave') {
+            $update_query = "UPDATE j_cl_leave SET HOD_remark = '$hod_remark', leave_approval_status = '$status' 
+                             WHERE Staff_id = $leave_id AND From_date = '$from_date' AND To_date = '$to_date'";
+        } elseif ($leave_table === 'j_dl_leave') {
+            $update_query = "UPDATE j_dl_leave SET HOD_remark = '$hod_remark', leave_approval_status = '$status' 
+                             WHERE Staff_id = $leave_id AND From_date = '$from_date' AND To_date = '$to_date'";
+        } elseif ($leave_table === 'j_ehm_leave') {
+            $update_query = "UPDATE j_ehm_leave SET HOD_remark = '$hod_remark', leave_approval_status = '$status' 
                              WHERE Staff_id = $leave_id AND From_date = '$from_date' AND To_date = '$to_date'";
         }
 
@@ -107,9 +139,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <?php
     $leave_types = [
-        'Casual Leave' => ['result' => $leave_result_cl, 'table' => 'd_cl_leave'],
-        'Duty Leave' => ['result' => $leave_result_dl, 'table' => 'd_dl_leave'],
-        'Medical Half Pay Maternity Leave' => ['result' => $leave_result_mhm, 'table' => 'd_mhm_leave']
+        'Casual Leave' => ['result' => $leave_result_cl, 'table' => $leave_table_cl],
+        'Duty Leave' => ['result' => $leave_result_dl, 'table' => $leave_table_dl],
+        'Medical Half Pay Maternity Leave' => ['result' => $leave_result_mhm, 'table' => $leave_table_mhm]
     ];
 
     foreach ($leave_types as $leave_type => $data): ?>
@@ -126,8 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <th class="py-3 px-4 border-b">No. of Days</th>
                             <th class="py-3 px-4 border-b w-40">Reason</th>
                             <th class="py-3 px-4 border-b">Application Date</th>
-                            <th class="py-3 px-4 border-b">HOD Remark</th>
-
+                            <th class="py-3 px-4 border-b">Vice Principal Remark</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm text-gray-600">
@@ -146,6 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <input type="hidden" name="leave_id" value="<?= $row['Staff_id'] ?>">
                                         <input type="hidden" name="from_date" value="<?= $row['From_date'] ?>">
                                         <input type="hidden" name="to_date" value="<?= $row['To_date'] ?>">
+                                        <!-- Dynamically set leave_table value based on PHP variable -->
                                         <input type="hidden" name="leave_table" value="<?= $data['table'] ?>">
 
                                         <textarea name="hod_remark" class="border border-gray-300 rounded-md p-2 w-full mb-2" rows="2" placeholder="Enter remark..."></textarea>
@@ -157,7 +189,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </div>
                                     </form>
                                 </td>
-
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
