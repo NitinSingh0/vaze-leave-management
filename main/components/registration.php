@@ -11,24 +11,44 @@
                 class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required>
         </div>
 
-        <!--Department-->
-        <div class="mb-4">
-            <label for="department" class="block text-gray-700 font-medium mb-2">Department</label>
-            <select id="department" name="department"
-                class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required>
-                <option value="" selected disabled>Select a Department</option>
-                <?php
-                $query = "SELECT D_id, Name FROM department";
-                $result = $conn->query($query);
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo '<option value="' . $row['D_id'] . '">' . $row['Name'] . '</option>';
-                    }
-                }
-                ?>
-            </select>
-        </div>
+        <div class="-mx-3 flex ">
 
+            <div class="w-full px-3 sm:w-1/2">
+                <!-- Type-->
+                <div class="mb-4">
+                    <label for="type" class="block text-gray-700 font-medium mb-2">Type</label>
+                    <select id="type" name="type" onchange="newreg(this)"
+                        class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required>
+                        <option value="" selected disabled>Select a Type</option>
+                        <option value="TD">Degree Teacher</option>
+                        <option value="TJ">Junior Teacher</option>
+                        <option value="NL">Non-Teaching Laboratory</option>
+                        <option value="NO">Non-Teaching Office</option>
+                        <option value="OO">Office Operator</option>
+                    </select>
+                </div>
+            </div>
+            <div class="w-full px-3 sm:w-1/2">
+
+                <!--Department-->
+                <div class="mb-4">
+                    <label for="department" class="block text-gray-700 font-medium mb-2">Department</label>
+                    <select id="reg_department" name="department"
+                        class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required>
+                        <option value="" selected disabled>Select a Department</option>
+                        <?php
+                        /*$query = "SELECT D_id, Name FROM department";
+                        $result = $conn->query($query);
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['D_id'] . '">' . $row['Name'] . '</option>';
+                            }
+                        }*/
+                        ?>
+                    </select>
+                </div>
+            </div>
+        </div>
         <!--Designation-->
         <div class="mb-4">
             <label for="designation" class="block text-gray-700 font-medium mb-2">Designation</label>
@@ -40,7 +60,7 @@
         <div class="mb-4">
             <label for="date_of_joining" class="block text-gray-700 font-medium mb-2">Date Of Joining</label>
             <input type="date" id="date_of_joining" name="date_of_joining"
-                class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required>
+                class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" max="<?php echo date('Y-m-d'); ?>" required>
         </div>
 
         <!--Gender-->
@@ -68,30 +88,20 @@
             <p id="usernameWarning" class="text-red-500 text-sm mt-1 hidden">Username already exists.</p>
         </div>
 
-        <!-- Type-->
-        <div class="mb-4">
-            <label for="type" class="block text-gray-700 font-medium mb-2">Type</label>
-            <select id="type" name="type"
-                class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required>
-                <option value="" selected disabled>Select a Type</option>
-                <option value="TD">Degree Teacher</option>
-                <option value="TJ">Junior Teacher</option>
-                <option value="NL">Non-Teaching Laboratory</option>
-                <option value="NO">Non-Teaching Office</option>
-                <option value="OO">Office Operator</option>
-            </select>
-        </div>
+
 
         <!-- Centered Submit Button -->
         <div class="w-full flex justify-center mt-6">
-            <button type="submit" onclick="reg1()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full ">Submit</button>
+            <input type="submit" value="Submit" id="submitbtn" onclick="reg1()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full " />
         </div>
 
     </form>
 </div>
 
+
 <?php
 //error_reporting(0);
+/*
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['name']) && !empty($_POST['department']) && !empty($_POST['designation']) && !empty($_POST['date_of_joining']) && !empty($_POST['gender']) && !empty($_POST['username']) && !empty($_POST['type'])) {
         $name = $_POST["name"];
@@ -135,5 +145,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     }
-}
+}*/
 ?>

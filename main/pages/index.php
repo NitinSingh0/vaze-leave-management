@@ -226,6 +226,7 @@ session_start();
             //alert(a.value);
             const username = a.value;
             const warning = document.getElementById("usernameWarning");
+            const submitBtn = document.getElementById('submitbtn');
 
             if (username.length > 0) {
 
@@ -237,14 +238,18 @@ session_start();
                     },
                     success: function(response) {
                         if (response === "exists") {
-                            warning.classList.remove("hidden"); // Show warning if username exists
+                            warning.classList.remove("hidden");
+                            submitBtn.disabled = true; // Disable submit button
+                            // Show warning if username exists
                         } else {
                             warning.classList.add("hidden"); // Hide warning if username is available
+                            submitBtn.disabled = false; // Enable submit button
                         }
                     }
                 });
             } else {
                 warning.classList.add("hidden"); // Hide warning if input is empty
+                submitBtn.disabled = false; // Enable submit button
             }
         }
 
@@ -301,7 +306,7 @@ session_start();
             form.submit();
         }
 
-        
+
         //CL Submit function prevenydefault to send data only pnce using ajax
 
         function c1() {
@@ -531,7 +536,25 @@ session_start();
         }*/
     </script>
 
+    <!--New Registration Type Based Department Population-->
 
+    <script>
+        function newreg(a) {
+            // alert("h");
+            var reg_type = a.value;
+            $.ajax({
+                url: "../components/registration/get_dept.php",
+                type: "POST",
+                cache: false,
+                data: {
+                    type: reg_type
+                },
+                success: function(data) {
+                    $("#reg_department").html(data);
+                }
+            });
+        }
+    </script>
 
 
     <!--Deactivae/ activate-->
