@@ -171,6 +171,7 @@
                  offDutyInput.name = `off_pay_date_${i + 1}`;
                  offDutyInput.required = true;
                  offDutyInput.className = "w-full border border-[#e0e0e0] py-2 px-3";
+                 
                  // // Get today's date
                  // const today = new Date();
 

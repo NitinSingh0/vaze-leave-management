@@ -140,6 +140,7 @@ if (isset($_POST['year']) && !empty($_POST['year']) && !empty($_POST['dept']) &&
     }
 }
 
+
 //Non Teaching staff Form
 
 if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype']) && !empty($_POST['ntype']) && !empty($_POST['sub_table2'])) {
@@ -149,8 +150,14 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
     //  $type = $_POST['type'];
     $sub_table = $_POST['sub_table2'];
 
+    if($ntype === 'NO'){
+        $query = "SELECT * FROM staff where Job_role IN ('NO', 'OO')  AND status='A' ";
+    }
+    else{
+        $query = "SELECT * FROM staff where Job_role='$ntype'  AND status='A' ";
+    }
 
-    $query = "SELECT * FROM staff where Job_role='$ntype'  AND status='A' ";
+   // $query = "SELECT * FROM staff where Job_role='$ntype'  AND status='A' ";
     $result = $conn->query($query);
     if ($result->num_rows > 0) {
         echo '
