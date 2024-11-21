@@ -104,7 +104,7 @@ if ($result && $row = $result->fetch_assoc()) {
                         </label>
                         <input name="from_date" id="from_date" required type="date"
                             class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                            onchange="setMinToDate()" min="<?php echo date('Y-m-d'); ?>" />
+                            onchange="setMinToDate2()" min="<?php echo date('Y-m-d'); ?>" />
                     </div>
                 </div>
 
@@ -114,7 +114,7 @@ if ($result && $row = $result->fetch_assoc()) {
                         <label class="mb-3 block text-base font-medium text-[#07074D]">
                             To-Date <span class="font-semibold text-red-600 text-2xl">*</span>
                         </label>
-                        <input name="to_date" id="to_date" required type="date"
+                        <input disabled name="to_date" id="to_date" required type="date"
                             class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                             onchange="calculateDays()" />
                     </div>
@@ -152,7 +152,7 @@ if ($result && $row = $result->fetch_assoc()) {
     </div>
 </div>
 <script>
-    function setMinToDate() {
+    function setMinToDate2() {
         const fromDate = document.getElementById("from_date").value;
         document.getElementById("to_date").min = fromDate;
         calculateDays();

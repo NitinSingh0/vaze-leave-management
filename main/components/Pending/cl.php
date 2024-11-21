@@ -33,18 +33,18 @@ if($jobRole=='NO' || $jobRole=='NL' || $jobRole=='OO' ){
 
   if ($jobRole == 'TD') {
 
-    $totalDutyLeave = fetchTotalLeave($conn, $Staff_id, 'DL', $a_year);
-    $usedDutyLeave = fetchUsedLeave($conn, 'd_dl_leave',$Staff_id, $a_year);
+    $totalDutyLeave = fetchTotalLeave($conn, $Staff_id, 'CL', $a_year);
+    $usedDutyLeave = fetchUsedLeave($conn, 'd_cl_leave',$Staff_id, $a_year);
 
 } elseif ($jobRole == 'TJ') {
 
-    $totalDutyLeave = fetchTotalLeave($conn, $Staff_id, 'DL', $a_year);
-    $usedDutyLeave = fetchUsedLeave($conn, 'j_dl_leave', $Staff_id, $a_year);
+    $totalDutyLeave = fetchTotalLeave($conn, $Staff_id, 'CL', $a_year);
+    $usedDutyLeave = fetchUsedLeave($conn, 'j_cl_leave', $Staff_id, $a_year);
     
 } else {
 
-    $totalDutyLeave = fetchTotalLeave($conn,$Staff_id, 'DL', $a_year);
-    $usedDutyLeave = fetchUsedLeave($conn, 'n_dl_leave',$Staff_id, $a_year);
+    $totalDutyLeave = fetchTotalLeave($conn,$Staff_id, 'CL', $a_year);
+    $usedDutyLeave = fetchUsedLeave($conn, 'n_cl_leave',$Staff_id, $a_year);
 }
 
  //  Return data as JSON
