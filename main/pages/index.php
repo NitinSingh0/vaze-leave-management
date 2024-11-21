@@ -554,6 +554,118 @@ session_start();
                 }
             });
         }
+
+
+        //DL From_Date To_Date Calculation based on total duty and used duty
+
+        function setMinToDate() {
+            const fromDate = document.getElementById("from_date").value;
+            const toDate = document.getElementById("to_date");
+            toDate.min = fromDate;
+
+            fetchLeaveData();
+
+            // Enable date field if From_Date is provided, otherwise disable it
+            toDate.disabled = fromDate === '';
+
+            // Make the date field required if From_Date is provided
+            toDate.required = fromDate !== '';
+
+            async function fetchLeaveData() {
+                try {
+                    const response = await fetch('../components/Pending/dl.php');
+                    const data = await response.json();
+
+                    console.log(data); // Log the data to verify
+                    const dutyUsed = Number(data.duty.used);
+                    const dutyRemaining = Number(data.duty.total) - dutyUsed;
+                    console.log(dutyRemaining);
+
+                    if (dutyRemaining > 0) {
+                        const fromDateObj = new Date(fromDate);
+                        const maxDateObj = new Date(fromDateObj);
+                        maxDateObj.setDate(fromDateObj.getDate() + dutyRemaining - 1);
+
+                        // Format the date as yyyy-mm-dd
+                        const maxDate = maxDateObj.toISOString().split("T")[0];
+
+                        // Set the max value for to_date
+                        document.getElementById("to_date").max = maxDate;
+                        console.log(`Max Date: ${maxDate}`);
+                    } else {
+                        // Show alert if no duty leave is left
+                        alert("No duty leave left!");
+
+                        // Ensure to_date is not disabled
+                        toDate.disabled = true;
+
+                        // Remove any restrictions on max date
+                        document.getElementById("to_date").max = "";
+                    }
+
+                } catch (error) {
+                    console.error("Error fetching leave data:", error);
+                }
+            }
+
+            calculateDays();
+        }
+
+        //CL From_Date To_Date Calculation based on total duty and used duty
+
+
+        function setMinToDate2() {
+            const fromDate = document.getElementById("from_date").value;
+            const toDate = document.getElementById("to_date");
+            toDate.min = fromDate;
+
+            fetchLeaveData();
+
+            // Enable date field if From_Date is provided, otherwise disable it
+            toDate.disabled = fromDate === '';
+
+            // Make the date field required if From_Date is provided
+            toDate.required = fromDate !== '';
+
+            async function fetchLeaveData() {
+                try {
+                    const response = await fetch('../components/Pending/cl.php');
+                    const data = await response.json();
+
+                    console.log(data); // Log the data to verify
+                    const dutyUsed = Number(data.duty.used);
+                    const dutyRemaining = Number(data.duty.total) - dutyUsed;
+                    console.log(dutyRemaining);
+
+                    if (dutyRemaining > 0) {
+                        const fromDateObj = new Date(fromDate);
+                        const maxDateObj = new Date(fromDateObj);
+                        maxDateObj.setDate(fromDateObj.getDate() + dutyRemaining - 1);
+
+                        // Format the date as yyyy-mm-dd
+                        const maxDate = maxDateObj.toISOString().split("T")[0];
+
+                        // Set the max value for to_date
+                        document.getElementById("to_date").max = maxDate;
+                        console.log(`Max Date: ${maxDate}`);
+                    } else {
+                        // Show alert if no duty leave is left
+                        alert("No duty leave left!");
+
+                        // Ensure to_date is not disabled
+                        toDate.disabled = true;
+
+                        // Remove any restrictions on max date
+                        document.getElementById("to_date").max = "";
+                    }
+
+                } catch (error) {
+                    console.error("Error fetching leave data:", error);
+                }
+            }
+
+            calculateDays();
+        }
     </script>
 
 
