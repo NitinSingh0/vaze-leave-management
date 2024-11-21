@@ -11,6 +11,17 @@ session_start();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <?php include('../../../library/library.php'); ?>
+    <style>
+        .oveflowH::-webkit-scrollbar {
+            display: none;
+            /* For Chrome, Safari, and Opera */
+        }
+
+        .btn1:hover {
+            background-color: darkcyan;
+
+        }
+    </style>
 
 </head>
 
@@ -18,13 +29,13 @@ session_start();
 
     <?php include("../../../config/connect.php"); ?>
     <?php include('../../layouts/header.php'); ?>
+    <!-- Sidebar -->
+    <?php include('../../layouts/sidebar.php');
+    ?>
+    <div class="mt-11 flex h-screen justify-center ">
 
-    <div class="mt-11 flex h-screen">
-        <!-- Sidebar -->
-        <?php include('../../layouts/sidebar.php');
-        ?>
-         <main class=" bg-gray-100 min-h-screen flex flex-col items-center p-6 ml-[20vw]">
-            <div class=" bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-4xl ">
+        <main class=" bg-white flex flex-col items-center w-full justify-center md:pl-80 pl-40 h-auto ">
+            <div class=" bg-white -mt-48 border shadow-sm rounded-lg px-8 py-6  items-center w-[80%] overflow-scroll bg-scroll oveflowH">
                 <h1 class="text-2xl font-bold text-center mb-6">Assign Leave</h1>
 
                 <!-- Tabs -->
@@ -38,7 +49,7 @@ session_start();
                     <!-- Teaching Section -->
                     <div id="teaching-section" class="mt-6">
 
-                        <div class="mx-auto w-full max-w-[550px] bg-white">
+                        <div class="mx-auto w-full px-2 bg-white">
                             <!-- Type Selection -->
                             <div class="mb-5">
                                 <label class="mb-3 block text-base text-gray-700 font-semibold">
@@ -106,7 +117,7 @@ session_start();
 
 
                         <!-- Teaching Sub Tabs -->
-                        <div class="mb-4">
+                        <div class="mb-4 px-2">
                             <button type="button" id="teacherWiseTab" class="px-4 py-2 rounded-l-lg bg-gray-300 text-gray-700  focus:outline-none">Teacher Wise</button>
                             <button type="button" id="departmentWiseTab" class="px-4 py-2 rounded-r-lg bg-gray-300 text-gray-700 focus:outline-none">Department Wise</button>
                         </div>
@@ -166,7 +177,7 @@ session_start();
 
                     <!-- Non-Teaching Section -->
                     <div id="nonteaching-section" class="mt-6 hidden">
-                        <div class="mx-auto w-full max-w-[550px] bg-white">
+                        <div class="mx-auto w-full px-2 bg-white">
                             <!-- Type Selection -->
 
                             <div class="mb-5">
@@ -245,7 +256,7 @@ session_start();
                         </div>
 
                         <!-- Non Teaching Sub Tabs -->
-                        <div class="mb-4">
+                        <div class="mb-4 px-2">
                             <button type="button" id="individualTab" class="px-4 py-2 rounded-l-lg bg-gray-300 text-gray-700 focus:outline-none">Individual</button>
                             <button type="button" id="allTab" class="px-4 py-2 rounded-r-lg bg-gray-300 text-gray-700 focus:outline-none w-24">All</button>
                         </div>

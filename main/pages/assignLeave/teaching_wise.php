@@ -125,7 +125,7 @@ if (isset($_POST['year']) && !empty($_POST['year']) && !empty($_POST['dept']) &&
         echo '
  </div>
                 <div class=" m-4 flex justify-center ">
-                    <button type="button" onclick="' . ($sub_table == 1 ? 'teachingSubmit()' : 'departmentSubmit()') . ' " id="' . ($sub_table == 1 ? 'teaching_wise_submit' : 'department_wise_submit') . '" class=" bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 hover:translate-y-[200px] w-full  ">Assign</button>
+                    <button type="button" onclick="' . ($sub_table == 1 ? 'teachingSubmit()' : 'departmentSubmit()') . ' " id="' . ($sub_table == 1 ? 'teaching_wise_submit' : 'department_wise_submit') . '" class=" bg-blue-500 text-white px-4 py-2 rounded-xl w-full btn1">Assign</button>
                 </div>
                 
  
@@ -252,7 +252,7 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
  </div>
 
    <div class=" m-4 flex justify-center ">
-                    <button type="button" onclick="' . ($sub_table == 1 ? 'IndivSubmit()' : 'allSubmit()') . '" id="' . ($sub_table == 1 ? 'individual_submit' : 'all_submit') . '" class=" bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 hover:translate-y-[200px] w-full  ">Assign</button>
+                    <button type="button" onclick="' . ($sub_table == 1 ? 'IndivSubmit()' : 'allSubmit()') . '" id="' . ($sub_table == 1 ? 'individual_submit' : 'all_submit') . '" class=" bg-blue-500 text-white px-4 py-2 rounded-xl  w-full btn1">Assign</button>
                 </div>
                 
  
@@ -332,7 +332,7 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
 
 
     function departmentSubmit() {
-       // alert("DEPARTMENT_wise");
+        // alert("DEPARTMENT_wise");
         var t_type = document.getElementById('teaching_type').value;
         var department_wise_cl = document.getElementById('department_wise_cl').value;
         var department_wise_ma = document.getElementById('department_wise_ma').value;
@@ -457,7 +457,7 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
     }
 
     function allSubmit() {
-       // alert("All");
+        // alert("All");
         var nt_type = document.getElementById('nt_type').value;
         var all_cl = document.getElementById('all_cl').value;
         var all_ma = document.getElementById('all_ma').value;
