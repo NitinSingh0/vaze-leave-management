@@ -207,6 +207,14 @@ if ($result && $row = $result->fetch_assoc()) {
     function setMinToDate() {
         const fromDate = document.getElementById("from_date").value;
         document.getElementById("to_date").min = fromDate;
+
+
+
+        // Enable date field if reference number is provided, otherwise disable it
+        toDate.disabled = fromDate === '';
+
+        // Make the date field required if reference number is provided
+        toDate.required = fromDate !== '';
         calculateDays();
     }
 

@@ -35,7 +35,7 @@ session_start();
     <div class="mt-11 flex h-screen justify-center ">
 
         <main class=" bg-white flex flex-col items-center w-full justify-center md:pl-80 pl-40 h-auto ">
-            <div class=" bg-white -mt-48 border shadow-sm rounded-lg px-8 py-6  items-center w-[80%] overflow-scroll bg-scroll oveflowH">
+            <div class=" bg-white m-10 border shadow-sm rounded-lg px-8 py-6  items-center w-[80%] overflow-scroll bg-scroll oveflowH">
                 <h1 class="text-2xl font-bold text-center mb-6">Assign Leave</h1>
 
                 <!-- Tabs -->

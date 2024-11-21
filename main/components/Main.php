@@ -46,7 +46,7 @@
              .catch(error => console.error('Error loading content:', error));
      }
 
-     <!--JavaScriptfor AJAX and Chart.js-- >
+     //JavaScriptfor AJAX and Chart.js
 
          document.addEventListener("DOMContentLoaded", function() {
              fetchLeaveData();
@@ -244,4 +244,5 @@
          // Make the date field required if reference number is provided
          dateOfLetter.required = referenceNumber !== '';
      }
+     
  </script>
