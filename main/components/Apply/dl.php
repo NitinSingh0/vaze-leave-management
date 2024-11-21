@@ -1,6 +1,8 @@
 <?php
 include("../../../config/connect.php");
-
+header('Content-Type: application/json'); // Return JSON response
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 session_start();
 $Staff_id = $_SESSION['Staff_id'];
 //echo "console.log(" . $Staff_id . ")";

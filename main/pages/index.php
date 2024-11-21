@@ -264,6 +264,11 @@ session_start();
 
                     let formData = new FormData(form);
 
+                    // Log form data to console
+                    console.log("Form data:");
+                    for (let [key, value] of formData.entries()) {
+                        console.log(`${key}: ${value}`);
+                    }
                     // Send AJAX request
                     $.ajax({
                         url: "../components/Apply/dl.php", // Update with your correct path to dl.php
@@ -296,6 +301,7 @@ session_start();
             form.submit();
         }
 
+        
         //CL Submit function prevenydefault to send data only pnce using ajax
 
         function c1() {
@@ -310,6 +316,11 @@ session_start();
                     event.preventDefault(); // Prevent the default form submission
 
                     let formData = new FormData(form);
+                    // Log form data to console
+                    console.log("Form data:");
+                    for (let [key, value] of formData.entries()) {
+                        console.log(`${key}: ${value}`);
+                    }
 
                     // Send AJAX request
                     $.ajax({
@@ -374,7 +385,7 @@ session_start();
                                 loadContent('APPLY_OFF_PAY');
                             } else {
                                 alert(response.message); // Show error message if any
-                                 loadContent('APPLY_OFF_PAY');
+                                loadContent('APPLY_OFF_PAY');
                             }
                         },
                         error: function(xhr, status, error) {
