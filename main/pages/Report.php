@@ -43,8 +43,8 @@ session_start();
 
                 <label class="block mb-2">Select Department:</label>
 
-                <select id="department" class="block w-full border rounded p-2 mb-4">
-
+                <select id="department34" class="block w-full border rounded p-2 mb-4">
+<option value="" selected disable> Select Department</option>
                 </select>
 
                 <button id="download-department-report" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download Department Report</button>
@@ -110,15 +110,8 @@ session_start();
                             },
                             success: function(response) {
                                 console.log("Response received:", response);
-                                // Check if the response contains proper <option> tags
-                                if (response.indexOf('<option') !== -1) {
-                                    //$("#department").empty(); // Clear existing options
-                                    $("#department").append('<option value="" disabled selected>Select Department</option>');
-                                    // Append new options directly
-                                    $(response).appendTo("#department");
-                                } else {
-                                    console.error("Response doesn't contain valid options.");
-                                }
+                                 $("#department34").html(response);
+                          
                             },
                             error: function(error) {
                                 console.error("Error loading departments:", error);
@@ -175,7 +168,7 @@ session_start();
                 // Download reports
                 $("#download-department-report").on("click", function() {
                     let college = $("#college").val();
-                    let department = $("#department").val();
+                    let department = $("#department34").val();
                     window.location.href = `generate_report.php?report_type=department&college=${college}&department=${department}`;
                 });
 

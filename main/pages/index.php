@@ -227,6 +227,7 @@ session_start();
             const username = a.value;
             const warning = document.getElementById("usernameWarning");
             const submitBtn = document.getElementById('submitbtn');
+  
 
             if (username.length > 0) {
 
@@ -467,6 +468,7 @@ session_start();
                     event.preventDefault(); // Prevent the default form submission
 
                     let formData = new FormData(form);
+                    console.log(formData);
 
                     // Send AJAX request
                     $.ajax({
@@ -497,7 +499,7 @@ session_start();
             }
 
             // Manually trigger form submission for demonstration purposes if needed
-            form.submit();
+            //form.submit();
         }
 
 

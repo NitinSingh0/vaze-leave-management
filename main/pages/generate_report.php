@@ -11,6 +11,8 @@ $college = $_GET['college'];
 $department = $_GET['department'];
 $staff = $_GET['staff'] ?? null;
 
+
+
 // Set leave columns based on the college and department conditions
 $leaveColumns = [];
 if ($college === 'D') { // Degree College
