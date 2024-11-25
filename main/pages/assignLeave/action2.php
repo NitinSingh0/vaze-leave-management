@@ -90,8 +90,14 @@ elseif (
     $year = $_POST['year'];
     $message = "";
 
-    // Query to fetch all staff members in the specified department
-    $query = "SELECT * FROM staff WHERE Job_role='$type' AND status='A' ";
+    if($type=='NO'){
+        $query = "SELECT * FROM staff WHERE Job_role IN ('NO','OO') AND status='A' ";
+    }
+    else{
+        // Query to fetch all staff members in the specified department
+        $query = "SELECT * FROM staff WHERE Job_role='$type' AND status='A' ";
+    }
+  
     $result = $conn->query($query);
 
     if ($result->num_rows > 0) {
