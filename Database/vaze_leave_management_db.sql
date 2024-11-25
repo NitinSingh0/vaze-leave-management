@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2024 at 07:50 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Generation Time: Nov 22, 2024 at 09:48 AM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.0.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,7 +31,7 @@ CREATE TABLE `department` (
   `D_id` int(11) NOT NULL,
   `Name` varchar(100) NOT NULL,
   `College` enum('D','J') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `department`
@@ -61,19 +61,19 @@ CREATE TABLE `d_cl_leave` (
   `Office_remark` text NOT NULL,
   `leave_approval_status` enum('P','HA','HD','PA','PD') NOT NULL,
   `A_year` year(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `d_cl_leave`
 --
 
 INSERT INTO `d_cl_leave` (`Staff_id`, `From_date`, `To_date`, `No_of_days`, `Reason`, `Date_of_application`, `HOD_remark`, `Principal_remark`, `Office_remark`, `leave_approval_status`, `A_year`) VALUES
-(120, '2024-11-01', '2024-11-23', 24, 'xyzzzz', '2024-11-04', '', 'approved', 'bsh', 'PA', '2024'),
-(120, '2024-11-24', '2024-11-27', 4, 'abcc', '2024-11-04', '', 'approved', '', 'PA', '2024'),
-(121, '2024-11-22', '2024-11-29', 8, 'aad', '2024-11-08', 'accept', 'approved', '', 'PA', '2024'),
-(123, '2024-10-01', '2024-10-03', 4, 'wxdxw', '2024-10-01', 'accepted', '', '', 'PA', '2024'),
-(123, '2024-10-01', '2024-10-10', 11, 'not specified ...................................................................................................................', '2024-10-08', 'accept', 'approved', 'wec', 'PA', '2024'),
-(129, '2024-11-05', '2024-11-15', 12, 'not specified', '2024-11-14', 'submit', 'approved', '', 'PA', '2024');
+(120, '2024-11-01', '2024-11-23', 24, 'xyzzzz', '2024-11-04', '', 'approved', 'bsh', 'PA', 2024),
+(120, '2024-11-24', '2024-11-27', 4, 'abcc', '2024-11-04', '', 'approved', 'approved', 'PA', 2024),
+(121, '2024-11-22', '2024-11-29', 8, 'aad', '2024-11-08', 'accept', 'approved', 'approved', 'PA', 2024),
+(123, '2024-10-01', '2024-10-03', 4, 'wxdxw', '2024-10-01', 'accepted', '', '', 'PA', 2024),
+(123, '2024-10-01', '2024-10-10', 11, 'not specified ...................................................................................................................', '2024-10-08', 'accept', 'approved', 'wec', 'PA', 2024),
+(129, '2024-11-05', '2024-11-15', 12, 'not specified', '2024-11-14', 'submit', 'approved', '', 'PA', 2024);
 
 -- --------------------------------------------------------
 
@@ -96,20 +96,21 @@ CREATE TABLE `d_dl_leave` (
   `A_year` year(4) NOT NULL,
   `Date_of_application` date NOT NULL,
   `Type` enum('SL','DL') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `d_dl_leave`
 --
 
 INSERT INTO `d_dl_leave` (`Staff_id`, `From_date`, `To_date`, `No_of_days`, `Nature`, `Reference_no`, `Date_of_letter`, `HOD_remark`, `Principal_remark`, `Office_remark`, `leave_approval_status`, `A_year`, `Date_of_application`, `Type`) VALUES
-(120, '2024-11-08', '2024-11-09', 2, 'abcccc', NULL, NULL, 'accespt', '', '', 'HA', '2024', '2024-11-04', 'SL'),
-(120, '2024-11-14', '2024-11-14', 1, 'xyzzz', NULL, NULL, '', 'approved', '', 'PA', '2024', '2024-11-04', 'DL'),
-(121, '2024-11-10', '2024-11-11', 2, 'not specified', 0, '0000-00-00', '', '', '', 'P', '2024', '2024-11-08', 'SL'),
-(121, '2024-11-21', '2024-11-22', 2, 'leave on 21st nov', 0, '0000-00-00', 'accept', '', '', 'HA', '2024', '2024-11-21', 'SL'),
-(121, '2024-11-21', '2024-11-30', 10, 'gffhj', 0, '0000-00-00', '', '', '', 'P', '2024', '2024-11-08', 'DL'),
-(123, '2024-10-17', '2024-10-18', 2, 'jjcc', NULL, NULL, 'accepted', 'decline', 'wef', 'PD', '2024', '2024-10-16', 'SL'),
-(129, '2024-11-13', '2024-11-15', 3, 'not specified', NULL, NULL, '', '', '', 'P', '2024', '2024-11-14', 'SL');
+(120, '2024-11-08', '2024-11-09', 2, 'abcccc', NULL, NULL, 'accespt', 'aaaaaaa', '', 'PA', 2024, '2024-11-04', 'SL'),
+(120, '2024-11-14', '2024-11-14', 1, 'xyzzz', NULL, NULL, '', 'approved', '', 'PA', 2024, '2024-11-04', 'DL'),
+(121, '2024-11-10', '2024-11-11', 2, 'not specified', 0, '0000-00-00', '', '', '', 'P', 2024, '2024-11-08', 'SL'),
+(121, '2024-11-21', '2024-11-22', 2, 'leave on 21st nov', 0, '0000-00-00', 'accept', '', '', 'HA', 2024, '2024-11-21', 'SL'),
+(121, '2024-11-21', '2024-11-30', 10, 'gffhj', 0, '0000-00-00', '', '', '', 'P', 2024, '2024-11-08', 'DL'),
+(123, '2024-10-17', '2024-10-18', 2, 'jjcc', NULL, NULL, 'accepted', 'decline', 'wef', 'PD', 2024, '2024-10-16', 'SL'),
+(129, '2024-11-13', '2024-11-15', 3, 'not specified', NULL, NULL, '', '', '', 'P', 2024, '2024-11-14', 'SL'),
+(134, '2024-11-22', '2024-11-23', 2, 'duty leave', 0, '0000-00-00', '', '', '', 'P', 2024, '2024-11-22', 'DL');
 
 -- --------------------------------------------------------
 
@@ -131,16 +132,17 @@ CREATE TABLE `d_mhm_leave` (
   `Office_remark` text NOT NULL,
   `leave_approval_status` enum('P','HA','HD','PA','PD') NOT NULL,
   `A_year` year(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `d_mhm_leave`
 --
 
 INSERT INTO `d_mhm_leave` (`Staff_id`, `From_date`, `To_date`, `No_of_days`, `Type`, `Reason`, `Prefix-Suffix`, `Date_of_application`, `HOD_remark`, `Principal_remark`, `Office_remark`, `leave_approval_status`, `A_year`) VALUES
-(120, '2024-11-14', '2024-11-16', 3, 'ML', 'abccc', '', '2024-10-02', '', '', '', 'P', '2024'),
-(121, '2024-11-22', '2024-11-27', 6, 'HP', 'reasonnnn', 'okk', '2024-11-21', 'accept', 'approved', '', 'PA', '2024'),
-(123, '2024-10-11', '2024-10-19', 10, 'ML', 'dcnjn,njjwj', 'wjj', '2024-10-02', 'aceept', 'decline', 'wdc', 'PD', '2024');
+(120, '2024-11-14', '2024-11-16', 3, 'ML', 'abccc', '', '2024-10-02', '', '', '', 'P', 2024),
+(121, '2024-11-22', '2024-11-27', 6, 'HP', 'reasonnnn', 'okk', '2024-11-21', 'accept', 'approved', '', 'PA', 2024),
+(123, '2024-10-11', '2024-10-19', 10, 'ML', 'dcnjn,njjwj', 'wjj', '2024-10-02', 'aceept', 'decline', 'wdc', 'PD', 2024),
+(129, '2024-11-22', '2024-11-23', 2, 'ML', 'medical leave', 'abc', '2024-11-22', 'approved', 'APPROVED', '', 'PA', 2024);
 
 -- --------------------------------------------------------
 
@@ -160,14 +162,14 @@ CREATE TABLE `j_cl_leave` (
   `Office_remark` text NOT NULL,
   `leave_approval_status` enum('P','HA','HD','PA','PD') NOT NULL,
   `A_year` year(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `j_cl_leave`
 --
 
 INSERT INTO `j_cl_leave` (`Staff_id`, `From_date`, `To_date`, `No_of_days`, `Reason`, `Date_of_application`, `HOD_remark`, `Principal_remark`, `Office_remark`, `leave_approval_status`, `A_year`) VALUES
-(136, '2024-11-05', '2024-11-14', 11, 'not specified', '2024-11-12', '', '', '', 'P', '2024');
+(136, '2024-11-05', '2024-11-14', 11, 'not specified', '2024-11-12', '', '', '', 'P', 2024);
 
 -- --------------------------------------------------------
 
@@ -190,7 +192,7 @@ CREATE TABLE `j_dl_leave` (
   `A_year` year(4) NOT NULL,
   `Date_of_application` date NOT NULL,
   `Type` enum('SL','DL') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -212,7 +214,7 @@ CREATE TABLE `j_ehm_leave` (
   `Office_remark` text NOT NULL,
   `leave_approval_status` enum('P','HA','HD','PA','PD') NOT NULL,
   `A_year` year(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -224,7 +226,7 @@ CREATE TABLE `leaves` (
   `Leave_type` enum('CL','DL','ML','HP','MA','EL','OL') NOT NULL,
   `College` enum('D','J') NOT NULL,
   `No_of_leaves` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -242,9 +244,16 @@ CREATE TABLE `n_cl_leave` (
   `HOD_remark` text NOT NULL,
   `Principal_remark` text NOT NULL,
   `Office_remark` text NOT NULL,
-  `leave_approval_status` enum('P','PA','PD') NOT NULL,
+  `leave_approval_status` enum('P','PA','PD','HA','HD') NOT NULL,
   `A_year` year(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `n_cl_leave`
+--
+
+INSERT INTO `n_cl_leave` (`Staff_id`, `From_date`, `To_date`, `No_of_days`, `Reason`, `Date_of_application`, `HOD_remark`, `Principal_remark`, `Office_remark`, `leave_approval_status`, `A_year`) VALUES
+(120, '2024-11-29', '2024-12-07', 9, 'op', '2024-11-22', '', '', '', 'HA', 2024);
 
 -- --------------------------------------------------------
 
@@ -261,11 +270,20 @@ CREATE TABLE `n_dl_leave` (
   `HOD_remark` text NOT NULL,
   `Principal_remark` text NOT NULL,
   `Office_remark` text NOT NULL,
-  `leave_approval_status` enum('P','PA','PD') NOT NULL,
+  `leave_approval_status` enum('P','PA','PD','HA','HD') NOT NULL,
   `A_year` year(4) NOT NULL,
   `Date_of_application` date NOT NULL,
-  `Type` enum('SL','DL') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `Type` enum('SL','DL') NOT NULL,
+  `Reference_no` int(11) NOT NULL,
+  `Date_of_letter` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `n_dl_leave`
+--
+
+INSERT INTO `n_dl_leave` (`Staff_id`, `From_date`, `To_date`, `No_of_days`, `Nature`, `HOD_remark`, `Principal_remark`, `Office_remark`, `leave_approval_status`, `A_year`, `Date_of_application`, `Type`, `Reference_no`, `Date_of_letter`) VALUES
+(135, '2024-11-22', '2024-11-23', 2, 'duty leave', '', 'APPROVED', '', 'PA', 2024, '2024-11-22', 'SL', 0, '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -286,7 +304,7 @@ CREATE TABLE `n_emhm_leave` (
   `Office_remark` text NOT NULL,
   `leave_approval_status` enum('P','PA','PD') NOT NULL,
   `A_year` year(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -304,7 +322,18 @@ CREATE TABLE `n_off_pay_leave` (
   `Office_remark` text NOT NULL,
   `leave_approval_status` enum('P','PA','PD') NOT NULL,
   `A_year` year(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `n_off_pay_leave`
+--
+
+INSERT INTO `n_off_pay_leave` (`Staff_id`, `Date_of_application`, `Extra_duty_date`, `Nature_of_work`, `Off_leave_date`, `Principal_remark`, `Office_remark`, `leave_approval_status`, `A_year`) VALUES
+(120, '2024-11-22', '2024-11-22', 'e32', '2024-12-04', '', '', 'P', 2024),
+(120, '2024-11-22', '2024-11-23', 'hfg', '2024-11-29', '', '', 'P', 2024),
+(120, '2024-11-22', '2024-11-29', 'hgh', '2024-11-30', '', '', 'P', 2024),
+(120, '2024-11-22', '2024-11-30', 'fh', '2024-12-06', '', '', 'P', 2024),
+(120, '2024-11-22', '2024-12-07', 'jj', '2024-12-05', '', '', 'P', 2024);
 
 -- --------------------------------------------------------
 
@@ -324,7 +353,7 @@ CREATE TABLE `staff` (
   `Job_role` enum('TD','TJ','NL','NO','OO') NOT NULL,
   `D_id` int(11) NOT NULL,
   `status` enum('A','D') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `staff`
@@ -340,10 +369,19 @@ INSERT INTO `staff` (`Staff_id`, `Name`, `Designation`, `DOJ`, `Staff_type`, `Us
 (129, 'Pournima Maam', 'HOD', '2024-10-27', 'T', 'hod@gmail.com', '$2y$10$r7SCexExdvYaP8cFGQtQBezIu1nbiNAORVGCgieNnKlZxQo1omtaa', 'F', 'TD', 1, 'A'),
 (131, 'Vice Principal', 'Vice Principal ', '2024-10-27', 'T', 'vice@gmail.com', '$2y$10$WCQk/CPqpBLgWNTzkFzM4ehKEykkhRg32xNAv8iOALzZYtT3120Yu', 'M', 'TD', 2, 'A'),
 (132, 'abc', 'Mr ', '2024-11-14', 'N', 'abc@gmail.com', '$2y$10$wLSWbZ45sOHqDLfZZgnPNOAfUKvnc0wCUMjHDxtsqGWBc1fsUx.au', 'M', 'NO', 1, 'A'),
-(134, 'new', 'Mr ', '2024-11-15', 'N', 'new@gmail.com', '$2y$10$LPS1cOWX.GqPSY35bzMIp.PlS1vPECZiUMUrvdTFRSXk2PKHpkqSi', 'M', 'NO', 1, 'A'),
+(134, 'new', 'Mr ', '2024-11-15', 'N', 'new@gmail.com', '$2y$10$LPS1cOWX.GqPSY35bzMIp.PlS1vPECZiUMUrvdTFRSXk2PKHpkqSi', 'M', 'TD', 1, 'A'),
 (135, 'Non Teaching1', 'Mr ', '2024-11-05', 'N', 'non@gmail.com', '$2y$10$QAdzCZ.3IKxkR5ouPdDXW.8efejCIP2lX9MyDgTgvE.SsNi0FSbum', 'M', 'NO', 4, 'A'),
 (136, 'Junior hod', 'HOD', '2024-11-03', 'T', 'juniorhod@gmail.com', '$2y$10$ghjBLHYmbhSbGQy0Si/.ouEGuuDcWP1rz0SIiMynEfgs1IAH2y6Xm', 'M', 'TJ', 3, 'A'),
-(137, 'junior Principal', 'Vice Principal ', '2024-10-28', 'T', 'juniorprincipal@gmail.com', '$2y$10$DQ2uj9/fvSRrs76IwRe26.ZiNa8bKvVyi4DdehxX4JTgqgHmL7zCO', 'M', 'TD', 3, 'A');
+(137, 'junior Principal', 'Vice Principal ', '2024-10-28', 'T', 'juniorprincipal@gmail.com', '$2y$10$DQ2uj9/fvSRrs76IwRe26.ZiNa8bKvVyi4DdehxX4JTgqgHmL7zCO', 'M', 'TD', 3, 'A'),
+(138, 'fb', 'ffdsg ', '2024-11-22', 'N', 'kumbharpratik764@gmail.com', '$2y$10$uR7YyHbLCtUfp11rKoplOeQBtmU3QimvwdwBghKRSEWzVcnSJPUDi', 'M', 'NO', 4, 'A'),
+(139, 'Sameeksha', 'ffdf ', '2024-11-12', 'T', 'vaidehikelkar2911@gmail.com', '$2y$10$gNuniXyf1FThASWaM5bonOUPw6fzBXHW2qbamqWJJC9PJO7I0qjxy', 'M', 'TJ', 3, 'A'),
+(140, 'fb', 'GFDGFDG ', '2024-11-13', 'T', 'vaidehikelkar2911FD@gmail.com', '$2y$10$A.VK/qsI1lAemGu6nl70/.TqRljpil4HCCe20p/tHmahS3fFep3.K', 'M', 'TD', 1, 'A'),
+(141, 'fb', '5465465 ', '2024-11-15', 'T', 'vaidehikelkar2911FDty@gmail.com', '$2y$10$YxSNlpvLri1BXW8OXroAOOFM7PyjDTVpN7NtzLT2kIKNZe.sBIKqi', 'M', 'TD', 1, 'A'),
+(142, 'Sameeksha', '5465465 ', '2024-11-16', 'N', 'vaidehikelkar2911FDty@gmail.comretre', '$2y$10$ne9cmY5828Y7KYAxrTngM.0KbaMKkCHUgdrKNczvJrybAEers8LBG', 'M', 'NL', 4, 'A'),
+(143, 'Sameeksha', '5465465 ', '2024-11-22', 'T', 'vaidehikelkar2911FDfdgerty@gmail.com', '$2y$10$Ogutvel6cOdB4A8b/VTZqu3cw0K3vFfZMi9vuYIzxPdgGjTwUm5iG', 'M', 'TJ', 3, 'A'),
+(144, 'Sameeksha', '5465465 ', '2024-11-16', 'N', 'vaidehikelkar2911FDfdgertwwy@gmail.com', '$2y$10$y2HJrzLLjsrRSkeQNHO3eOrT7FxaQ/VJHZDrVGbfIS71F9sfMBQiG', 'F', 'NO', 4, 'A'),
+(145, 'Sameeksha', '5465465 ', '2024-11-06', 'N', 'vaidehikelkar2911FDfdgertwwydssds@gmail.com', '$2y$10$zh7QTqrzwGbAnSqPS/OH4./GUTF1Os2DE8ZxLZKCXD7KVUmBEUk4S', 'M', 'NO', 4, 'A'),
+(146, 'fb', 'dwdd ', '2024-11-15', 'T', 'aniuket@gmail.com', '$2y$10$YY126sHNv3KwdZCizkbbFeIZVykKYdpMGTw.cq3k6xmhoFN//tg8u', 'M', 'TD', 1, 'A');
 
 -- --------------------------------------------------------
 
@@ -356,7 +394,7 @@ CREATE TABLE `staff_leaves` (
   `Type` enum('CL','DL','ML','HP','MA','EL','OL') NOT NULL,
   `College` enum('D','J') NOT NULL,
   `A_year` year(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -369,46 +407,92 @@ CREATE TABLE `staff_leaves_trial` (
   `Leave_type` enum('CL','DL','ML','HP','MA','EL','OL') NOT NULL,
   `No_of_leaves` int(11) NOT NULL,
   `A_year` year(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `staff_leaves_trial`
 --
 
 INSERT INTO `staff_leaves_trial` (`Staff_id`, `Leave_type`, `No_of_leaves`, `A_year`) VALUES
-(121, 'CL', 15, '2024'),
-(121, 'MA', 15, '2024'),
-(121, 'HP', 15, '2024'),
-(121, 'ML', 15, '2024'),
-(121, 'DL', 15, '2024'),
-(120, 'CL', 15, '2024'),
-(120, 'MA', 15, '2024'),
-(120, 'HP', 15, '2024'),
-(120, 'ML', 15, '2024'),
-(123, 'CL', 15, '2024'),
-(123, 'MA', 15, '2024'),
-(123, 'HP', 15, '2024'),
-(123, 'ML', 15, '2024'),
-(124, 'CL', 15, '2024'),
-(124, 'MA', 15, '2024'),
-(124, 'HP', 15, '2024'),
-(124, 'ML', 15, '2024'),
-(127, 'CL', 15, '2024'),
-(127, 'MA', 15, '2024'),
-(127, 'HP', 15, '2024'),
-(127, 'ML', 15, '2024'),
-(129, 'CL', 15, '2024'),
-(129, 'MA', 15, '2024'),
-(129, 'HP', 15, '2024'),
-(129, 'ML', 15, '2024'),
-(132, 'CL', 15, '2024'),
-(132, 'MA', 15, '2024'),
-(132, 'HP', 15, '2024'),
-(132, 'ML', 15, '2024'),
-(134, 'CL', 15, '2024'),
-(134, 'MA', 15, '2024'),
-(134, 'HP', 15, '2024'),
-(134, 'ML', 15, '2024');
+(120, 'CL', 12, 2024),
+(120, 'MA', 12, 2024),
+(120, 'HP', 12, 2024),
+(120, 'DL', 10, 2024),
+(120, 'ML', 12, 2024),
+(121, 'CL', 12, 2024),
+(121, 'MA', 12, 2024),
+(121, 'HP', 12, 2024),
+(121, 'DL', 10, 2024),
+(121, 'ML', 12, 2024),
+(123, 'CL', 12, 2024),
+(123, 'MA', 12, 2024),
+(123, 'HP', 12, 2024),
+(123, 'DL', 10, 2024),
+(123, 'ML', 12, 2024),
+(124, 'CL', 12, 2024),
+(124, 'MA', 12, 2024),
+(124, 'HP', 12, 2024),
+(124, 'DL', 10, 2024),
+(124, 'ML', 12, 2024),
+(127, 'CL', 12, 2024),
+(127, 'MA', 12, 2024),
+(127, 'HP', 12, 2024),
+(127, 'DL', 10, 2024),
+(127, 'ML', 12, 2024),
+(129, 'CL', 12, 2024),
+(129, 'MA', 12, 2024),
+(129, 'HP', 12, 2024),
+(129, 'DL', 10, 2024),
+(129, 'ML', 12, 2024),
+(132, 'CL', 12, 2024),
+(132, 'MA', 12, 2024),
+(132, 'HP', 12, 2024),
+(132, 'DL', 10, 2024),
+(132, 'ML', 12, 2024),
+(134, 'CL', 12, 2024),
+(134, 'MA', 12, 2024),
+(134, 'HP', 12, 2024),
+(134, 'DL', 10, 2024),
+(134, 'ML', 12, 2024),
+(140, 'CL', 12, 2024),
+(140, 'MA', 12, 2024),
+(140, 'HP', 12, 2024),
+(140, 'DL', 10, 2024),
+(140, 'ML', 12, 2024),
+(141, 'CL', 12, 2024),
+(141, 'MA', 12, 2024),
+(141, 'HP', 12, 2024),
+(141, 'DL', 10, 2024),
+(141, 'ML', 12, 2024),
+(146, 'CL', 12, 2024),
+(146, 'MA', 12, 2024),
+(146, 'HP', 12, 2024),
+(146, 'DL', 10, 2024),
+(146, 'ML', 12, 2024),
+(135, 'CL', 12, 2024),
+(135, 'MA', 12, 2024),
+(135, 'HP', 12, 2024),
+(135, 'DL', 10, 2024),
+(135, 'ML', 12, 2024),
+(135, 'EL', 12, 2024),
+(138, 'CL', 12, 2024),
+(138, 'MA', 12, 2024),
+(138, 'HP', 12, 2024),
+(138, 'DL', 10, 2024),
+(138, 'ML', 12, 2024),
+(138, 'EL', 12, 2024),
+(144, 'CL', 12, 2024),
+(144, 'MA', 12, 2024),
+(144, 'HP', 12, 2024),
+(144, 'DL', 10, 2024),
+(144, 'ML', 12, 2024),
+(144, 'EL', 12, 2024),
+(145, 'CL', 12, 2024),
+(145, 'MA', 12, 2024),
+(145, 'HP', 12, 2024),
+(145, 'DL', 10, 2024),
+(145, 'ML', 12, 2024),
+(145, 'EL', 12, 2024);
 
 --
 -- Indexes for dumped tables
@@ -515,13 +599,13 @@ ALTER TABLE `staff_leaves_trial`
 -- AUTO_INCREMENT for table `n_off_pay_leave`
 --
 ALTER TABLE `n_off_pay_leave`
-  MODIFY `Staff_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `Staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=138;
+  MODIFY `Staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- Constraints for dumped tables
