@@ -1,7 +1,7 @@
 <?php
 $college = $_POST['college'];
 
-// Example: Database connection (adjust according to your setup)
+
 include('../../config/connect.php');
 
 

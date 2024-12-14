@@ -16,8 +16,8 @@ session_start();
 <?php include('../layouts/header.php'); ?>
 
 <body class="bg-gray-100 p-6 pl-0">
-    
-    <div class="mt-11 flex h-screen">
+
+    <div class="mt-11 flex h-fit">
         <!-- Sidebar -->
         <?php include('../layouts/sidebar.php'); ?>
 
@@ -44,7 +44,12 @@ session_start();
                 <label class="block mb-2">Select Department:</label>
 
                 <select id="department34" class="block w-full border rounded p-2 mb-4">
-<option value="" selected disable> Select Department</option>
+                    <option value="" selected disable> Select Department</option>
+                </select>
+
+                <label class="block mb-2">Select Academic Year:</label>
+                <select id="a_year_department" class="block w-full border rounded p-2 mb-4">
+                    <option value="" disabled selected>Select Academic Year</option>
                 </select>
 
                 <button id="download-department-report" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download Department Report</button>
@@ -67,6 +72,11 @@ session_start();
                 <label class="block mb-2">Select Staff:</label>
                 <select id="staff" class="block w-full border rounded p-2 mb-4">
 
+                </select>
+
+                <label class="block mb-2">Select Academic Year:</label>
+                <select id="a_year_teacher" class="block w-full border rounded p-2 mb-4">
+                    <option value="" disabled selected>Select Academic Year</option>
                 </select>
 
                 <button id="download-teacher-report" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download Teacher Report</button>
@@ -110,8 +120,8 @@ session_start();
                             },
                             success: function(response) {
                                 console.log("Response received:", response);
-                                 $("#department34").html(response);
-                          
+                                $("#department34").html(response);
+
                             },
                             error: function(error) {
                                 console.error("Error loading departments:", error);
@@ -165,19 +175,66 @@ session_start();
                     }
                 });
 
-                // Download reports
-                $("#download-department-report").on("click", function() {
-                    let college = $("#college").val();
-                    let department = $("#department34").val();
-                    window.location.href = `generate_report.php?report_type=department&college=${college}&department=${department}`;
+                // Load academic years dynamically
+                $("#department34").change(function() {
+
+                    const collegeType = $("#college").val();
+                    const department = $(this).val();
+
+                    if (collegeType && department) {
+                        alert("hello");
+                        $.ajax({
+                            url: "get_academic_years.php",
+                            method: "POST",
+                            data: {
+                                college: collegeType,
+                                department: department
+                            },
+                            success: function(response) {
+                                $("#a_year_department").html('<option value="" disabled selected>Select Academic Year</option>' + response);
+                            },
+                            error: function() {
+                                alert("Error loading academic years.");
+                            }
+                        });
+                    }
                 });
 
-                $("#download-teacher-report").on("click", function() {
-                    let college = $("#college-teacher").val();
-                    let department = $("#department-teacher").val();
-                    let staff = $("#staff").val();
-                    window.location.href = `generate_report.php?report_type=teacher&college=${college}&department=${department}&staff=${staff}`;
+                $("#staff").change(function() {
+                    const staffId = $(this).val();
+
+                    if (staffId) {
+                        $.ajax({
+                            url: "get_academic_years.php",
+                            method: "POST",
+                            data: {
+                                college: collegeType,
+                                department: department,
+                                staff_id: staffId
+                            },
+                            success: function(response) {
+                                $("#a_year_teacher").html('<option value="" disabled selected>Select Academic Year</option>' + response);
+                            },
+                            error: function() {
+                                alert("Error loading academic years for teacher.");
+                            }
+                        });
+                    }
                 });
+            });
+
+            // Download reports
+            $("#download-department-report").on("click", function() {
+                let college = $("#college").val();
+                let department = $("#department34").val();
+                window.location.href = `generate_report.php?report_type=department&college=${college}&department=${department}`;
+            });
+
+            $("#download-teacher-report").on("click", function() {
+                let college = $("#college-teacher").val();
+                let department = $("#department-teacher").val();
+                let staff = $("#staff").val();
+                window.location.href = `generate_report.php?report_type=teacher&college=${college}&department=${department}&staff=${staff}`;
             });
         </script>
 </body>
