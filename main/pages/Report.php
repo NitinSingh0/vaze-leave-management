@@ -249,14 +249,16 @@ session_start();
             $("#download-department-report").on("click", function() {
                 let college = $("#college").val();
                 let department = $("#department34").val();
-                window.location.href = `generate_report.php?report_type=department&college=${college}&department=${department}`;
+                let academicYear = $("#a_year_department").val();
+                window.location.href = `generate_report.php?report_type=department&college=${college}&department=${department}&academicYear=${academicYear}`;
             });
 
             $("#download-teacher-report").on("click", function() {
                 let college = $("#college-teacher").val();
                 let department = $("#department-teacher").val();
+                let academicYear = $("#a_year_teacher").val();
                 let staff = $("#staff").val();
-                window.location.href = `generate_report.php?report_type=teacher&college=${college}&department=${department}&staff=${staff}`;
+                window.location.href = `generate_report.php?report_type=teacher&college=${college}&department=${department}&academicYear=${academicYear}&staff=${staff}`;
             });
         </script>
 </body>
