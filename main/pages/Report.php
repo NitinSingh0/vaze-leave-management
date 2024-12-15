@@ -182,7 +182,7 @@ session_start();
                     const department = $(this).val();
 
                     if (collegeType && department) {
-                        alert("hello");
+                       
                         $.ajax({
                             url: "get_academic_years.php",
                             method: "POST",

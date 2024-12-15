@@ -153,7 +153,7 @@ if ($reportType === 'department') {
 
     $pdf->Ln(10);
     $pdf->SetFont('Times', 'B', 12);
-    $pdf->Cell(0, 10, "Report Generated on: " . date("F j, Y, g:i A") . " for Academic year " . $academicYear, 0, 1);
+    $pdf->Cell(0, 10, "Report Generated on: " . date("F j, Y, g:i A") . " for Academic year " . $academicYear . "-" . $academicYear + 1, 0, 1);
 }
 
 // Generate Individual Teacher Report
@@ -169,6 +169,10 @@ elseif ($reportType === 'teacher' && $staff) {
     $pdf->Cell(0, 8, "Designation: " . $staffData['Designation'], 0, 1);
     $pdf->Cell(0, 8, "Date of Joining: " . $staffData['DOJ'], 0, 1);
     $pdf->Cell(0, 8, "Username: " . $staffData['Username'], 0, 1);
+    // Initialize leave totals
+    $clLeave = $dlLeave = $otherLeave = 0;
+
+   
 
     // Generate Leave Details
     foreach ($leaveColumns as $column) {
@@ -187,15 +191,31 @@ elseif ($reportType === 'teacher' && $staff) {
             while ($leaveRow = $leaveResult->fetch_assoc()) {
                 $pdf->ColoredTableRow([$leaveRow['From_date'], $leaveRow['To_date'], $leaveRow['No_of_days']], $fill);
                 $fill = !$fill;
+                // Sum up leave totals
+                if (strpos($column, 'cl') !== false) {
+                    $clLeave += $leaveRow['No_of_days'];
+                } elseif (strpos($column, 'dl') !== false) {
+                    $dlLeave += $leaveRow['No_of_days'];
+                } else {
+                    $otherLeave += $leaveRow['No_of_days'];
+                }
             }
         } else {
             $pdf->ColoredTableRow(['-', '-', 'No Data'], false);
         }
     }
+    // Display total leave counts
+    $pdf->Ln(5);
+    $pdf->SetFont('Times', 'B', 12);
+    $pdf->Cell(0, 10, "Total Leave Summary:", 0, 1);
+    $pdf->SetFont('Times', '', 10);
+    $pdf->Cell(0, 8, "Total CL Leaves: " . $clLeave, 0, 1);
+    $pdf->Cell(0, 8, "Total DL Leaves: " . $dlLeave, 0, 1);
+    $pdf->Cell(0, 8, "Total Other Leaves: " . $otherLeave, 0, 1);
 
     $pdf->Ln(10);
     $pdf->SetFont('Times', 'B', 12);
-    $pdf->Cell(0, 10, "Report Generated on: " . date("F j, Y, g:i A") . " for Academic year " . $academicYear, 0, 1);
+    $pdf->Cell(0, 10, "Report Generated on: " . date("F j, Y, g:i A") . " for Academic year " . $academicYear."-".$academicYear+1, 0, 1);
 }
 
 // Output PDF
