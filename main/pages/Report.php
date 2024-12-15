@@ -191,19 +191,31 @@ session_start();
                                 department: department
                             },
                             success: function(response) {
-                                $("#a_year_department").html('<option value="" disabled selected>Select Academic Year</option>' + response);
+                                if (response.success) {
+                                    $('#a_year_department').html(response.data);
+                                } else {
+                                    alert(response.error || 'No options available');
+                                }
                             },
-                            error: function() {
+                            error: function(xhr, status, error) {
+                                console.log("AJAX Error Details:");
+                                console.log("Status: ", status);
+                                console.log("Error: ", error);
+                                console.log("Response Text: ", xhr.responseText);
                                 alert("Error loading academic years.");
                             }
+
                         });
                     }
                 });
 
                 $("#staff").change(function() {
+                    const collegeType = $("#college-teacher").val();
+                    const department = $("#department-teacher").val();
                     const staffId = $(this).val();
 
                     if (staffId) {
+
                         $.ajax({
                             url: "get_academic_years.php",
                             method: "POST",
@@ -213,11 +225,21 @@ session_start();
                                 staff_id: staffId
                             },
                             success: function(response) {
-                                $("#a_year_teacher").html('<option value="" disabled selected>Select Academic Year</option>' + response);
+                                if (response.success) {
+                                    $('#a_year_teacher').html(response.data);
+                                } else {
+                                    alert(response.error || 'No options available');
+                                }
+
                             },
-                            error: function() {
-                                alert("Error loading academic years for teacher.");
+                            error: function(xhr, status, error) {
+                                console.log("AJAX Error Details:");
+                                console.log("Status: ", status);
+                                console.log("Error: ", error);
+                                console.log("Response Text: ", xhr.responseText);
+                                alert("Error loading academic years.");
                             }
+
                         });
                     }
                 });

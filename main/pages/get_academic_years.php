@@ -1,136 +1,129 @@
 <?php
-// get_academic_years.php
-
+// Database connection
 include('../../config/connect.php');
 
+header('Content-Type: application/json'); // Set JSON response
+
+$response = [
+    'success' => false,
+    'data' => '',
+    'error' => ''
+];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $college = isset($_POST['college']) ? $_POST['college'] : '';
     $department = isset($_POST['department']) ? $_POST['department'] : '';
     $staffId = isset($_POST['staff_id']) ? $_POST['staff_id'] : '';
 
-    $response = "";
-    $errorMessage = "";
-
     if ($conn->connect_error) {
-        $errorMessage = "Database connection failed: " . $conn->connect_error;
+        $response['error'] = "Database connection failed: " . $conn->connect_error;
+        echo json_encode($response);
+        exit;
     }
-   
-    if (!empty($college) && !empty($department) && empty($staffId)) {
-        // Define the tables to check based on college and department
+
+    if (!empty($college) && (!empty($department) || !empty($staffId))) {
         $tables = [];
-     
-        if ($college === 'D') { // Degree College
-            if ($department === 'office_lab') {
-                $tables = ['n_cl_leave', 'n_dl_leave', 'n_emhm_leave', 'n_off_pay_leave'];
-            } else {
-                $tables = ['d_cl_leave', 'd_dl_leave', 'd_mhm_leave'];
-            }
-        } elseif ($college === 'J') { // Junior College
+
+        if ($college === 'D') {
+            $tables = ($department === 'office_lab')
+                ? ['n_cl_leave', 'n_dl_leave', 'n_emhm_leave', 'n_off_pay_leave']
+                : ['d_cl_leave', 'd_dl_leave', 'd_mhm_leave'];
+        } elseif ($college === 'J') {
             $tables = ['j_cl_leave', 'j_dl_leave', 'j_ehm_leave'];
         }
 
-        // Fetch distinct academic years from the relevant tables
-        $years = [];
-        foreach ($tables as $table) {
-            $query = "SELECT DISTINCT A_year FROM $table WHERE Department = ?";
-            $stmt = $conn->prepare($query);
-            if (!$stmt) {
-                $errorMessage = "Error preparing query for table $table: " . $conn->error;
-                break;
-            }
-            $stmt->bind_param("s", $department);
+        $staffIds = [];
 
-            if ($stmt->execute()) {
-                $result = $stmt->get_result();
-                while ($row = $result->fetch_assoc()) {
-                    $years[] = $row['A_year'];
+        // Step 1: Fetch Staff IDs if department is provided
+        if (!empty($department) && empty($staffId)) {
+            $staffQuery = "SELECT Staff_id FROM staff WHERE D_id = ?";
+            $staffStmt = $conn->prepare($staffQuery);
+
+            if (!$staffStmt) {
+                $response['error'] = "Error preparing staff query: " . $conn->error;
+                echo json_encode($response);
+                exit;
+            }
+
+            $staffStmt->bind_param("s", $department);
+
+            if ($staffStmt->execute()) {
+                $staffResult = $staffStmt->get_result();
+                while ($row = $staffResult->fetch_assoc()) {
+                    $staffIds[] = $row['Staff_id'];
                 }
             } else {
-                $errorMessage = "Error executing query for table $table: " . $stmt->error;
+                $response['error'] = "Error executing staff query: " . $staffStmt->error;
+                echo json_encode($response);
+                exit;
             }
+
+            $staffStmt->close();
+
+            if (empty($staffIds)) {
+                $response['data'] = "<option value='' disabled>No Staff Found for Department</option>";
+                echo json_encode($response);
+                exit;
+            }
+        }
+
+        // If staffId is directly provided, use it
+        if (!empty($staffId)) {
+            $staffIds[] = $staffId;
+        }
+
+        // Step 2: Fetch Academic Years for the relevant Staff IDs
+        $years = [];
+        foreach ($tables as $table) {
+            $query = "SELECT DISTINCT A_year FROM $table WHERE Staff_id = ?";
+            $stmt = $conn->prepare($query);
+
+            if (!$stmt) {
+                $response['error'] = "Error preparing query for table $table: " . $conn->error;
+                echo json_encode($response);
+                exit;
+            }
+
+            foreach ($staffIds as $id) {
+                $stmt->bind_param("s", $id);
+
+                if ($stmt->execute()) {
+                    $result = $stmt->get_result();
+                    while ($row = $result->fetch_assoc()) {
+                        $years[] = $row['A_year'];
+                    }
+                } else {
+                    $response['error'] = "Error executing query for table $table: " . $stmt->error;
+                    echo json_encode($response);
+                    exit;
+                }
+            }
+
             $stmt->close();
         }
 
-        if (empty($errorMessage)) {
-            // Remove duplicates and sort years
+        if (!empty($years)) {
             $years = array_unique($years);
             sort($years, SORT_NUMERIC);
 
-            // Build response options
-            if (!empty($years)) {
-                foreach ($years as $year) {
-                    $displayYear = $year . '-' . ($year + 1);
-                    $response .= "<option value='$year'>$displayYear</option>";
-                }
-            } else {
-                $response = "<option value='' disabled>No Academic Years Available</option>";
+            $options = "";
+            foreach ($years as $year) {
+                $displayYear = $year . '-' . ($year + 1);
+                $options .= "<option value='$year'>$displayYear</option>";
             }
-        }
-    } elseif (!empty($staffId)) {
-        // Define the tables to check based on college and department
-        $tables = [];
-        echo "<script>alert('$errorMessage. hello');</script>";
-        if ($college === 'D') { // Degree College
-            if ($department === 'office_lab') {
-                $tables = ['n_cl_leave', 'n_dl_leave', 'n_emhm_leave', 'n_off_pay_leave'];
-            } else {
-                $tables = ['d_cl_leave', 'd_dl_leave', 'd_mhm_leave'];
-            }
-        } elseif ($college === 'J') { // Junior College
-            $tables = ['j_cl_leave', 'j_dl_leave', 'j_ehm_leave'];
-        }
 
-        // Fetch distinct academic years from the relevant tables
-        $years = [];
-        foreach ($tables as $table) {
-            $query = "SELECT DISTINCT A_year FROM $table WHERE Department = ? AND Staff_id = ?";
-            $stmt = $conn->prepare($query);
-            if (!$stmt) {
-                $errorMessage = "Error preparing query for table $table: " . $conn->error;
-                break;
-            }
-            $stmt->bind_param("ss", $department, $staffId);
-
-            if ($stmt->execute()) {
-                $result = $stmt->get_result();
-                while ($row = $result->fetch_assoc()) {
-                    $years[] = $row['A_year'];
-                }
-            } else {
-                $errorMessage = "Error executing query for table $table: " . $stmt->error;
-            }
-            $stmt->close();
-        }
-
-        if (empty($errorMessage)) {
-            // Remove duplicates and sort years
-            $years = array_unique($years);
-            sort($years, SORT_NUMERIC);
-
-            // Build response options
-            if (!empty($years)) {
-                foreach ($years as $year) {
-                    $displayYear = $year . '-' . ($year + 1);
-                    $response .= "<option value='$year'>$displayYear</option>";
-                }
-            } else {
-                $response = "<option value='' disabled>No Academic Years Available</option>";
-            }
+            $response['success'] = true;
+            $response['data'] = $options;
+        } else {
+            $response['data'] = "<option value='' disabled>No Academic Years Available</option>";
         }
     } else {
-        $errorMessage = "Invalid Request: Missing required inputs.";
+        $response['error'] = "Invalid Request: Missing required inputs.";
     }
 
     $conn->close();
-
-    // Send response or error message
-    if (!empty($errorMessage)) {
-        echo "<script>alert('$errorMessage');</script>";
-    } else {
-      
-        echo $response;
-    }
 } else {
-    echo "<script>alert('Invalid Request: This script only supports POST requests.');</script>";
+    $response['error'] = "Invalid Request: This script only supports POST requests.";
 }
+
+echo json_encode($response);
