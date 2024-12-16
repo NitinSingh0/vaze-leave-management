@@ -1,18 +1,37 @@
 <?php
 session_start();
-      
-        if (!isset($_SESSION['Staff_id'])) {
-            // Redirect to login page if not logged in
-            header("Location: login.php");
-            exit();
-        }
+include('../../config/connect.php');
+$staff_id = $_SESSION['Staff_id'];
+if (!isset($_SESSION['Staff_id'])) {
+    // Redirect to login page if not logged in
+    header("Location: login.php");
+    exit();
+}
+$departmentOptions = '';
+if ($staff_id) {
+    $query = "
+        SELECT d.D_id, d.Name,d.College 
+        FROM staff s
+        JOIN department d ON s.D_id = d.D_id
+        WHERE s.Staff_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $staff_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $departmentOptions .= "<option value='{$row['D_id']}'>{$row['Name']}</option>";
+        $college = $row['College'];
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Principal Report Page</title>
+    <title>Departmental Report Page</title>
 
     <link rel="stylesheet" href="./output.css">
     <?php include('../../library/library.php'); ?>
@@ -28,7 +47,7 @@ session_start();
         <?php include('../layouts/sidebar.php'); ?>
 
         <div class="bg-white border rounded-lg px-8 py-6 mx-auto my-8 justify-items-center">
-            <h1 class="text-2xl font-bold mb-4">Principal Report Page</h1>
+            <h1 class="text-2xl font-bold mb-4">Departmental Report Page</h1>
 
             <!-- Tabs for Department and Individual Teacher -->
             <div class="mb-4 border-b border-gray-200">
@@ -40,17 +59,12 @@ session_start();
 
             <!-- Department Report Form (default visible) -->
             <div id="department-form" class="report-form">
-                <label class="block mb-2">Select College:</label>
-                <select id="college" class="block w-full border rounded p-2 mb-4">
-                    <option value="" disabled selected>Select College</option>
-                    <option value="D">Degree</option>
-                    <option value="J">Junior</option>
-                </select>
-
                 <label class="block mb-2">Select Department:</label>
 
                 <select id="department34" class="block w-full border rounded p-2 mb-4">
-                    <option value="" selected disable> Select Department</option>
+
+                    <<option value="" selected disabled>Select Department</option>
+                        <?= $departmentOptions ?>
                 </select>
 
                 <label class="block mb-2">Select Academic Year:</label>
@@ -63,16 +77,10 @@ session_start();
 
             <!-- Teacher Report Form (initially hidden) -->
             <div id="teacher-form" class="report-form hidden">
-                <label class="block mb-2">Select College:</label>
-                <select id="college-teacher" class="block w-full border rounded p-2 mb-4">
-                    <option value="" disabled selected>Select College</option>
-                    <option value="D">Degree</option>
-                    <option value="J">Junior</option>
-                </select>
-
                 <label class="block mb-2">Select Department:</label>
                 <select id="department-teacher" class="block w-full border rounded p-2 mb-4">
-
+                    <option value="" selected disabled>Select Department</option>
+                    <?= $departmentOptions ?>
                 </select>
 
                 <label class="block mb-2">Select Staff:</label>
@@ -113,51 +121,51 @@ session_start();
                 });
 
                 // Load departments for Department Report tab
-                $("#college").change(function() {
-                    let collegeType = $(this).val();
-                    console.log("Department Report - College selected:", collegeType); // Debugging log
+                // $("#college").change(function() {
+                //     let collegeType = $(this).val();
+                //     console.log("Department Report - College selected:", collegeType); // Debugging log
 
-                    if (collegeType) {
-                        $.ajax({
-                            url: "get_departments.php",
-                            method: "POST",
-                            data: {
-                                college: collegeType
-                            },
-                            success: function(response) {
-                                console.log("Response received:", response);
-                                $("#department34").html(response);
+                //     if (collegeType) {
+                //         $.ajax({
+                //             url: "get_departments.php",
+                //             method: "POST",
+                //             data: {
+                //                 college: collegeType
+                //             },
+                //             success: function(response) {
+                //                 console.log("Response received:", response);
+                //                 $("#department34").html(response);
 
-                            },
-                            error: function(error) {
-                                console.error("Error loading departments:", error);
-                            }
-                        });
-                    }
-                });
+                //             },
+                //             error: function(error) {
+                //                 console.error("Error loading departments:", error);
+                //             }
+                //         });
+                //     }
+                // });
 
 
                 // Load departments for Individual Teacher tab
                 $("#college-teacher").change(function() {
-                    let collegeType = $(this).val();
+                    let collegeType = "<?php echo $college; ?>";
                     console.log("Individual Teacher Report - College selected:", collegeType); // Debugging log
 
-                    if (collegeType) {
-                        $.ajax({
-                            url: "get_departments.php",
-                            method: "POST",
-                            data: {
-                                college: collegeType
-                            },
-                            success: function(response) {
-                                console.log("Individual Teacher Report - Departments loaded:", response); // Debugging log
-                                $("#department-teacher").html('<option value="" disabled selected>Select Department</option>' + response);
-                            },
-                            error: function(error) {
-                                console.error("Individual Teacher Report - Error loading departments:", error);
-                            }
-                        });
-                    }
+                    // if (collegeType) {
+                    //     $.ajax({
+                    //         url: "get_departments.php",
+                    //         method: "POST",
+                    //         data: {
+                    //             college: collegeType
+                    //         },
+                    //         success: function(response) {
+                    //             console.log("Individual Teacher Report - Departments loaded:", response); // Debugging log
+                    //             $("#department-teacher").html('<option value="" disabled selected>Select Department</option>' + response);
+                    //         },
+                    //         error: function(error) {
+                    //             console.error("Individual Teacher Report - Error loading departments:", error);
+                    //         }
+                    //     });
+                    // }
                 });
 
                 // Load staff based on selected department
@@ -184,11 +192,11 @@ session_start();
                 // Load academic years dynamically
                 $("#department34").change(function() {
 
-                    const collegeType = $("#college").val();
+                    const collegeType = "<?php echo $college; ?>";
                     const department = $(this).val();
 
                     if (collegeType && department) {
-                       
+
                         $.ajax({
                             url: "get_academic_years.php",
                             method: "POST",
@@ -216,7 +224,7 @@ session_start();
                 });
 
                 $("#staff").change(function() {
-                    const collegeType = $("#college-teacher").val();
+                    const collegeType = "<?php echo $college; ?>";
                     const department = $("#department-teacher").val();
                     const staffId = $(this).val();
 
@@ -253,14 +261,14 @@ session_start();
 
             // Download reports
             $("#download-department-report").on("click", function() {
-                let college = $("#college").val();
+                let college = "<?php echo $college; ?>";
                 let department = $("#department34").val();
                 let academicYear = $("#a_year_department").val();
                 window.location.href = `generate_report.php?report_type=department&college=${college}&department=${department}&academicYear=${academicYear}`;
             });
 
             $("#download-teacher-report").on("click", function() {
-                let college = $("#college-teacher").val();
+                let college = "<?php echo $college; ?>";
                 let department = $("#department-teacher").val();
                 let academicYear = $("#a_year_teacher").val();
                 let staff = $("#staff").val();

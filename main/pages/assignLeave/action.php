@@ -111,6 +111,7 @@ elseif (
                     "CL" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'CL', '$department_wise_cl', '$year')",
                     "MA" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'MA', '$department_wise_ma', '$year')",
                     "HP" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'HP', '$department_wise_hl', '$year')",
+                    "DL" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'DL', 10, '$year')",
                     ($type == 'J' ? "EL" : "ML") => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', '" . ($type == 'J' ? "EL" : "ML") . "', '$department_wise_ml_el', '$year')"
                 ];
 

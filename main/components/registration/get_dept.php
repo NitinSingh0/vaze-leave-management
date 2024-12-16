@@ -6,11 +6,11 @@ if (isset($_POST['type']) && !empty($_POST['type'])) {
     $type = $_POST['type'];
 
     if ($type === 'TD') {
-        $query = "SELECT D_id,Name FROM department where College='D' AND Name != 'Office_Labratory'";
+        $query = "SELECT D_id,Name FROM department where College='D' AND Name != 'office_lab'";
     } elseif ($type === 'TJ') {
         $query = "SELECT D_id,Name FROM department where College='J'";
     } else {
-        $query = "SELECT D_id,Name FROM department where Name = 'Office_Labratory'";
+        $query = "SELECT D_id,Name FROM department where Name = 'office_lab'";
     }
     $result = $conn->query($query);
     if ($result->num_rows > 0) {

@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                 // No duplicate, proceed with insertion
                 $sql = "INSERT INTO n_dl_leave (Staff_id, From_date, To_date, No_of_days, Nature, Reference_no, Date_of_letter, Date_of_application, leave_approval_status, A_year, Type) 
-                VALUES ('$staff_id', '$from_date', '$to_date', '$days', '$reason', '$ref_no' , '$date_of_letter' , '$application_date', 'P', $year, '$leave_type')";
+                VALUES ('$staff_id', '$from_date', '$to_date', '$days', '$reason', '$ref_no' , '$date_of_letter' , '$application_date', 'HA', $year, '$leave_type')";
 
                 if ($res = $conn->query($sql)) {
                     //echo "<script>alert('Duty Leave Applied Successfully!');</script>";

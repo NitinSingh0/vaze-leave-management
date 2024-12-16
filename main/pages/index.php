@@ -227,6 +227,7 @@ session_start();
             const username = a.value;
             const warning = document.getElementById("usernameWarning");
             const submitBtn = document.getElementById('submitbtn');
+  
 
             if (username.length > 0) {
 
@@ -467,6 +468,7 @@ session_start();
                     event.preventDefault(); // Prevent the default form submission
 
                     let formData = new FormData(form);
+                    console.log(formData);
 
                     // Send AJAX request
                     $.ajax({
@@ -497,7 +499,7 @@ session_start();
             }
 
             // Manually trigger form submission for demonstration purposes if needed
-            form.submit();
+            //form.submit();
         }
 
 
@@ -563,50 +565,50 @@ session_start();
             const toDate = document.getElementById("to_date");
             toDate.min = fromDate;
 
-            fetchLeaveData();
+            // fetchLeaveData();
 
-            // Enable date field if From_Date is provided, otherwise disable it
-            toDate.disabled = fromDate === '';
+            // // Enable date field if From_Date is provided, otherwise disable it
+            // toDate.disabled = fromDate === '';
 
-            // Make the date field required if From_Date is provided
-            toDate.required = fromDate !== '';
+            // // Make the date field required if From_Date is provided
+            // toDate.required = fromDate !== '';
 
-            async function fetchLeaveData() {
-                try {
-                    const response = await fetch('../components/Pending/dl.php');
-                    const data = await response.json();
+            // async function fetchLeaveData() {
+            //     try {
+            //         const response = await fetch('../components/Pending/dl.php');
+            //         const data = await response.json();
 
-                    console.log(data); // Log the data to verify
-                    const dutyUsed = Number(data.duty.used);
-                    const dutyRemaining = Number(data.duty.total) - dutyUsed;
-                    console.log(dutyRemaining);
+            //         console.log(data); // Log the data to verify
+            //         const dutyUsed = Number(data.duty.used);
+            //         const dutyRemaining = Number(data.duty.total) - dutyUsed;
+            //         console.log(dutyRemaining);
 
-                    if (dutyRemaining > 0) {
-                        const fromDateObj = new Date(fromDate);
-                        const maxDateObj = new Date(fromDateObj);
-                        maxDateObj.setDate(fromDateObj.getDate() + dutyRemaining - 1);
+            //         if (dutyRemaining > 0) {
+            //             const fromDateObj = new Date(fromDate);
+            //             const maxDateObj = new Date(fromDateObj);
+            //             maxDateObj.setDate(fromDateObj.getDate() + dutyRemaining - 1);
 
-                        // Format the date as yyyy-mm-dd
-                        const maxDate = maxDateObj.toISOString().split("T")[0];
+            //             // Format the date as yyyy-mm-dd
+            //             const maxDate = maxDateObj.toISOString().split("T")[0];
 
-                        // Set the max value for to_date
-                        document.getElementById("to_date").max = maxDate;
-                        console.log(`Max Date: ${maxDate}`);
-                    } else {
-                        // Show alert if no duty leave is left
-                        alert("No duty leave left!");
+            //             // Set the max value for to_date
+            //             document.getElementById("to_date").max = maxDate;
+            //             console.log(`Max Date: ${maxDate}`);
+            //         } else {
+            //             // Show alert if no duty leave is left
+            //             alert("No duty leave left!");
 
-                        // Ensure to_date is not disabled
-                        toDate.disabled = true;
+            //             // Ensure to_date is not disabled
+            //             toDate.disabled = true;
 
-                        // Remove any restrictions on max date
-                        document.getElementById("to_date").max = "";
-                    }
+            //             // Remove any restrictions on max date
+            //             document.getElementById("to_date").max = "";
+            //         }
 
-                } catch (error) {
-                    console.error("Error fetching leave data:", error);
-                }
-            }
+            //     } catch (error) {
+            //         console.error("Error fetching leave data:", error);
+            //     }
+            // }
 
             calculateDays();
         }

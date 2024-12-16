@@ -90,8 +90,14 @@ elseif (
     $year = $_POST['year'];
     $message = "";
 
-    // Query to fetch all staff members in the specified department
-    $query = "SELECT * FROM staff WHERE Job_role='$type' AND status='A' ";
+    if($type=='NO'){
+        $query = "SELECT * FROM staff WHERE Job_role IN ('NO','OO') AND status='A' ";
+    }
+    else{
+        // Query to fetch all staff members in the specified department
+        $query = "SELECT * FROM staff WHERE Job_role='$type' AND status='A' ";
+    }
+  
     $result = $conn->query($query);
 
     if ($result->num_rows > 0) {
@@ -113,6 +119,7 @@ elseif (
                     "CL" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'CL', '$cl', '$year')",
                     "MA" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'MA', '$ma', '$year')",
                     "HP" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'HP', '$hl', '$year')",
+                    "DL" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'DL', 10, '$year')",
                     "ML" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'ML', '$ml', '$year')",
                             ];
 
