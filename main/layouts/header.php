@@ -113,11 +113,19 @@
                     if (data.error) {
                         alert(data.error);
                     } else {
+                        const roleMapping = {
+                            TD: 'Teacher Degree',
+                            TJ: 'Teacher Junior',
+                            OO: 'Office Operator',
+                            NL: 'Non Teaching Lab',
+                            NO: 'Non Teaching Office'
+                        };
+                        const roleDescription = roleMapping[data.Role] || 'Unknown Role';
                         // Populate profile data in the card
                         $('#name').text(data.Name);
                         $('#username').text(data.Username);
                         $('#department').text(data.Department_name);
-                        $('#role').text(data.Role);
+                        $('#role').text(roleDescription);
                         $('#dateOfJoining').text(data.Date_of_Joining);
                         $('#Designation').text(data.Designation);
                         $('#profileCard').removeClass('hidden'); // Show the card
