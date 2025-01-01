@@ -52,9 +52,9 @@
                           <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">EHM</a></li>
                       <?php elseif ($jobRole == 'NL'): ?>
                           <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('mediacl')">MHM</a></li>
-                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('offpay')">OFF Pay</a></li>
+                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
                       <?php elseif ($jobRole == 'NO'): ?>
-                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('offpay')">OFF Pay</a></li>
+                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
                           <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHME</a></li>
                       <?php elseif ($jobRole == 'OO'): ?>
                           <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
