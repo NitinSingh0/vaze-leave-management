@@ -9,6 +9,7 @@
     <title>Vaze Leave Management</title>
 
     <?php include('../../config/connect.php'); ?>
+    <?php include('../../library/library.php'); ?>
     <link rel="stylesheet" href="../../css/common/header.css" />
 
 </head>

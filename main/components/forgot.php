@@ -57,79 +57,77 @@ if (isset($_POST['submit'])) {
 <head>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: "Arial", sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f4f4f4;
-      color: #333333;
+      background-color: #f8f9fa;
+      color: #4d4d4d;
     }
     .email-container {
       max-width: 600px;
-      margin: 20px auto;
+      margin: 30px auto;
       background-color: #ffffff;
-      border-radius: 8px;
+      border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       overflow: hidden;
+      border: 1px solid #ddd;
     }
     .email-header {
-      background-color: #4CAF50;
+      background-color: #0056b3;
+      color: #ffffff;
       padding: 20px;
       text-align: center;
-      color: #ffffff;
     }
     .email-header h1 {
       margin: 0;
       font-size: 24px;
+      font-weight: bold;
     }
     .email-body {
       padding: 20px;
       font-size: 16px;
       line-height: 1.6;
+      color: #333333;
     }
     .email-body p {
       margin: 10px 0;
+      color: #5a5a5a;
     }
     .otp-box {
-      display: inline-block;
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: #ffffff;
-      font-size: 18px;
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #e3f2fd;
+      color: #007bff;
+      font-size: 20px;
       font-weight: bold;
-      border-radius: 4px;
       text-align: center;
+      border-radius: 5px;
+      letter-spacing: 1.2px;
     }
     .email-footer {
-      background-color: #f4f4f4;
-      padding: 10px;
+      background-color: #f1f3f5;
+      padding: 15px;
       text-align: center;
-      font-size: 12px;
-      color: #666666;
-    }
-    .email-footer a {
-      color: #4CAF50;
-      text-decoration: none;
+      font-size: 14px;
+      color: #6c757d;
+      border-top: 1px solid #ddd;
     }
   </style>
 </head>
 <body>
   <div class="email-container">
     <div class="email-header">
-      <h1>Vaze Leave Management</h1>
-      <p>Reset Your Password</p>
+      <h1>Vaze Leave Management System</h1>
     </div>
     <div class="email-body">
       <p>Dear User,</p>
-      <p>You have requested to reset your password on the <strong>Vaze Leave Management System</strong>.</p>
-      <p>Please use the following OTP to complete the process:</p>
+      <p>You have requested to reset your password on the <strong style="color: #0056b3;">Vaze Leave Management System</strong>. Please use the OTP below to complete the process:</p>
       <div class="otp-box">' . $otp . '</div>
-      <p>Note: This OTP is valid only for a limited time. Do not share it with anyone.</p>
-      <p>If you did not request a password reset, please contact our support team immediately.</p>
-      <p>Best Regards,<br>Vaze College Leave Management Team</p>
+      <p style="color: #6c757d;">If you did not make this request, please ignore this email. Your account remains secure.</p>
+      <p>Best Regards,<br><strong style="color: #0056b3;">The Vaze College Leave Management Team</strong></p>
     </div>
     <div class="email-footer">
       <p>&copy; ' . date("Y") . ' V.G. Vaze College | All Rights Reserved.</p>
-      <p><a href="https://www.vazecollege.net">Visit Our Website</a></p>
     </div>
   </div>
 </body>
