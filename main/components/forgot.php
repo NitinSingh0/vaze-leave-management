@@ -15,10 +15,10 @@ if (isset($_POST['submit'])) {
 
   $sql = "SELECT * FROM staff WHERE Username='$email'";
   $result = mysqli_query($conn, $sql);
-
   if (mysqli_num_rows($result) > 0) {
     $otp = rand(1000, 9999);
     $_SESSION['OTP'] = $otp;
+    $_SESSION['email'] = $email;
 
     require('Exception.php');
     require('PHPMailer.php');

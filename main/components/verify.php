@@ -11,6 +11,17 @@ if (isset($_POST['submit'])) {
 
         if ($otpp == $enterotp) {
             unset($_SESSION['OTP']);
+            $email = $_SESSION['email'];
+
+
+            $sql = "SELECT Staff_id FROM staff WHERE Username = '$email'";
+            $result = mysqli_query($conn, $sql);
+
+            if ($result && mysqli_num_rows($result) > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $_SESSION['Staff_id'] = $row['Staff_id']; // Set Staff_id in session
+            }
+        
             //session_destroy();
 
             echo '<META HTTP-EQUIV="Refresh" Content="0.5; URL=changepass.php">';

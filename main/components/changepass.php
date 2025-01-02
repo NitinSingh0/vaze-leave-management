@@ -3,8 +3,9 @@
 error_reporting(0);
 
 $Staff_id = $_SESSION['Staff_id'];
+$email = $_SESSION['email']; // Check if email is set in session
 
-if (!$Staff_id) {
+if (!$Staff_id && !$email) {
     echo "<script>alert('User not logged in.'); window.location.href='login.php';</script>";
     exit;
 }
@@ -12,11 +13,13 @@ if (!$Staff_id) {
 // Database connection
 include('../../config/connect.php');
 
-// Fetch the existing password for the staff
-$sql = "SELECT * FROM staff WHERE Staff_id = '$Staff_id'";
-$result = $conn->query($sql);
-if ($result && $row = $result->fetch_assoc()) {
-    $current_password_hash = $row['Password'];
+if ($Staff_id) {
+    // Fetch the existing password for the staff (when Staff_id is set)
+    $sql = "SELECT * FROM staff WHERE Staff_id = '$Staff_id'";
+    $result = $conn->query($sql);
+    if ($result && $row = $result->fetch_assoc()) {
+        $current_password_hash = $row['Password'];
+    }
 }
 ?>
 
@@ -28,11 +31,13 @@ if ($result && $row = $result->fetch_assoc()) {
 
             <form method="POST" action="changepass.php" class="mb-0 mt-6 space-y-5 rounded-lg p-4 sm:p-6 lg:p-8">
 
-                <!-- Old Password Field -->
-                <div>
-                    <h1 class="text-xl font-medium mb-3">Enter Old Password</h1>
-                    <input type="password" id="OldPass" name="OldPass" class="w-full border-2 border-black rounded-lg p-4 pe-12 text-sm shadow-sm" placeholder="Old Password" required />
-                </div>
+                <?php if (!$email): ?>
+                    <!-- Old Password Field (Only if email is not set) -->
+                    <div>
+                        <h1 class="text-xl font-medium mb-3">Enter Old Password</h1>
+                        <input type="password" id="OldPass" name="OldPass" class="w-full border-2 border-black rounded-lg p-4 pe-12 text-sm shadow-sm" placeholder="Old Password" required />
+                    </div>
+                <?php endif; ?>
 
                 <!-- New Password Field -->
                 <div>
@@ -62,7 +67,6 @@ if ($result && $row = $result->fetch_assoc()) {
 <script>
     $(document).ready(function() {
         $('#submit').click(function(e) {
-            var oldPass = $('#OldPass').val();
             var npass = $('#Npass').val();
             var cpass = $('#Cpass').val();
 
@@ -87,31 +91,38 @@ if ($result && $row = $result->fetch_assoc()) {
 <?php
 // Handling password update on form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $old_password = $_POST['OldPass'];
+    $old_password = $_POST['OldPass'] ?? null;
     $new_password = $_POST['Npass'];
     $confirm_password = $_POST['Cpass'];
 
-    // Check if the old password matches
-    if (password_verify($old_password, $current_password_hash)) {
-        if ($new_password === $confirm_password) {
-            $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-            $sql = "UPDATE staff SET Password = '$hashed_password' WHERE Staff_id = '$Staff_id'";
+    if ($new_password === $confirm_password) {
+        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
 
-            if ($conn->query($sql) === TRUE) {
-                echo "<script>
-                        showAlert('Password Updated Successfully', 'green');
-                        setTimeout(function() {
-                            window.location.href = '../pages/index.php';
-                        }, 2000);
-                      </script>";
-            } else {
-                echo "<script>showAlert('Error updating password: " . $conn->error . "', 'red');</script>";
-            }
+        if ($email) {
+            // Update directly using email (if email is set in session)
+            $sql = "UPDATE staff SET Password = '$hashed_password' WHERE Username = '$email'";
         } else {
-            echo "<script>showAlert('New Password and Confirm Password do not match.', 'red');</script>";
+            // Verify old password and update using Staff_id
+            if (password_verify($old_password, $current_password_hash)) {
+                $sql = "UPDATE staff SET Password = '$hashed_password' WHERE Staff_id = '$Staff_id'";
+            } else {
+                echo "<script>showAlert('Incorrect Old Password.', 'red');</script>";
+                exit;
+            }
+        }
+
+        if ($conn->query($sql) === TRUE) {
+            echo "<script>
+                    showAlert('Password Updated Successfully', 'green');
+                    setTimeout(function() {
+                        window.location.href = '../pages/index.php';
+                    }, 2000);
+                  </script>";
+        } else {
+            echo "<script>showAlert('Error updating password: " . $conn->error . "', 'red');</script>";
         }
     } else {
-        echo "<script>showAlert('Incorrect Old Password.', 'red');</script>";
+        echo "<script>showAlert('New Password and Confirm Password do not match.', 'red');</script>";
     }
 }
 ?>

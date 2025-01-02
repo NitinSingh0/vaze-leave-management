@@ -20,13 +20,13 @@ if (isset($_POST['submit'])) {
           (password_verify($pass, $hashedpass)) {
 
             $_SESSION['Staff_id'] = $row['Staff_id'];
-            echo $_SESSION['Staff_id'];
-            echo "
-                  <script>
-                  alert("
-              . $_SESSION['Staff_id'] . ");
-                  </script>
-                  ";
+            //echo $_SESSION['Staff_id'];
+           // echo "
+                 // <script>
+                 // alert("
+             // . $_SESSION['Staff_id'] . ");
+               //   </script>
+               //   ";
             header("refresh:0.5; url=../pages/changepass.php");
 
             // echo '
@@ -36,7 +36,7 @@ if (isset($_POST['submit'])) {
           }
         } else {
           $hashedpass = $row['Password'];
-          echo $hashedpass;
+          //echo $hashedpass;
           $okay = password_verify($pass, $hashedpass);
           //$row['Password']==$pass
           if ($okay) {
