@@ -34,16 +34,31 @@ if ($result && $row = $result->fetch_assoc()) {
                         <select name="year" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
                             <option value="" disabled>Select Year</option>
                             <?php
-                            $currentMonth = date('n'); // Get the current month (1-12)
-                            $currentYear = date('Y');  // Get the current year
+                            // $currentMonth = date('n'); // Get the current month (1-12)
+                            // $currentYear = date('Y');  // Get the current year
 
-                            // Determine academic year based on the month
-                            if ($currentMonth >= 6) { // From June onwards, current academic year starts with this year
-                                $startYear = $currentYear;
-                            } else { // Before June, current academic year starts with last year
-                                $startYear = $currentYear - 1;
-                            }
+                            // // Determine academic year based on the month
+                            // if ($currentMonth >= 6) { // From June onwards, current academic year starts with this year
+                            //     $startYear = $currentYear;
+                            // } else { // Before June, current academic year starts with last year
+                            //     $startYear = $currentYear - 1;
+                            // }
 
+                    $startMonth = date('n'); // Get the current month (1-12)
+                    $startYear= date('Y');  // Get the current year
+
+                //If Non Teaching Then No year Change Else the 1 june - 31may Condition
+             if ($jobRole != "OO" && $jobRole != "NL" && $jobRole != "NO") {
+                        // Determine academic year based on the month
+                        if ($startMonth >= 6) { // From June onwards, current academic year starts with this year
+                            $startYear = $startYear;
+                        } else { // Before June, current academic year starts with last year
+                            $startYear = $startYear - 1;
+                          
+                        }
+
+                     }
+                            
                             // Display the options
                             echo '<option selected value="' . $startYear . '">' . $startYear . ' - ' . ($startYear + 1) . '</option>';
                             echo '<option value="' . ($startYear + 1) . '">' . ($startYear + 1) . ' - ' . ($startYear + 2) . '</option>';

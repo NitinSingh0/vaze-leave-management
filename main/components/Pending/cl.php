@@ -19,7 +19,7 @@ if ($result && $row = $result->fetch_assoc()) {
     $jobRole = $row['Job_role'];
 }
 
-if($jobRole=='NO' || $jobRole=='NL' || $jobRole=='OO' ){
+if($jobRole=='NO' && $jobRole=='NL' && $jobRole=='OO' ){
     $currentYear = date("Y");
     $currentMonth = date("n");
     $a_year = ($currentMonth > 6) ? $currentYear : $currentYear - 1;

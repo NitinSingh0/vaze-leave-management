@@ -227,7 +227,7 @@ session_start();
             const username = a.value;
             const warning = document.getElementById("usernameWarning");
             const submitBtn = document.getElementById('submitbtn');
-  
+
 
             if (username.length > 0) {
 
@@ -642,7 +642,12 @@ session_start();
                     if (dutyRemaining > 0) {
                         const fromDateObj = new Date(fromDate);
                         const maxDateObj = new Date(fromDateObj);
-                        maxDateObj.setDate(fromDateObj.getDate() + dutyRemaining - 1);
+
+                        // Set the max date to either the remaining leave days or 3 days, whichever is smaller
+                        const maxDays = Math.min(dutyRemaining, 3);
+                        maxDateObj.setDate(fromDateObj.getDate() + maxDays - 1);
+                        
+                        // maxDateObj.setDate(fromDateObj.getDate() + dutyRemaining - 1);
 
                         // Format the date as yyyy-mm-dd
                         const maxDate = maxDateObj.toISOString().split("T")[0];
