@@ -1,0 +1,17 @@
+CREATE TABLE user_status_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    staff_id INT NOT NULL,
+    action_performed_by INT NOT NULL,
+    action VARCHAR(50) NOT NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+ $action = $new_status === 'A' ? 'Activate' : 'Deactivate';
+    $log_query = "INSERT INTO user_status_logs (staff_id, action_performed_by, action) VALUES (?, ?, ?)";
+    $log_stmt = $conn->prepare($log_query);
+    $log_stmt->bind_param('iis', $staff_id, $action_performed_by, $action);
+
+
+$staff_id = $_POST['staff_id'];
+    $new_status = $_POST['status'];
+    $action_performed_by = $_SESSION['Staff_id'];
