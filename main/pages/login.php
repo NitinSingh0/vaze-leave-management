@@ -37,6 +37,6 @@
 </body>
 <?php include('../../library/AOS.php'); ?>
 
-<?php include('../../library/library.php'); ?>
+
 
 </html>

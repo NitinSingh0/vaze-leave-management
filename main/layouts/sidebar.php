@@ -65,6 +65,10 @@
           </li>
           <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('status')">Check Status</a></li>
           <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('summary')">Summary</a></li>
+          <?php if (strcasecmp(trim($designation), 'Registrar') === 0): ?>
+              <li><a href="user_status_logs.php" class="block px-4 py-2 text-gray-700">User Status Log</a></li>
+          <?php endif; ?>
+
 
           <!-- Additional options only for designation Principal , Vice Principal and HOD -->
 
@@ -73,6 +77,7 @@
               <li><a href="Report.php" class="block px-4 py-2 text-gray-700">Report</a></li>
 
           <?php endif; ?>
+
 
           <?php if ($designation == 'HOD'): ?>
               <li><a href="HOD.php" class="block px-4 py-2 text-gray-700">HOD Leave Request</a></li>

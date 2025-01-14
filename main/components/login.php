@@ -21,13 +21,14 @@ if (isset($_POST['submit'])) {
 
             $_SESSION['Staff_id'] = $row['Staff_id'];
             //echo $_SESSION['Staff_id'];
-           // echo "
-                 // <script>
-                 // alert("
-             // . $_SESSION['Staff_id'] . ");
-               //   </script>
-               //   ";
-            header("refresh:0.5; url=../pages/changepass.php");
+            // echo "
+            // <script>
+            // alert("
+            // . $_SESSION['Staff_id'] . ");
+            //   </script>
+            //   ";
+            //header("refresh:0.5; url=../pages/changepass.php");
+            echo '<META HTTP-EQUIV="Refresh" Content="0.5; URL=../pages/changepass.php">';
 
             // echo '
             // <META HTTP-EQUIV="Refresh" Content="0.2; URL=../pages/changepass.php">';
