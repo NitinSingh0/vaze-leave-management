@@ -150,14 +150,13 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
     //  $type = $_POST['type'];
     $sub_table = $_POST['sub_table2'];
 
-    if($ntype === 'NO'){
+    if ($ntype === 'NO') {
         $query = "SELECT * FROM staff where Job_role IN ('NO', 'OO')  AND status='A' ";
-    }
-    else{
+    } else {
         $query = "SELECT * FROM staff where Job_role='$ntype'  AND status='A' ";
     }
 
-   // $query = "SELECT * FROM staff where Job_role='$ntype'  AND status='A' ";
+    // $query = "SELECT * FROM staff where Job_role='$ntype'  AND status='A' ";
     $result = $conn->query($query);
     if ($result->num_rows > 0) {
         echo '
@@ -302,7 +301,7 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
 
 
             $.ajax({
-                url: "action.php",
+                url: "assignLeave/action.php",
                 type: "POST",
                 dataType: 'json', // Expect a JSON response
                 data: {
@@ -363,7 +362,7 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
 
 
             $.ajax({
-                url: "action.php",
+                url: "assignLeave/action.php",
                 type: "POST",
                 dataType: 'json', // Expect a JSON response
                 data: {
@@ -380,6 +379,7 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
                         alert(response.message); // Show success message
                         //loadContent('dl');
                     } else {
+
                         alert(response.message); // Show error message if any
                         // loadContent('dl');
                     }
@@ -428,7 +428,7 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
             // });
 
             $.ajax({
-                url: "action2.php",
+                url: "assignLeave/action2.php",
                 type: "POST",
                 dataType: 'json', // Expect a JSON response
                 data: {
@@ -491,7 +491,7 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
             // });
 
             $.ajax({
-                url: "action2.php",
+                url: "assignLeave/action2.php",
                 type: "POST",
                 dataType: 'json', // Expect a JSON response
                 data: {

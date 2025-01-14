@@ -102,7 +102,7 @@
                   <?php endif ?>
 
                   <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('registration')">New Registration</a></li>
-                  <li><a href="assignleave/assign_leave.php" class="block px-4 py-2 text-gray-700">Assign Leave</a></li>
+                  <li><a href="assign_leave.php" class="block px-4 py-2 text-gray-700">Assign Leave</a></li>
                   <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('update')">Update Details</a></li>
                   <li><a href="#" class="block px-4 py-2 text-gray-700 mb-5" onclick="loadContent('active/deactive')">Deactivate Users</a></li>
               </ul>
