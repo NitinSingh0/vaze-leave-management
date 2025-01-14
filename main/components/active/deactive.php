@@ -1,4 +1,4 @@
-<?php include("connect.php"); ?>
+<?php include("../../../config/connect.php"); ?>
 
 <div class=" bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-4xl">
     <h1 class="text-2xl font-bold text-center mb-6 text-black ">Deactivate Staff</h1>

@@ -37,14 +37,65 @@
 
  <!-- JavaScript for AJAX and Chart.js -->
  <script>
+
+     //to load the page if dynamicContentContainer div is not availabe. go to index.php then fetch content from components
+
      function loadContent(page) {
-         fetch(`../components/${page}.php`)
-             .then(response => response.text())
-             .then(data => {
-                 document.getElementById('dynamicContent').innerHTML = data;
-             })
-             .catch(error => console.error('Error loading content:', error));
+         // Get the base URL up to the directory containing index.php
+         const baseUrl = `${window.location.origin}/vaze-leave-management/main/pages/`;
+
+         // Check if the dynamic content container exists
+         const dynamicContentContainer = document.getElementById('dynamicContent');
+
+         if (dynamicContentContainer) {
+             // If the dynamic content container exists, load the content dynamically
+             fetch(`../components/${page}.php`)
+                 .then(response => {
+                     if (!response.ok) {
+                         throw new Error(`HTTP error! Status: ${response.status}`);
+                     }
+                     return response.text();
+                 })
+                 .then(data => {
+                     dynamicContentContainer.innerHTML = data;
+                     // Optionally update the browser history
+                     window.history.pushState({
+                         page: page
+                     }, '', `index.php?page=${page}`);
+                 })
+                 .catch(error => console.error('Error loading content:', error));
+         } else {
+             // If the dynamic content container doesn't exist, redirect to index.php
+             const url = new URL(`${baseUrl}index.php`);
+             url.searchParams.set('page', page); // Add the 'page' parameter to the URL
+             window.location.href = url;
+         }
      }
+
+     // Check for `page` parameter in the URL and load the corresponding content
+     window.addEventListener('DOMContentLoaded', () => {
+         const params = new URLSearchParams(window.location.search);
+         const page = params.get('page');
+
+         if (page) {
+             const dynamicContentContainer = document.getElementById('dynamicContent');
+             if (dynamicContentContainer) {
+                 // Dynamically load the page if the container exists
+                 fetch(`../components/${page}.php`)
+                     .then(response => {
+                         if (!response.ok) {
+                             throw new Error(`HTTP error! Status: ${response.status}`);
+                         }
+                         return response.text();
+                     })
+                     .then(data => {
+                         dynamicContentContainer.innerHTML = data;
+                     })
+                     .catch(error => console.error('Error loading content:', error));
+             }
+         }
+     });
+
 
      //JavaScriptfor AJAX and Chart.js
 
