@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2024 at 05:18 PM
+-- Generation Time: Jan 14, 2025 at 11:08 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -63,6 +63,16 @@ CREATE TABLE `d_cl_leave` (
   `A_year` year(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `d_cl_leave`
+--
+
+INSERT INTO `d_cl_leave` (`Staff_id`, `From_date`, `To_date`, `No_of_days`, `Reason`, `Date_of_application`, `HOD_remark`, `Principal_remark`, `Office_remark`, `leave_approval_status`, `A_year`) VALUES
+(120, '2024-11-01', '2024-11-23', 24, 'xyzzzz', '2024-11-04', '', 'approved', 'bsh', 'PA', '2024'),
+(120, '2024-11-24', '2024-11-27', 4, 'abcc', '2024-11-04', '', 'approved', '', 'PA', '2024'),
+(121, '2024-11-22', '2024-11-29', 8, 'aad', '2024-11-08', 'accept', 'approved', '', 'PA', '2024'),
+(129, '2024-11-05', '2024-11-15', 12, 'not specified', '2024-11-14', 'submit', 'approved', '', 'PA', '2024');
+
 -- --------------------------------------------------------
 
 --
@@ -86,6 +96,18 @@ CREATE TABLE `d_dl_leave` (
   `Type` enum('SL','DL') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `d_dl_leave`
+--
+
+INSERT INTO `d_dl_leave` (`Staff_id`, `From_date`, `To_date`, `No_of_days`, `Nature`, `Reference_no`, `Date_of_letter`, `HOD_remark`, `Principal_remark`, `Office_remark`, `leave_approval_status`, `A_year`, `Date_of_application`, `Type`) VALUES
+(120, '2024-11-08', '2024-11-09', 2, 'abcccc', NULL, NULL, 'accespt', 'approved 11:08', '', 'PA', '2024', '2024-11-04', 'SL'),
+(120, '2024-11-14', '2024-11-14', 1, 'xyzzz', NULL, NULL, '', 'approved', '', 'PA', '2024', '2024-11-04', 'DL'),
+(121, '2024-11-10', '2024-11-11', 2, 'not specified', 0, '0000-00-00', '', '', '', 'P', '2024', '2024-11-08', 'SL'),
+(121, '2024-11-21', '2024-11-22', 2, 'leave on 21st nov', 0, '0000-00-00', 'accept', '', '', 'HA', '2024', '2024-11-21', 'SL'),
+(121, '2024-11-21', '2024-11-30', 10, 'gffhj', 0, '0000-00-00', '', '', '', 'P', '2024', '2024-11-08', 'DL'),
+(129, '2024-11-13', '2024-11-15', 3, 'not specified', NULL, NULL, '', '', '', 'P', '2024', '2024-11-14', 'SL');
+
 -- --------------------------------------------------------
 
 --
@@ -108,6 +130,14 @@ CREATE TABLE `d_mhm_leave` (
   `A_year` year(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `d_mhm_leave`
+--
+
+INSERT INTO `d_mhm_leave` (`Staff_id`, `From_date`, `To_date`, `No_of_days`, `Type`, `Reason`, `Prefix-Suffix`, `Date_of_application`, `HOD_remark`, `Principal_remark`, `Office_remark`, `leave_approval_status`, `A_year`) VALUES
+(120, '2024-11-14', '2024-11-16', 3, 'ML', 'abccc', '', '2024-10-02', '', '', '', 'P', '2024'),
+(121, '2024-11-22', '2024-11-27', 6, 'HP', 'reasonnnn', 'okk', '2024-11-21', 'accept', 'approved', '', 'PA', '2024');
+
 -- --------------------------------------------------------
 
 --
@@ -127,6 +157,13 @@ CREATE TABLE `j_cl_leave` (
   `leave_approval_status` enum('P','HA','HD','PA','PD') NOT NULL,
   `A_year` year(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `j_cl_leave`
+--
+
+INSERT INTO `j_cl_leave` (`Staff_id`, `From_date`, `To_date`, `No_of_days`, `Reason`, `Date_of_application`, `HOD_remark`, `Principal_remark`, `Office_remark`, `leave_approval_status`, `A_year`) VALUES
+(136, '2024-11-05', '2024-11-14', 11, 'not specified', '2024-11-12', '', '', '', 'P', '2024');
 
 -- --------------------------------------------------------
 
@@ -201,7 +238,7 @@ CREATE TABLE `n_cl_leave` (
   `HOD_remark` text NOT NULL,
   `Principal_remark` text NOT NULL,
   `Office_remark` text NOT NULL,
-  `leave_approval_status` enum('P','PA','PD','HA','HD') NOT NULL,
+  `leave_approval_status` enum('P','PA','PD') NOT NULL,
   `A_year` year(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -220,12 +257,10 @@ CREATE TABLE `n_dl_leave` (
   `HOD_remark` text NOT NULL,
   `Principal_remark` text NOT NULL,
   `Office_remark` text NOT NULL,
-  `leave_approval_status` enum('P','PA','PD','HA','HD') NOT NULL,
+  `leave_approval_status` enum('P','PA','PD') NOT NULL,
   `A_year` year(4) NOT NULL,
   `Date_of_application` date NOT NULL,
-  `Type` enum('SL','DL') NOT NULL,
-  `Reference_no` int(11) NOT NULL,
-  `Date_of_letter` date NOT NULL
+  `Type` enum('SL','DL') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -292,20 +327,17 @@ CREATE TABLE `staff` (
 --
 
 INSERT INTO `staff` (`Staff_id`, `Name`, `Designation`, `DOJ`, `Staff_type`, `Username`, `Password`, `Gender`, `Job_role`, `D_id`, `status`) VALUES
-(120, 'Abc', 'Mr ', '2024-10-31', 'N', '022nitinsingh@gmail.com', '$2y$10$4sYMmkb1czma7PJOwtEpJ.XO2EHi0ajwVAdd24Xg7oBfFv7t7Lw1O', 'M', 'OO', 4, 'A'),
-(121, 'Nitin Singh', 'Principal', '2024-11-01', 'T', '31nitinthakur@gmail.com', '$2y$10$QdYTsnWuJW1ku3RnkMkFLO9qqTLtI2Opro54uvTIKpUu01SlMMcHe', 'M', 'TD', 1, 'A'),
-(123, 'Nitin Singh', 'Master', '2024-10-07', '', 'college.nitinsingh@gmail.com', 'nitin', 'M', 'TD', 1, 'A'),
-(124, 'Abc', 'HOD', '2024-05-06', 'T', 'HOD', 'nitin', 'M', 'TD', 1, 'A'),
-(125, 'Anonymous', 'Principal', '2024-04-01', 'T', 'Principal', 'nitin', 'M', 'TD', 4, 'A'),
+(120, 'Abc', 'Mr ', '2024-10-31', 'N', '022nitinsingh@gmail.com', '$2y$10$4sYMmkb1czma7PJOwtEpJ.XO2EHi0ajwVAdd24Xg7oBfFv7t7Lw1O', 'M', 'OO', 1, 'D'),
+(121, 'Nitin Singh', 'Principal', '2024-11-01', 'T', '31nitinthakur@gmail.com', '$2y$10$0G1ZrrtB0b4I0rEUnryP1.5fE7i3fYdIaF1Tfv/mKtb0D4e.TiRyK', 'M', 'TD', 1, 'A'),
 (127, 'aniket', 'Mr ', '2024-11-14', 'T', 'aniket@gmail.com', '$2y$10$zmnHuuNCXmdVZjhYbfoMXek2Up9VrnzYCSq.cjLIH3Q2ZjxaY13G2', 'M', 'TD', 1, 'A'),
 (129, 'Pournima Maam', 'HOD', '2024-10-27', 'T', 'hod@gmail.com', '$2y$10$r7SCexExdvYaP8cFGQtQBezIu1nbiNAORVGCgieNnKlZxQo1omtaa', 'F', 'TD', 1, 'A'),
 (131, 'Vice Principal', 'Vice Principal ', '2024-10-27', 'T', 'vice@gmail.com', '$2y$10$WCQk/CPqpBLgWNTzkFzM4ehKEykkhRg32xNAv8iOALzZYtT3120Yu', 'M', 'TD', 2, 'A'),
-(132, 'abc', 'Mr ', '2024-11-14', 'N', 'abc@gmail.com', '$2y$10$wLSWbZ45sOHqDLfZZgnPNOAfUKvnc0wCUMjHDxtsqGWBc1fsUx.au', 'M', 'NO', 4, 'A'),
-(134, 'new', 'Mr ', '2024-11-15', 'N', 'new@gmail.com', '$2y$10$LPS1cOWX.GqPSY35bzMIp.PlS1vPECZiUMUrvdTFRSXk2PKHpkqSi', 'M', 'TD', 1, 'A'),
+(132, 'abc', 'Mr ', '2024-11-14', 'N', 'abc@gmail.com', '$2y$10$wLSWbZ45sOHqDLfZZgnPNOAfUKvnc0wCUMjHDxtsqGWBc1fsUx.au', 'M', 'NO', 1, 'A'),
+(134, 'new', 'Mr ', '2024-11-15', 'N', 'new@gmail.com', '$2y$10$LPS1cOWX.GqPSY35bzMIp.PlS1vPECZiUMUrvdTFRSXk2PKHpkqSi', 'M', 'NO', 1, 'A'),
 (135, 'Non Teaching1', 'Mr ', '2024-11-05', 'N', 'non@gmail.com', '$2y$10$QAdzCZ.3IKxkR5ouPdDXW.8efejCIP2lX9MyDgTgvE.SsNi0FSbum', 'M', 'NO', 4, 'A'),
-(136, 'Junior hod', 'HOD', '2024-11-03', 'T', 'juniorhod@gmail.com', '$2y$10$ghjBLHYmbhSbGQy0Si/.ouEGuuDcWP1rz0SIiMynEfgs1IAH2y6Xm', 'M', 'TJ', 3, 'A'),
-(137, 'junior Principal', 'Vice Principal ', '2024-10-28', 'T', 'juniorprincipal@gmail.com', '$2y$10$DQ2uj9/fvSRrs76IwRe26.ZiNa8bKvVyi4DdehxX4JTgqgHmL7zCO', 'M', 'TD', 3, 'A'),
-(147, 'aniket', 'HOD22 ', '2024-10-31', 'T', 'walfra52777@gmail.com', '$2y$10$0jeaMvaHkgWFDIqbkyoKm.1EptL2BeOFkv5VGaHpo3uP5PwMKwYJi', 'M', 'TD', 1, 'A');
+(136, 'Junior hod', 'HOD', '2024-11-03', 'T', 'juniorhod@gmail.com', '$2y$10$ghjBLHYmbhSbGQy0Si/.ouEGuuDcWP1rz0SIiMynEfgs1IAH2y6Xm', 'M', 'TJ', 3, 'D'),
+(137, 'junior Principal', 'Vice Principal ', '2024-10-28', 'T', 'juniorprincipal@gmail.com', '$2y$10$DQ2uj9/fvSRrs76IwRe26.ZiNa8bKvVyi4DdehxX4JTgqgHmL7zCO', 'M', 'TD', 3, 'D'),
+(138, 'Registrar', 'Registrar', '2025-01-14', 'N', 'registrar@gmail.com', '$2y$10$VLp9eqC9hKzECjCenC0kEeUf53MbCvrfios2nGokUTPlXGirwiPlG', 'M', 'NO', 4, 'A');
 
 -- --------------------------------------------------------
 
@@ -338,10 +370,53 @@ CREATE TABLE `staff_leaves_trial` (
 --
 
 INSERT INTO `staff_leaves_trial` (`Staff_id`, `Leave_type`, `No_of_leaves`, `A_year`) VALUES
-(124, 'CL', 11, '2024'),
-(124, 'MA', 11, '2024'),
-(124, 'HP', 11, '2024'),
-(124, 'ML', 11, '2024');
+(121, 'CL', 15, '2024'),
+(121, 'MA', 15, '2024'),
+(121, 'HP', 15, '2024'),
+(121, 'ML', 15, '2024'),
+(121, 'DL', 15, '2024'),
+(120, 'CL', 15, '2024'),
+(120, 'MA', 15, '2024'),
+(120, 'HP', 15, '2024'),
+(120, 'ML', 15, '2024'),
+(127, 'CL', 15, '2024'),
+(127, 'MA', 15, '2024'),
+(127, 'HP', 15, '2024'),
+(127, 'ML', 15, '2024'),
+(129, 'CL', 15, '2024'),
+(129, 'MA', 15, '2024'),
+(129, 'HP', 15, '2024'),
+(129, 'ML', 15, '2024'),
+(132, 'CL', 15, '2024'),
+(132, 'MA', 15, '2024'),
+(132, 'HP', 15, '2024'),
+(132, 'ML', 15, '2024'),
+(134, 'CL', 15, '2024'),
+(134, 'MA', 15, '2024'),
+(134, 'HP', 15, '2024'),
+(134, 'ML', 15, '2024');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_status_logs`
+--
+
+CREATE TABLE `user_status_logs` (
+  `id` int(11) NOT NULL,
+  `staff_id` int(11) NOT NULL,
+  `action_performed_by` int(11) NOT NULL,
+  `action` varchar(50) NOT NULL,
+  `timestamp` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_status_logs`
+--
+
+INSERT INTO `user_status_logs` (`id`, `staff_id`, `action_performed_by`, `action`, `timestamp`) VALUES
+(1, 136, 121, 'Activate', '2025-01-14 13:49:25'),
+(2, 136, 121, 'Deactivate', '2025-01-14 13:49:52');
 
 --
 -- Indexes for dumped tables
@@ -441,6 +516,12 @@ ALTER TABLE `staff_leaves_trial`
   ADD KEY `staff_leave_try` (`Staff_id`);
 
 --
+-- Indexes for table `user_status_logs`
+--
+ALTER TABLE `user_status_logs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -448,13 +529,19 @@ ALTER TABLE `staff_leaves_trial`
 -- AUTO_INCREMENT for table `n_off_pay_leave`
 --
 ALTER TABLE `n_off_pay_leave`
-  MODIFY `Staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `Staff_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `Staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=148;
+  MODIFY `Staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
+
+--
+-- AUTO_INCREMENT for table `user_status_logs`
+--
+ALTER TABLE `user_status_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
