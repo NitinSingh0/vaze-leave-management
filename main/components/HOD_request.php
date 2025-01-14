@@ -130,7 +130,23 @@ if (
     }
 </script>
 
-
+<script>
+    $("form").on("submit", function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "HOD_request.php",
+            data: $(this).serialize(),
+            success: function(response) {
+                alert("Leave updated successfully!");
+                location.reload();
+            },
+            error: function() {
+                alert("An error occurred.");
+            }
+        });
+    });
+</script>
 
 <div class="bg-gray-100 flex flex-col items-center p-6 ml-[20vw]">
 

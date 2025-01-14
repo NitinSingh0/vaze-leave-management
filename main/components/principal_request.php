@@ -154,20 +154,35 @@ if (
     if ($conn->query($update_query)) {
         $message = "Leave request updated successfully.";
         $messageType = "success";
+        //echo "<script>setTimeout(function() { window.location.reload(); }, 500);</script>";
+        //echo " <script > window.location.reload();</script>";
+        //header("Refresh:0"); // Refresh the page
+        //exit();
     } else {
         $message = "Error updating record: " . $conn->error;
         $messageType = "error";
     }
 }
 ?>
-
-
-
-
-
-
-
-
+<script>
+    $("form").on("submit", function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "principal_request.php",
+            data: $(this).serialize(),
+            success: function(response) {
+                alert("Leave updated successfully!");
+                setTimeout(function() {
+                    window.location.reload();
+                }, 100);
+            },
+            error: function() {
+                alert("An error occurred.");
+            }
+        });
+    });
+</script>
 <main class="bg-gray-100 min-h-screen flex flex-col items-center p-6 ml-[20vw]">
     <div class="w-full max-w-6xl bg-white shadow-lg rounded-lg p-6">
         <?php if (!empty($message)): ?>
@@ -178,7 +193,7 @@ if (
                 setTimeout(function() {
                     const alertBox = document.getElementById("alert-box");
                     if (alertBox) alertBox.style.display = "none";
-                }, 3000);
+                }, 300);
             </script>
         <?php endif; ?>
 
