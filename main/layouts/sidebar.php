@@ -110,24 +110,81 @@
       <?php endif; ?>
   </aside>
   <script>
+      //   function loadContent(page) {
+      //       // Get the base URL up to the directory containing index.php
+      //       const baseUrl = `${window.location.origin}/vaze-leave-management/main/pages/`;
+
+      //       // Check if the current page is 'index.php'
+      //       const isMainPage = window.location.pathname.includes("index.php");
+
+      //       if (!isMainPage) {
+      //           // Redirect to index.php with the 'page' parameter, using the base URL
+      //           window.location.href = `${baseUrl}index.php?page=${page}`;
+      //       } else {
+      //           // If already on index.php, load the content dynamically
+      //           fetch(`../components/${page}.php`)
+      //               .then(response => response.text())
+      //               .then(data => {
+      //                   document.getElementById('dynamicContent').innerHTML = data;
+      //               })
+      //               .catch(error => console.error('Error loading content:', error));
+      //       }
+      //   }
+
+      //to load the page if dynamicContentContainer div is not availabe. go to index.php then fetch content from components
       function loadContent(page) {
           // Get the base URL up to the directory containing index.php
           const baseUrl = `${window.location.origin}/vaze-leave-management/main/pages/`;
 
-          // Check if the current page is 'index.php'
-          const isMainPage = window.location.pathname.includes("index.php");
+          // Check if the dynamic content container exists
+          const dynamicContentContainer = document.getElementById('dynamicContent');
 
-          if (!isMainPage) {
-              // Redirect to index.php with the 'page' parameter, using the base URL
-              window.location.href = `${baseUrl}index.php?page=${page}`;
-          } else {
-              // If already on index.php, load the content dynamically
+          if (dynamicContentContainer) {
+              // If the dynamic content container exists, load the content dynamically
               fetch(`../components/${page}.php`)
-                  .then(response => response.text())
+                  .then(response => {
+                      if (!response.ok) {
+                          throw new Error(`HTTP error! Status: ${response.status}`);
+                      }
+                      return response.text();
+                  })
                   .then(data => {
-                      document.getElementById('dynamicContent').innerHTML = data;
+                      dynamicContentContainer.innerHTML = data;
+                      // Optionally update the browser history
+                      window.history.pushState({
+                          page: page
+                      }, '', `index.php?page=${page}`);
                   })
                   .catch(error => console.error('Error loading content:', error));
+          } else {
+              // If the dynamic content container doesn't exist, redirect to index.php
+              const url = new URL(`${baseUrl}index.php`);
+              url.searchParams.set('page', page); // Add the 'page' parameter to the URL
+              window.location.href = url;
           }
       }
+
+      // Check for `page` parameter in the URL and load the corresponding content
+      window.addEventListener('DOMContentLoaded', () => {
+          const params = new URLSearchParams(window.location.search);
+          const page = params.get('page');
+
+          if (page) {
+              const dynamicContentContainer = document.getElementById('dynamicContent');
+              if (dynamicContentContainer) {
+                  // Dynamically load the page if the container exists
+                  fetch(`../components/${page}.php`)
+                      .then(response => {
+                          if (!response.ok) {
+                              throw new Error(`HTTP error! Status: ${response.status}`);
+                          }
+                          return response.text();
+                      })
+                      .then(data => {
+                          dynamicContentContainer.innerHTML = data;
+                      })
+                      .catch(error => console.error('Error loading content:', error));
+              }
+          }
+      });
   </script>
