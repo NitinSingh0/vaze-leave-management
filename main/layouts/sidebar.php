@@ -43,30 +43,30 @@
                   </summary>
                   <ul class="mt-2 pl-4 space-y-1">
                       <!-- Leave options based on job role -->
-                      <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('dl')">Duty Leave</a></li>
-                      <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('cl')">Casual Leave</a></li>
+                      <li><a href="#" data-page="dl" class="nav-tab block px-4 py-2 text-gray-700" onclick="loadContent('dl')">Duty Leave</a></li>
+                      <li><a href="#" data-page="cl" class=" nav-tab block px-4 py-2 text-gray-700" onclick="loadContent('cl')">Casual Leave</a></li>
                       <!-- Conditional rendering for MHM, EHM, OFF pay, etc. -->
                       <?php if ($jobRole == 'TD'): ?>
-                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHM</a></li>
+                          <li><a href="#" data-page="medical" class=" nav-tab block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHM</a></li>
                       <?php elseif ($jobRole == 'TJ'): ?>
-                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">EHM</a></li>
+                          <li><a href="#" data-page="medical" class=" nav-tab block px-4 py-2 text-gray-700" onclick="loadContent('medical')">EHM</a></li>
                       <?php elseif ($jobRole == 'NL'): ?>
-                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('mediacl')">MHM</a></li>
-                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
+                          <li><a href="#" data-page="medical" class=" nav-tab block px-4 py-2 text-gray-700" onclick="loadContent('mediacl')">MHM</a></li>
+                          <li><a href="#" data-page="APPLY_OFF_PAY" class=" nav-tab block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
                       <?php elseif ($jobRole == 'NO'): ?>
-                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
-                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHME</a></li>
+                          <li><a href="#" data-page="APPLY_OFF_PAY" class=" nav-tab block px-4 py-2 text-gray-700 " onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
+                          <li><a href="#" data-page="medical" class="nav-tab block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHME</a></li>
                       <?php elseif ($jobRole == 'OO'): ?>
-                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
-                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHME</a></li>
+                          <li><a href="#" data-page="APPLY_OFF_PAY" class="nav-tab block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
+                          <li><a href="#" data-page="medical" class="nav-tab block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHME</a></li>
                       <?php endif; ?>
                   </ul>
               </details>
           </li>
-          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('status')">Check Status</a></li>
-          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('summary')">Summary</a></li>
+          <li><a href="#" data-page="status" class=" nav-tab block px-4 py-2 text-gray-700" onclick="loadContent('status')">Check Status</a></li>
+          <li><a href="#" data-page="summary" class="block px-4 py-2 text-gray-700" onclick="loadContent('summary')">Summary</a></li>
           <?php if (strcasecmp(trim($designation), 'Registrar') === 0): ?>
-              <li><a href="user_status_logs.php" class="block px-4 py-2 text-gray-700">User Status Log</a></li>
+              <li><a href="user_status_logs.php" class="nav-tab block px-4 py-2 text-gray-700">User Status Log</a></li>
           <?php endif; ?>
 
 
@@ -74,17 +74,17 @@
 
           <?php if ($designation == 'Principal'): ?>
 
-              <li><a href="Report.php" class="block px-4 py-2 text-gray-700">Report</a></li>
+              <li><a href="Report.php" class=" nav-tab block px-4 py-2 text-gray-700">Report</a></li>
 
           <?php endif; ?>
 
 
           <?php if ($designation == 'HOD'): ?>
-              <li><a href="HOD.php" class="block px-4 py-2 text-gray-700">HOD Leave Request</a></li>
-              <li><a href="HOD_Report.php" class="block px-4 py-2 text-gray-700">Generate Report</a></li>
+              <li><a href="HOD.php" class="nav-tab block px-4 py-2 text-gray-700">HOD Leave Request</a></li>
+              <li><a href="HOD_Report.php" class="nav-tab block px-4 py-2 text-gray-700">Generate Report</a></li>
           <?php endif; ?>
           <?php if (strcasecmp(trim($designation), 'Vice Principal') === 0): ?>
-              <li><a href="vicePrincipal.php" class="block px-4 py-2 text-gray-700" onclick="loadContent('VicePrincipalLeaveRequest')">Vice Principal Leave Request</a></li>
+              <li><a href="vicePrincipal.php" data-page="VicePrincipalLeaveRequest" class="nav-tab block px-4 py-2 text-gray-700" onclick="loadContent('VicePrincipalLeaveRequest')">Vice Principal Leave Request</a></li>
 
           <?php endif; ?>
       </ul>
@@ -94,17 +94,17 @@
               <h3 class="font-medium text-gray-800">Admin Options </h3>
               <ul class="mt-2 space-y-2">
                   <?php if ($jobRole == 'OO'): ?>
-                      <li><a href="officeRemark.php" class="block px-4 py-2 text-gray-700">Leave Request</a></li>
+                      <li><a href="officeRemark.php" class="nav-tab block px-4 py-2 text-gray-700">Leave Request</a></li>
                   <?php endif ?>
 
                   <?php if ($designation == 'Principal'): ?>
-                      <li><a href="principalRequest.php" class="block px-4 py-2 text-gray-700">Principal Leave Request</a></li>
+                      <li><a href="principalRequest.php" class="nav-tab block px-4 py-2 text-gray-700">Principal Leave Request</a></li>
                   <?php endif ?>
 
-                  <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('registration')">New Registration</a></li>
-                  <li><a href="assign_leave.php" class="block px-4 py-2 text-gray-700">Assign Leave</a></li>
-                  <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('update')">Update Details</a></li>
-                  <li><a href="#" class="block px-4 py-2 text-gray-700 mb-5" onclick="loadContent('active/deactive')">Deactivate Users</a></li>
+                  <li><a href="#" data-page="registration" class="nav-tab block px-4 py-2 text-gray-700" onclick="loadContent('registration')">New Registration</a></li>
+                  <li><a href="assign_leave.php" onclick="nav_style(event, this)" class=" nav-tab block px-4 py-2 text-gray-700">Assign Leave</a></li>
+                  <li><a href="#" data-page="update" class="nav-tab block px-4 py-2 text-gray-700" onclick="loadContent('update')">Update Details</a></li>
+                  <li><a href="#" data-page="active/deactive" class="nav-tab block px-4 py-2 text-gray-700 mb-5" onclick="loadContent('active/deactive')">Deactivate Users</a></li>
               </ul>
           </div>
       <?php endif; ?>
@@ -187,4 +187,22 @@
               }
           }
       });
+
+      function nav_style(event, element) {
+          // Prevent the default navigation behavior
+          event.preventDefault();
+
+          // Remove the active styles from all tabs
+          const tabs = document.querySelectorAll('.nav-tab');
+          tabs.forEach(tab => tab.classList.remove('bg-slate-200', 'text-black', 'font-bold', 'rounded-xl'));
+
+          // Add the active styles to the clicked tab
+          element.classList.add('bg-slate-200', 'text-black', 'font-bold', 'rounded-xl');
+
+          // Navigate to the URL manually if needed
+          const href = element.getAttribute('href');
+          if (href) {
+              window.location.href = href;
+          }
+      }
   </script>

@@ -37,7 +37,6 @@
 
  <!-- JavaScript for AJAX and Chart.js -->
  <script>
-
      //to load the page if dynamicContentContainer div is not availabe. go to index.php then fetch content from components
 
      function loadContent(page) {
@@ -62,6 +61,8 @@
                      window.history.pushState({
                          page: page
                      }, '', `index.php?page=${page}`);
+                     // Highlight the active tab
+                     highlightActiveTab(page);
                  })
                  .catch(error => console.error('Error loading content:', error));
          } else {
@@ -90,12 +91,43 @@
                      })
                      .then(data => {
                          dynamicContentContainer.innerHTML = data;
+                         // Highlight the active tab
+                         highlightActiveTab(page);
                      })
                      .catch(error => console.error('Error loading content:', error));
              }
          }
      });
 
+     function nav_style(event, element) {
+         // Prevent the default navigation behavior
+         event.preventDefault();
+
+         // Remove the active styles from all tabs
+         const tabs = document.querySelectorAll('.nav-tab');
+         tabs.forEach(tab => tab.classList.remove('bg-slate-200', 'text-black', 'font-bold', 'rounded-xl'));
+
+         // Add the active styles to the clicked tab
+         element.classList.add('bg-slate-200', 'text-black', 'font-bold', 'rounded-xl');
+
+         // Navigate to the URL manually if needed
+         const href = element.getAttribute('href');
+         if (href) {
+             window.location.href = href;
+         }
+     }
+
+     function highlightActiveTab(page) {
+         // Remove the active styles from all tabs
+         const tabs = document.querySelectorAll('.nav-tab');
+         tabs.forEach(tab => tab.classList.remove('bg-slate-200', 'text-black', 'font-bold', 'rounded-xl'));
+
+         // Add the active styles to the selected tab
+         const activeTab = document.querySelector(`.nav-tab[data-page="${page}"]`);
+         if (activeTab) {
+             activeTab.classList.add('bg-slate-200', 'text-black', 'font-bold', 'rounded-xl');
+         }
+     }
 
      //JavaScriptfor AJAX and Chart.js
 
