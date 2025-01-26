@@ -32,6 +32,7 @@
   <aside class="fixed flex flex-col w-1/5 bg-white border-r h-full px-4 py-6 overflow-y-auto">
       <ul class="space-y-2">
           <li>
+            <?php if (strcasecmp(trim($designation), 'Principal') != 0): ?>
               <details class="group">
                   <summary class="flex items-center justify-between px-4 py-2 text-gray-700 cursor-pointer font-medium">
                       Apply Leave
@@ -62,6 +63,7 @@
                       <?php endif; ?>
                   </ul>
               </details>
+              <?php endif; ?>
           </li>
           <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('status')">Check Status</a></li>
           <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('summary')">Summary</a></li>

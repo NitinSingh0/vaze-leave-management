@@ -82,8 +82,8 @@
 
         <!-- Username -->
         <div class="mb-4">
-            <label for="username" class="block text-gray-700 font-medium mb-2">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter a Username"
+            <label for="username" class="block text-gray-700 font-medium mb-2">Username / Email</label>
+            <input type="text" id="username" name="username" placeholder="Enter Email"
                 class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required onchange="change(this)">
             <p id="usernameWarning" class="text-red-500 text-sm mt-1 hidden">Username already exists.</p>
         </div>
