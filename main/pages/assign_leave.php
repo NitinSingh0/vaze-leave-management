@@ -21,6 +21,14 @@ session_start();
             background-color: darkcyan;
 
         }
+
+        body {
+            margin: 0;
+            /* Prevents unintended horizontal scrolling due to default margins */
+            overflow-x: hidden;
+            /* Hides the horizontal scrollbar */
+        }
+        
     </style>
 
 </head>
@@ -611,7 +619,7 @@ session_start();
             });
         });
     </script>
-        <?php include('../layouts/footer.php'); ?>
+    <?php include('../layouts/footer.php'); ?>
 </body>
 
 </html>

@@ -15,6 +15,31 @@ unset($_SESSION['email']);
     <?php include('../../library/library.php'); ?>
     <!-- <link rel="stylesheet" href="" /> -->
 
+    <style>
+        body {
+            margin: 0;
+            /* Prevents unintended horizontal scrolling due to default margins */
+            overflow-x: hidden;
+            /* Hides the horizontal scrollbar */
+        }
+
+        body::-webkit-scrollbar {
+            width: 10px;
+          display: none;
+        }
+
+        body::-webkit-scrollbar-track {
+            background-color: grey;
+            /* Background of the scrollbar track */
+            border-radius: 10px;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background-color: darkcyan;
+            border-radius: 10px;
+            /* Color of the scrollbar thumb */
+        }
+    </style>
 
 </head>
 
