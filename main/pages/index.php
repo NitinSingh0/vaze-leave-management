@@ -710,7 +710,7 @@ unset($_SESSION['email']);
     <!-- Update details -->
     <script>
         function fetchDetails(selectElement) {
-            alert("okk");
+            //alert("okk");
             const staffId = selectElement.value;
             const staffDetails = document.getElementById("staff_details");
             const noRecordMessage = document.getElementById("no_record");
