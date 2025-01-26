@@ -620,20 +620,46 @@ unset($_SESSION['email']);
         function setMinToDate2() {
             const fromDate = document.getElementById("from_date").value;
             const toDate = document.getElementById("to_date");
+            const submit = document.getElementById("submit2");
+            var year1 = document.getElementById("year3").value;
+            //console.log(year1);
             toDate.min = fromDate;
-
-            fetchLeaveData();
-
             // Enable date field if From_Date is provided, otherwise disable it
             toDate.disabled = fromDate === '';
 
             // Make the date field required if From_Date is provided
             toDate.required = fromDate !== '';
+            submit.disabled = false;
+            fetchLeaveData();
 
             async function fetchLeaveData() {
                 try {
-                    const response = await fetch('../components/Pending/cl.php');
+
+                    // Data to send in the request
+                    const requestData = {
+                        year: year1
+                    };
+
+                    // Sending a POST request with JSON data
+                    const response = await fetch('../components/Pending/cl.php', {
+                        method: 'POST', // Specify the HTTP method
+                        headers: {
+                            'Content-Type': 'application/json', // Indicate JSON payload
+                        },
+                        body: JSON.stringify(requestData), // Convert the data to a JSON string
+                    });
+
+                    // Handle the response
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
                     const data = await response.json();
+
+                    // async function fetchLeaveData() {
+                    //     try {
+                    //         const response = await fetch('../components/Pending/cl.php');
+                    //         const data = await response.json();
 
                     console.log(data); // Log the data to verify
                     const dutyUsed = Number(data.duty.used);
@@ -647,7 +673,7 @@ unset($_SESSION['email']);
                         // Set the max date to either the remaining leave days or 3 days, whichever is smaller
                         const maxDays = Math.min(dutyRemaining, 3);
                         maxDateObj.setDate(fromDateObj.getDate() + maxDays - 1);
-                        
+
                         // maxDateObj.setDate(fromDateObj.getDate() + dutyRemaining - 1);
 
                         // Format the date as yyyy-mm-dd
@@ -658,10 +684,12 @@ unset($_SESSION['email']);
                         console.log(`Max Date: ${maxDate}`);
                     } else {
                         // Show alert if no duty leave is left
-                        alert("No duty leave left!");
+                        alert("No Casual leave left!");
 
                         // Ensure to_date is not disabled
                         toDate.disabled = true;
+                        submit.disabled = true;
+
 
                         // Remove any restrictions on max date
                         document.getElementById("to_date").max = "";

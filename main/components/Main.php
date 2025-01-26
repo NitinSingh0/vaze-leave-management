@@ -37,7 +37,6 @@
 
  <!-- JavaScript for AJAX and Chart.js -->
  <script>
-
      //to load the page if dynamicContentContainer div is not availabe. go to index.php then fetch content from components
 
      function loadContent(page) {
@@ -369,6 +368,7 @@
          const fromDate = document.getElementById("from_date").value;
          const toDate = document.getElementById("to_date");
          var type1 = document.getElementById("LType").value;
+         var year1 = document.getElementById("year").value;
          if (type1 === "") {
              alert("Select The Type Of Leave To be Applied !!");
          } else {
@@ -389,7 +389,8 @@
 
                  // Data to send in the request
                  const requestData = {
-                     type: type1
+                     type: type1,
+                     year: year1
                  };
 
                  // Sending a POST request with JSON data

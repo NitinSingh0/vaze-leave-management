@@ -1,4 +1,12 @@
 <?php
+// Get the raw POST data
+$json = file_get_contents('php://input');
+$data = json_decode($json, true); // Decode JSON into PHP array
+
+// Access the data
+
+$a_year = $data['year'] ?? null;
+
 include("../../../config/connect.php");
 header('Content-Type: application/json'); // Return JSON response
 //error_reporting(E_ALL);
@@ -19,13 +27,14 @@ if ($result && $row = $result->fetch_assoc()) {
     $jobRole = $row['Job_role'];
 }
 
-if($jobRole=='NO' && $jobRole=='NL' && $jobRole=='OO' ){
-    $currentYear = date("Y");
-    $currentMonth = date("n");
-    $a_year = ($currentMonth > 6) ? $currentYear : $currentYear - 1;
-}else{
-     $a_year= date("Y");
-}
+// if($jobRole=='NO' && $jobRole=='NL' && $jobRole=='OO' ){
+//     $a_year = date("Y");
+  
+// }else{
+//     $currentYear = date("Y");
+//     $currentMonth = date("n");
+//     $a_year = ($currentMonth > 6) ? $currentYear : $currentYear - 1;
+// }
 
     // Initialize leave totals and used values
     $totalDutyLeave = $usedDutyLeave = 0;

@@ -44,7 +44,7 @@ if ($result && $row = $result->fetch_assoc()) {
                         <label class="mb-3 block text-base font-medium text-[#07074D]">
                             Academic Year <span class=" font-semibold text-red-600 text-2xl">*</span>
                         </label>
-                        <select name="year" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
+                        <select id="year" name="year" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
                             <option value="" disabled>Select Year</option>
                             <?php
                             $startMonth = date('n'); // Get the current month (1-12)

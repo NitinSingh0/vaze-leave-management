@@ -30,7 +30,7 @@ if ($result && $row = $result->fetch_assoc()) {
                 <label class="mb-3 block text-base font-medium text-[#07074D]">
                     Academic Year
                 </label>
-                <select name="year" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
+                <select name="year" id="year3" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
                     <option value="" disabled>Select Year</option>
                     <?php
                     $startMonth = date('n'); // Get the current month (1-12)
@@ -152,7 +152,7 @@ if ($result && $row = $result->fetch_assoc()) {
 
 
             <div class="bg-slate-600 rounded-lg">
-                <Input type="submit" value="Apply" name="submit" onclick="c1()"
+                <Input type="submit" value="Apply" name="submit" id="submit2" onclick="c1()"
                     class="hover:shadow-form w-full rounded-md bg-[#55a0e7] py-3 px-8 text-center text-base font-semibold text-white outline-none hover:bg-blue-800"
                     Apply />
             </div>
