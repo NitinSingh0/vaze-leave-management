@@ -64,7 +64,7 @@
                             </svg>
                             Logout
                         </a>
-                       
+
                     </div>
                 </div>
             </div>
@@ -89,6 +89,7 @@
             <p class="text-gray-800 dark:text-gray-300"><strong>Department:</strong> <span id="department" class="font-medium"></span></p>
             <p class="text-gray-800 dark:text-gray-300"><strong>Role:</strong> <span id="role" class="font-medium"></span></p>
             <p class="text-gray-800 dark:text-gray-300"><strong>Date of Joining:</strong> <span id="dateOfJoining" class="font-medium"></span></p>
+            <p class="text-gray-800 dark:text-gray-300"><strong>Designation:</strong> <span id="Designation" class="font-medium"></span></p>
         </div>
     </div>
 </div>
@@ -112,12 +113,21 @@
                     if (data.error) {
                         alert(data.error);
                     } else {
+                        const roleMapping = {
+                            TD: 'Teacher Degree',
+                            TJ: 'Teacher Junior',
+                            OO: 'Office Operator',
+                            NL: 'Non Teaching Lab',
+                            NO: 'Non Teaching Office'
+                        };
+                        const roleDescription = roleMapping[data.Role] || 'Unknown Role';
                         // Populate profile data in the card
                         $('#name').text(data.Name);
                         $('#username').text(data.Username);
                         $('#department').text(data.Department_name);
-                        $('#role').text(data.Role);
+                        $('#role').text(roleDescription);
                         $('#dateOfJoining').text(data.Date_of_Joining);
+                        $('#Designation').text(data.Designation);
                         $('#profileCard').removeClass('hidden'); // Show the card
                     }
                 },

@@ -13,12 +13,12 @@ $from_date = isset($_POST['from_date']) ? $_POST['from_date'] : '';
 
 // Prepare the base query
 $query = "SELECT From_date AS from_date, To_date AS to_date, No_of_days AS no_of_days, 
-                 Reason AS reason, Application_date AS application_date, 
+                 Reason AS reason, Date_of_application AS Date_of_application, 
                  leave_approval_status, A_year, 'CL' AS leave_type
                  FROM d_cl_leave 
                  WHERE Staff_id = $staff_id
                  UNION ALL
-                 SELECT From_date, To_date, No_of_days, Application_date, Nature AS reason, 
+                 SELECT From_date, To_date, No_of_days, Date_of_application, Nature AS reason, 
                  leave_approval_status, A_year, 'DL' AS leave_type 
                  FROM d_dl_leave 
                  WHERE Staff_id = $staff_id";
