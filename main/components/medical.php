@@ -214,7 +214,7 @@ if ($result && $row = $result->fetch_assoc()) {
 
 
             <div class="bg-slate-600 rounded-lg">
-                <Input type="submit" value="Apply" name="submit" onclick="emhm()"
+                <Input type="submit" value="Apply" name="submit" id="submit22" onclick="emhm()"
                     class="hover:shadow-form w-full rounded-md bg-[#55a0e7] py-3 px-8 text-center text-base font-semibold text-white outline-none hover:bg-blue-800"
                     Apply />
             </div>

@@ -367,10 +367,14 @@
      function setMinToDate3() {
          const fromDate = document.getElementById("from_date").value;
          const toDate = document.getElementById("to_date");
+         const submit = document.getElementById("submit22");
          var type1 = document.getElementById("LType").value;
          var year1 = document.getElementById("year").value;
          if (type1 === "") {
              alert("Select The Type Of Leave To be Applied !!");
+             submit.disabled = true;
+                toDate.disabled = true;
+             return;
          } else {
              fetchLeaveData();
          }
@@ -432,6 +436,8 @@
 
                      // Ensure to_date is not disabled
                      toDate.disabled = true;
+                     submit.disabled = true;
+
 
                      // Remove any restrictions on max date
                      document.getElementById("to_date").max = "";

@@ -330,7 +330,7 @@ unset($_SESSION['email']);
             }
 
             // Manually trigger form submission for demonstration purposes if needed
-            form.submit();
+            //form.submit();
         }
 
 

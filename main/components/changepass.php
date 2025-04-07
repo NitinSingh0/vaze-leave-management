@@ -57,7 +57,7 @@ if ($Staff_id) {
             </form>
 
             <!-- Alert Box -->
-            <div id="alertBox" class="hidden fixed top-5 right-5 p-4 rounded-md shadow-lg transition-opacity duration-500 ease-in-out"></div>
+            <div id="alertBox" class="hidden fixed top-5 right-5 p-4 rounded-md shadow-lg transition-opacity duration-500 ease-in-out">edewdewdewd</div>
         </div>
     </div>
 </div>

@@ -1,0 +1,10 @@
+[07-Apr-2025 16:50:38 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'Reference_no' in 'field list' in C:\xampp\htdocs\Leave Management VAZE\vaze-leave-management\main\components\Apply\dl.php:121
+Stack trace:
+#0 C:\xampp\htdocs\Leave Management VAZE\vaze-leave-management\main\components\Apply\dl.php(121): mysqli->query('INSERT INTO n_d...')
+#1 {main}
+  thrown in C:\xampp\htdocs\Leave Management VAZE\vaze-leave-management\main\components\Apply\dl.php on line 121
+[07-Apr-2025 16:51:26 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'Reference_no' in 'field list' in C:\xampp\htdocs\Leave Management VAZE\vaze-leave-management\main\components\Apply\dl.php:123
+Stack trace:
+#0 C:\xampp\htdocs\Leave Management VAZE\vaze-leave-management\main\components\Apply\dl.php(123): mysqli->query('INSERT INTO n_d...')
+#1 {main}
+  thrown in C:\xampp\htdocs\Leave Management VAZE\vaze-leave-management\main\components\Apply\dl.php on line 123

@@ -191,18 +191,18 @@ session_start();
                                     $currentYear = date('Y');  // Get the current year
 
                                     // Determine academic year based on the month
-                                    if ($currentMonth >= 6) { // From June onwards, current academic year starts with this year
-                                        $startYear = $currentYear;
-                                    } else { // Before June, current academic year starts with last year
-                                        $startYear = $currentYear - 1;
-                                    }
+                                    // if ($currentMonth >= 6) { // From June onwards, current academic year starts with this year
+                                    //     $startYear = $currentYear;
+                                    // } else { // Before June, current academic year starts with last year
+                                    //     $startYear = $currentYear - 1;
+                                    // }
 
                                     // Display the options
-                                    echo '<option value="' . $startYear . '">' . $startYear . ' - ' . ($startYear + 1) . '</option>';
-                                    echo '<option value="' . ($startYear + 1) . '">' . ($startYear + 1) . ' - ' . ($startYear + 2) . '</option>';
+                                    // echo '<option value="' . $startYear . '">' . $startYear . ' - ' . ($startYear + 1) . '</option>';
+                                    // echo '<option value="' . ($startYear + 1) . '">' . ($startYear + 1) . ' - ' . ($startYear + 2) . '</option>';
 
-                                    // echo '<option selected value="' . (date('Y')) . '">' . date('Y') . ' - ' . (date('Y') + 1) . '</option>';
-                                    // echo '<option  value="' . (date('Y') + 1) . '">' . date('Y') + 1 . ' - ' . (date('Y') + 2) . '</option>';
+                                    echo '<option  value="' . ($currentYear) . '">' .  $currentYear . ' - ' . ($currentYear + 1) . '</option>';
+                                    echo '<option  value="' . ($currentYear + 1) . '">' .  $currentYear + 1 . ' - ' . ($currentYear + 2) . '</option>';
 
                                     ?>
                                 </select>

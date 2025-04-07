@@ -1,8 +1,13 @@
 <?php
 include("../../../config/connect.php");
+ob_clean(); // Cle // Return JSON response
 header('Content-Type: application/json'); // Return JSON response
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('display_errors', 0);
+ini_set('error_log', 'error_log.txt');
 session_start();
 $Staff_id = $_SESSION['Staff_id'];
 //echo "console.log(" . $Staff_id . ")";
@@ -19,6 +24,7 @@ if ($result && $row = $result->fetch_assoc()) {
 
 //error_reporting(0);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // echo "<script>console.log('Inside POST request');</script>";
     if (isset($_POST['year']) && !empty($_POST['application_date']) && !empty($_POST['department']) && !empty($_POST['from_date']) && !empty($_POST['to_date']) && !empty($_POST['reason'])) {
         $year = $_POST["year"];
         $application_date = $_POST["application_date"];
@@ -99,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
         } elseif ($type == 'NL' || $type == 'NO' || $type == 'OO') {
+            
 
             // Check for duplicate entry
             $checkSql = "SELECT * FROM n_dl_leave WHERE Staff_id = '$staff_id' AND From_date = '$from_date' AND To_date = '$to_date'";
@@ -125,4 +132,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     }
+    else{
+        //echo "<script>alert('Please fill all the fields!');</script>";
+        echo json_encode(['status' => 'error', 'message' => 'Please fill all the fields!']);
+    }
+}else{
+    // Handle GET request or other methods if needed
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
+    //echo "<script>alert('Invalid request method.');</script>";
+    //echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_DL.php">';
 }
+?>
