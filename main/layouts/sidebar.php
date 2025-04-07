@@ -31,39 +31,39 @@
   <!-- Sidebar -->
   <aside class="fixed flex flex-col w-1/5 bg-white border-r h-full px-4 py-6 overflow-y-auto">
       <ul class="space-y-2">
-          <li>
-              <?php if (strcasecmp(trim($designation), 'Principal') != 0): ?>
-                  <details class="group">
-                      <summary class="flex items-center justify-between px-4 py-2 text-gray-700 cursor-pointer font-medium">
-                          Apply Leave
-                          <span class="transition duration-300 transform group-open:-rotate-180">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-                                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                              </svg>
-                          </span>
-                      </summary>
-                      <ul class="mt-2 pl-4 space-y-1">
-                          <!-- Leave options based on job role -->
-                          <li class=" hover:bg-gray-200  rounded-lg hover:ring-2"><a href="#" class="block px-4 py-2 text-gray-700 hover:text-black" onclick="loadContent('dl')">Duty Leave</a></li>
-                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('cl')">Casual Leave</a></li>
-                          <!-- Conditional rendering for MHM, EHM, OFF pay, etc. -->
-                          <?php if ($jobRole == 'TD'): ?>
-                              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHM</a></li>
-                          <?php elseif ($jobRole == 'TJ'): ?>
-                              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">EHM</a></li>
-                          <?php elseif ($jobRole == 'NL'): ?>
-                              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('mediacl')">MHM</a></li>
-                              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
-                          <?php elseif ($jobRole == 'NO'): ?>
-                              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
-                              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHME</a></li>
-                          <?php elseif ($jobRole == 'OO'): ?>
-                              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
-                              <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHME</a></li>
-                          <?php endif; ?>
-                      </ul>
-                  </details>
-              <?php endif; ?>
+          <li><a href="index.php" class="block px-4 py-2 text-gray-700">Dashboard</a></li>
+          <?php if (strcasecmp(trim($designation), 'Principal') != 0): ?>
+              <details class="group">
+                  <summary class="flex items-center justify-between px-4 py-2 text-gray-700 cursor-pointer font-medium">
+                      Apply Leave
+                      <span class="transition duration-300 transform group-open:-rotate-180">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                          </svg>
+                      </span>
+                  </summary>
+                  <ul class="mt-2 pl-4 space-y-1">
+                      <!-- Leave options based on job role -->
+                      <li class=" hover:bg-gray-200  rounded-lg hover:ring-2"><a href="#" class="block px-4 py-2 text-gray-700 hover:text-black" onclick="loadContent('dl')">Duty Leave</a></li>
+                      <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('cl')">Casual Leave</a></li>
+                      <!-- Conditional rendering for MHM, EHM, OFF pay, etc. -->
+                      <?php if ($jobRole == 'TD'): ?>
+                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHM</a></li>
+                      <?php elseif ($jobRole == 'TJ'): ?>
+                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">EHM</a></li>
+                      <?php elseif ($jobRole == 'NL'): ?>
+                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('mediacl')">MHM</a></li>
+                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
+                      <?php elseif ($jobRole == 'NO'): ?>
+                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
+                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHME</a></li>
+                      <?php elseif ($jobRole == 'OO'): ?>
+                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('APPLY_OFF_PAY')">OFF Pay</a></li>
+                          <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('medical')">MHME</a></li>
+                      <?php endif; ?>
+                  </ul>
+              </details>
+          <?php endif; ?>
           </li>
           <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('status')">Check Status</a></li>
           <li><a href="#" class="block px-4 py-2 text-gray-700" onclick="loadContent('summary')">Summary</a></li>
