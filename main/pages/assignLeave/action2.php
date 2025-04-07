@@ -9,18 +9,20 @@ if (
     !empty($_POST['year']) &&
     !empty($_POST['indiv_ml']) &&
     !empty($_POST['indiv_cl']) &&
+    !empty($_POST['indiv_hl']) &&
+    !empty($_POST['indiv_ma']) &&
     !empty($_POST['indiv_el'])
 ) {
     $el = $_POST['indiv_el'];
     $staff_id = $_POST['teacherId'];
     $cl = $_POST['indiv_cl'];
-    // $ma = $_POST['indiv_ma'];
-    // $hl = $_POST['indiv_hl'];
+    $ma = $_POST['indiv_ma'];
+    $hl = $_POST['indiv_hl'];
     $ml = $_POST['indiv_ml'];
     $year = $_POST['year'];
     $message = "";
 
-    $checkSql = "SELECT * FROM staff_leaves_trial WHERE Staff_id = '$staff_id' AND A_year = '$year' AND (Leave_type = 'CL'  OR Leave_type = 'EL' OR Leave_type = 'ML' )";
+    $checkSql = "SELECT * FROM staff_leaves_trial WHERE Staff_id = '$staff_id' AND A_year = '$year' AND (Leave_type = 'CL' OR Leave_type = 'MA' OR Leave_type = 'HP' OR Leave_type = 'EL' OR Leave_type = 'ML' )";
     $checkResult = $conn->query($checkSql);
 
     if ($checkResult->num_rows > 0) {
@@ -29,8 +31,8 @@ if (
     } else {
         // No duplicate, proceed with insertion
         $sql1 = "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'CL', '$cl', '$year')";
-        // $sql2 = "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'MA', '$ma', '$year')";
-        // $sql3 = "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'HP', '$hl', '$year')";
+        $sql2 = "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'MA', '$ma', '$year')";
+        $sql3 = "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'HP', '$hl', '$year')";
         $sql4 = "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'ML', '$ml', '$year')";
       
        if ($el != "ok123") {
@@ -48,17 +50,17 @@ if (
             $message .= "Failed to Apply Casual Leave \n";
         }
 
-        // if ($conn->query($sql2)) {
-        //     $message .= "Maternity Leave Applied \n";
-        // } else {
-        //     $message .= "Failed to Apply Maternity Leave \n";
-        // }
+        if ($conn->query($sql2)) {
+            $message .= "Maternity Leave Applied \n";
+        } else {
+            $message .= "Failed to Apply Maternity Leave \n";
+        }
 
-        // if ($conn->query($sql3)) {
-        //     $message .= "Half Pay Leave Applied \n";
-        // } else {
-        //     $message .= "Failed to Apply Half Pay Leave \n";
-        // }
+        if ($conn->query($sql3)) {
+            $message .= "Half Pay Leave Applied \n";
+        } else {
+            $message .= "Failed to Apply Half Pay Leave \n";
+        }
 
         if ($conn->query($sql4)) {
             $message .= "Medical Leave Applied \n";
@@ -74,14 +76,16 @@ elseif (
     !empty($_POST['year']) &&
     !empty($_POST['all_ml']) &&
     !empty($_POST['all_cl']) &&
+    !empty($_POST['all_hl']) &&
+    !empty($_POST['all_ma']) &&
     !empty($_POST['all_el']) &&
     !empty($_POST['type'])
 ) {
     $el = $_POST['all_el'];
     $type = $_POST['type'];
     $cl = $_POST['all_cl'];
-    // $ma = $_POST['all_ma'];
-    // $hl = $_POST['all_hl'];
+    $ma = $_POST['all_ma'];
+    $hl = $_POST['all_hl'];
     $ml = $_POST['all_ml'];
     $year = $_POST['year'];
     $message = "";
@@ -102,7 +106,7 @@ elseif (
             $staff_id = $row['Staff_id'];
 
             // Check for existing leave entries for the specified year
-            $checkSql = "SELECT * FROM staff_leaves_trial WHERE Staff_id = '$staff_id' AND A_year = '$year' AND (Leave_type = 'CL' OR Leave_type = 'EL' OR Leave_type = 'ML')";
+            $checkSql = "SELECT * FROM staff_leaves_trial WHERE Staff_id = '$staff_id' AND A_year = '$year' AND (Leave_type = 'CL' OR Leave_type = 'MA' OR Leave_type = 'HP' OR Leave_type = 'EL' OR Leave_type = 'ML')";
             $checkResult = $conn->query($checkSql);
 
             if ($checkResult->num_rows > 0) {
@@ -113,7 +117,10 @@ elseif (
                 // Prepare insertion statements for each leave type
                 $insertSql = [
                     "CL" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'CL', '$cl', '$year')",
-                    "ML" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'ML', '$ml', '$year')"
+                    "MA" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'MA', '$ma', '$year')",
+                    "HP" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'HP', '$hl', '$year')",
+                    // "DL" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'DL', 10, '$year')",
+                    "ML" => "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) VALUES ('$staff_id', 'ML', '$ml', '$year')",
                             ];
 
                 if ($el != "ok123") {
