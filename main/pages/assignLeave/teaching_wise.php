@@ -46,39 +46,18 @@ if (isset($_POST['year']) && !empty($_POST['year']) && !empty($_POST['dept']) &&
 
                         </div>
 
-                        <div class="w-full px-3 sm:w-1/2">
-                            <div class="mb-5">
-                                <label class=" pl-2 mb-3 block text-base text-gray-700 font-semibold">
-                                   Maternity Leave
-                                </label>
-                                <input type="number" placeholder="No. Of Maternity Leave" min="0" name="' . ($sub_table == 1 ? 'teacher_wise_ma' : 'department_wise_ma') . '" id="' . ($sub_table == 1 ? 'teacher_wise_ma' : 'department_wise_ma') . '" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md focus:ring-2 focus:ring-blue-500""/>
-                                 
-
-                            </div>
-                        </div>
-                    </div>
- 
+                
  
  
  ';
         //If degree then Ml
         if ($type === 'D') {
             echo '
-                       <div class="-mx-3 flex flex-wrap">
+                    
+                       
                         <div class="w-full px-3 sm:w-1/2">
                             <div class="mb-5">
-                                <label class="pl-2 mb-3 block text-base text-gray-700 font-semibold">
-                                   Half Pay Leave
-                                </label>
-                                <input type="number" placeholder="No. Of Half Pay Leave"  min="0" name="' . ($sub_table == 1 ? 'teacher_wise_hl' : 'department_wise_hl') . '" id="' . ($sub_table == 1 ? 'teacher_wise_hl' : 'department_wise_hl') . '" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md focus:ring-2 focus:ring-blue-500""/>
-                                    
-                            </div>
-
-                        </div>
-
-                        <div class="w-full px-3 sm:w-1/2">
-                            <div class="mb-5">
-                                <label class=" pl-2 mb-3 block text-base text-gray-700 font-semibold">
+                                <label class=" pl-2 mb-3 text-base text-gray-700 font-semibold">
                                    Medical Leave
                                 </label>
                                 <input type="number" min="0" placeholder="No. Of Medical Leave"  name="' . ($sub_table == 1 ? 'teacher_wise_ml_el' : 'department_wise_ml_el') . '" id="' . ($sub_table == 1 ? 'teacher_wise_ml_el' : 'department_wise_ml_el') . '" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md focus:ring-2 focus:ring-blue-500""/>
@@ -86,28 +65,20 @@ if (isset($_POST['year']) && !empty($_POST['year']) && !empty($_POST['dept']) &&
 
                             </div>
                         </div>
-                    </div>
+                       </div>
+ 
     
     
     ';         // if Junior Then EL
         } elseif ($type === 'J') {
 
             echo '
-                       <div class="-mx-3 flex flex-wrap">
-                        <div class="w-full px-3 sm:w-1/2">
-                            <div class="mb-5">
-                                <label class="pl-2 mb-3 block text-base text-gray-700 font-semibold">
-                                   Half Pay Leave
-                                </label>
-                                <input type="number" min="0" placeholder="No. Of Half Pay Leave"  name="' . ($sub_table == 1 ? 'teacher_wise_hl' : 'department_wise_hl') . '" id="' . ($sub_table == 1 ? 'teacher_wise_hl' : 'department_wise_hl') . '" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md focus:ring-2 focus:ring-blue-500""/>
-                                    
-                            </div>
-
-                        </div>
+            
+                      
 
                         <div class="w-full px-3 sm:w-1/2">
                             <div class="mb-5">
-                                <label class=" pl-2 mb-3 block text-base text-gray-700 font-semibold">
+                                <label class=" pl-2 mb-3 text-base text-gray-700 font-semibold">
                                    Earned Leave
                                 </label>
                                 <input type="number" min="0" placeholder="No. Of Earned Leave"  name="' . ($sub_table == 1 ? 'teacher_wise_ml_el' : 'department_wise_ml_el') . '" id="' . ($sub_table == 1 ? 'teacher_wise_ml_el' : 'department_wise_ml_el') . '" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md focus:ring-2 focus:ring-blue-500""/>
@@ -115,8 +86,8 @@ if (isset($_POST['year']) && !empty($_POST['year']) && !empty($_POST['dept']) &&
 
                             </div>
                         </div>
-                    </div>
-    
+        </div>
+ 
     
     ';
         }
@@ -191,32 +162,7 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
 
                         </div>
 
-                        <div class="w-full px-3 sm:w-1/2">
-                            <div class="mb-5">
-                                <label class=" pl-2 mb-3 block text-base text-gray-700 font-semibold">
-                                   Maternity Leave
-                                </label>
-                                <input type="number" placeholder="No. Of Maternity Leave" min="0" name="' . ($sub_table == 1 ? 'individual_ma' : 'all_ma') . '" id="' . ($sub_table == 1 ? 'individual_ma' : 'all_ma') . '" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md focus:ring-2 focus:ring-blue-500""/>
-                                 
-
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="-mx-3 flex flex-wrap">
-                        <div class="w-full px-3 sm:w-1/2">
-                            <div class="mb-5">
-                                <label class="pl-2 mb-3 block text-base text-gray-700 font-semibold">
-                                   Half Pay Leave
-                                </label>
-                                <input type="number" placeholder="No. Of Half Pay Leave"  min="0" name="' . ($sub_table == 1 ? 'individual_hl' : 'all_hl') . '" id="' . ($sub_table == 1 ? 'individual_hl' : 'all_hl') . '" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md focus:ring-2 focus:ring-blue-500""/>
-                                    
-                            </div>
-
-                        </div>
-
-                        <div class="w-full px-3 sm:w-1/2">
+                       <div class="w-full px-3 sm:w-1/2">
                             <div class="mb-5">
                                 <label class=" pl-2 mb-3 block text-base text-gray-700 font-semibold">
                                    Medical Leave
@@ -227,6 +173,8 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
                             </div>
                         </div>
                     </div>
+
+
  
  
  
@@ -237,7 +185,7 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
                        <div class="-mx-3 flex flex-wrap">
                         <div class="w-full px-3 sm:w-1/2">
                             <div class="mb-5">
-                                <label class="pl-2 mb-3 block text-base text-gray-700 font-semibold">
+                                <label class="pl-2 mb-3 text-base text-gray-700 font-semibold">
                                    Earned Leave
                                 </label>
                                 <input type="number" placeholder="No. Of Earned Leave"  min="0" name="' . ($sub_table == 1 ? 'individual_el' : 'all_el') . '" id="' . ($sub_table == 1 ? 'individual_el' : 'all_el') . '" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-gray-700  outline-none focus:border-[#6A64F1] focus:shadow-md focus:ring-2 focus:ring-blue-500""/>
@@ -280,13 +228,13 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
         var t_type = document.getElementById('teaching_type').value;
         var teaching_wise_t = document.getElementById('teacher_wise_teacher').value;
         var teaching_wise_cl = document.getElementById('teacher_wise_cl').value;
-        var teaching_wise_ma = document.getElementById('teacher_wise_ma').value;
-        var teaching_wise_hl = document.getElementById('teacher_wise_hl').value;
+        // var teaching_wise_ma = document.getElementById('teacher_wise_ma').value;
+        // var teaching_wise_hl = document.getElementById('teacher_wise_hl').value;
         var teaching_wise_ml_el = document.getElementById('teacher_wise_ml_el').value;
         var a_type = document.getElementById('teaching_year').value;
 
 
-        if (teaching_wise_t === "" || teaching_wise_cl === "" || teaching_wise_ma === "" || teaching_wise_hl === "" || teaching_wise_ml_el === "") {
+        if (teaching_wise_t === "" || teaching_wise_cl === "" || teaching_wise_ml_el === "") {
             alert("Please Assign All the Leaves !!");
 
         } else {
@@ -309,8 +257,6 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
                     year: a_type,
                     teaching_t: teaching_wise_t,
                     teaching_cl: teaching_wise_cl,
-                    teaching_ma: teaching_wise_ma,
-                    teaching_hl: teaching_wise_hl,
                     teaching_ml_el: teaching_wise_ml_el
                 },
                 success: function(response) {
@@ -341,13 +287,13 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
         // alert("DEPARTMENT_wise");
         var t_type = document.getElementById('teaching_type').value;
         var department_wise_cl = document.getElementById('department_wise_cl').value;
-        var department_wise_ma = document.getElementById('department_wise_ma').value;
-        var department_wise_hl = document.getElementById('department_wise_hl').value;
+        // var department_wise_ma = document.getElementById('department_wise_ma').value;
+        // var department_wise_hl = document.getElementById('department_wise_hl').value;
         var department_wise_ml_el = document.getElementById('department_wise_ml_el').value;
         var a_type = document.getElementById('teaching_year').value;
         var dept = document.getElementById('teaching_department').value;
 
-        if (department_wise_cl === "" || department_wise_ma === "" || department_wise_hl === "" || department_wise_ml_el === "" || t_type === "" || a_type === "" || dept === "") {
+        if (department_wise_cl === "" || department_wise_ml_el === "" || t_type === "" || a_type === "" || dept === "") {
             alert("Please Assign All the Leaves !!");
 
         } else {
@@ -370,8 +316,6 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
                     year: a_type,
                     department: dept,
                     department_wise_cl: department_wise_cl,
-                    department_wise_ma: department_wise_ma,
-                    department_wise_hl: department_wise_hl,
                     department_wise_ml_el: department_wise_ml_el
                 },
                 success: function(response) {
@@ -404,8 +348,8 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
         var nt_type = document.getElementById('nt_type').value;
         var individual_teacher = document.getElementById('individual_teacher').value;
         var individual_cl = document.getElementById('individual_cl').value;
-        var individual_ma = document.getElementById('individual_ma').value;
-        var individual_hl = document.getElementById('individual_hl').value;
+        // var individual_ma = document.getElementById('individual_ma').value;
+        // var individual_hl = document.getElementById('individual_hl').value;
         var individual_ml = document.getElementById('individual_ml').value;
         var individual_el = "ok123";
         var nt_year = document.getElementById('nt_year').value;
@@ -414,7 +358,7 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
             individual_el = document.getElementById('individual_el').value;
         }
 
-        if (individual_teacher === "" || individual_cl === "" || individual_ma === "" || individual_hl === "" || individual_ml === "" || individual_el === "" || nt_year === "") {
+        if (individual_teacher === "" || individual_cl === "" ||  individual_ml === "" || individual_el === "" || nt_year === "") {
             alert("Please Assign All the Leaves !!");
 
         } else {
@@ -435,8 +379,6 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
                     teacherId: individual_teacher,
                     year: nt_year,
                     indiv_cl: individual_cl,
-                    indiv_ma: individual_ma,
-                    indiv_hl: individual_hl,
                     indiv_el: individual_el,
                     indiv_ml: individual_ml
                 },
@@ -467,8 +409,8 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
         // alert("All");
         var nt_type = document.getElementById('nt_type').value;
         var all_cl = document.getElementById('all_cl').value;
-        var all_ma = document.getElementById('all_ma').value;
-        var all_hl = document.getElementById('all_hl').value;
+        // var all_ma = document.getElementById('all_ma').value;
+        // var all_hl = document.getElementById('all_hl').value;
         var all_ml = document.getElementById('all_ml').value;
         var all_el = "ok123";
         var nt_year = document.getElementById('nt_year').value;
@@ -477,7 +419,7 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
             all_el = document.getElementById('all_el').value;
         }
 
-        if (all_cl === "" || all_ma === "" || all_hl === "" || all_ml === "" || all_el === "" || nt_year === "") {
+        if (all_cl === "" || all_ml === "" || all_el === "" || nt_year === "") {
             alert("Please Assign All the Leaves !!");
 
         } else {
@@ -498,8 +440,6 @@ if (isset($_POST['nyear']) && !empty($_POST['nyear']) && !empty($_POST['ntype'])
                     type: nt_type,
                     year: nt_year,
                     all_cl: all_cl,
-                    all_ma: all_ma,
-                    all_hl: all_hl,
                     all_el: all_el,
                     all_ml: all_ml
                 },
