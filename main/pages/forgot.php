@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,7 +32,7 @@
     FOOTER
     ****************/
     -->
- 
+
 </body>
 <?php include('../../library/AOS.php'); ?>
 
