@@ -161,6 +161,13 @@
                                  <span class="text-3xl font-bold text-green-600">12</span>
                                  <span class="text-sm text-gray-500">Total Days/Year</span>
                              </div>
+                             <!-- Progress Bar -->
+                             <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
+                                 <div class="h-full bg-green-500" style="width: 50%; float: left;"></div>
+                                 <div class="h-full bg-orange-400" style="width: 16.67%; float: left;"></div>
+                                 <div class="h-full bg-gray-300" style="width: 33.33%; float: left;"></div>
+                             </div>
+
                          </div>
                          <div class="bg-white rounded-lg shadow p-6">
                              <div class="flex items-center gap-4 mb-4">
@@ -175,6 +182,13 @@
                                  <span class="text-3xl font-bold text-blue-600">15</span>
                                  <span class="text-sm text-gray-500">Total Days/Year</span>
                              </div>
+                             <!-- Progress Bar -->
+                             <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
+                                 <div class="h-full bg-blue-500" style="width: 33.33%; float: left;"></div>
+                                 <div class="h-full bg-orange-400" style="width: 6.67%; float: left;"></div>
+                                 <div class="h-full bg-gray-300" style="width: 60%; float: left;"></div>
+                             </div>
+
                          </div>
                          <div class="bg-white rounded-lg shadow p-6">
                              <div class="flex items-center gap-4 mb-4">
@@ -189,6 +203,13 @@
                                  <span class="text-3xl font-bold text-yellow-600">10</span>
                                  <span class="text-sm text-gray-500">Total Days/Year</span>
                              </div>
+                             <!-- Progress Bar -->
+                             <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
+                                 <div class="h-full bg-yellow-500" style="width: 20%; float: left;"></div>
+                                 <div class="h-full bg-orange-400" style="width: 10%; float: left;"></div>
+                                 <div class="h-full bg-gray-300" style="width: 70%; float: left;"></div>
+                             </div>
+
                          </div>
                          <div class="bg-white rounded-lg shadow p-6">
                              <div class="flex items-center gap-4 mb-4">
@@ -202,6 +223,12 @@
                              <div class="flex gap-4 justify-center items-center">
                                  <span class="text-3xl font-bold text-pink-600">180</span>
                                  <span class="text-sm text-gray-500">Total Days</span>
+                             </div>
+                             <!-- Progress Bar -->
+                             <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
+                                 <div class="h-full bg-pink-400" style="width: 55.56%; float: left;"></div>
+                                 <div class="h-full bg-orange-400" style="width: 5.56%; float: left;"></div>
+                                 <div class="h-full bg-gray-300" style="width: 38.88%; float: left;"></div>
                              </div>
                          </div>
                      </div>
@@ -939,7 +966,7 @@
 
 
  <!-- Newly added end -->
-  
+
  </body>
 
  </html>
