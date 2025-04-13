@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leave Management Dashboard</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-50">
+    <div class="min-h-screen p-8">
+      <!-- Header -->
+      <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Leave Management Dashboard</h1>
+        <p class="text-gray-600">Academic Year 2024-2025</p>
+      </header>
+
+      <!-- Total Leave Summary -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">Casual Leave</h3>
+          <div class="flex justify-between items-center">
+            <span class="text-3xl font-bold text-green-600">12</span>
+            <span class="text-sm text-gray-500">Total Days/Year</span>
+          </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
+            <div class="h-full bg-green-500" style="width: 50%; float: left;"></div>
+            <div class="h-full bg-orange-400" style="width: 16.67%; float: left;"></div>
+            <div class="h-full bg-gray-300" style="width: 33.33%; float: left;"></div>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">Medical Leave</h3>
+          <div class="flex justify-between items-center">
+            <span class="text-3xl font-bold text-blue-600">15</span>
+            <span class="text-sm text-gray-500">Total Days/Year</span>
+          </div>
+            <!-- Progress Bar -->
+    <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
+      <div class="h-full bg-blue-500" style="width: 33.33%; float: left;"></div>
+      <div class="h-full bg-orange-400" style="width: 6.67%; float: left;"></div>
+      <div class="h-full bg-gray-300" style="width: 60%; float: left;"></div>
+    </div>
+
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">Half Pay Leave</h3>
+          <div class="flex justify-between items-center">
+            <span class="text-3xl font-bold text-yellow-600">10</span>
+            <span class="text-sm text-gray-500">Total Days/Year</span>
+          </div>
+             <!-- Progress Bar -->
+    <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
+      <div class="h-full bg-yellow-500" style="width: 20%; float: left;"></div>
+      <div class="h-full bg-orange-400" style="width: 10%; float: left;"></div>
+      <div class="h-full bg-gray-300" style="width: 70%; float: left;"></div>
+    </div>
+
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">Maternity Leave</h3>
+          <div class="flex justify-between items-center">
+            <span class="text-3xl font-bold text-pink-600">180</span>
+            <span class="text-sm text-gray-500">Total Days</span>
+          </div>
+           <!-- Progress Bar -->
+    <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
+      <div class="h-full bg-pink-400" style="width: 55.56%; float: left;"></div>
+      <div class="h-full bg-orange-400" style="width: 5.56%; float: left;"></div>
+      <div class="h-full bg-gray-300" style="width: 38.88%; float: left;"></div>
+    </div>
+        </div>
+      </div>
+
+      <!-- Leave Status Charts -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Casual Leave Status</h3>
+          <canvas id="casualChart"></canvas>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Medical Leave Status</h3>
+          <canvas id="medicalChart"></canvas>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Half Pay Leave Status</h3>
+          <canvas id="halfpayChart"></canvas>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Maternity Leave Status</h3>
+          <canvas id="maternityChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Yearly Leave Trend -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Yearly Leave Trend</h3>
+        <canvas id="yearlyChart"></canvas>
+      </div>
+    </div>
+
+    <script>
+
+$(document).ready(function() {
+    
+  // Initialize pie charts
+//   const leaveTypes = [
+//     { name: 'casual', color: '#22c55e', total: 12 },
+//     { name: 'medical', color: '#3b82f6', total: 15 },
+//     { name: 'halfpay', color: '#eab308', total: 10 },
+//     { name: 'maternity', color: '#ec4899', total: 180 }
+//   ];
+  
+//   leaveTypes.forEach(type => {
+//     const ctx = document.getElementById(`${type.name}Chart`);
+//     new Chart(ctx, {
+//       type: 'pie',
+//       data: {
+//         labels: ['Used', 'Pending', 'Available'],
+//         datasets: [{
+//           data: [
+//             Math.floor(Math.random() * type.total), 
+//             Math.floor(Math.random() * 3), 
+//             type.total - Math.floor(Math.random() * type.total)
+//           ],
+//           backgroundColor: [
+//             type.color,
+//             '#9ca3af',
+//             '#e5e7eb'
+//           ]
+//         }]
+//       },
+//       options: {
+//         responsive: true,
+//         plugins: {
+//           legend: {
+//             position: 'bottom',
+//             labels: {
+//               padding: 20
+//             }
+//           }
+//         }
+//       }
+//     });
+//   });
+
+
+// Casual Leave Pie Chart
+const casualCtx = document.getElementById('casualChart');
+new Chart(casualCtx, {
+  type: 'pie',
+  data: {
+    labels: ['Used', 'Pending', 'Available'],
+    datasets: [{
+      data: [6, 2, 4],
+      backgroundColor: ['#22c55e', '#9ca3af', '#e5e7eb']
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { padding: 20 }
+      }
+    }
+  }
+});
+
+// Medical Leave Pie Chart
+const medicalCtx = document.getElementById('medicalChart');
+new Chart(medicalCtx, {
+  type: 'pie',
+  data: {
+    labels: ['Used', 'Pending', 'Available'],
+    datasets: [{
+      data: [5, 1, 9],
+      backgroundColor: ['#3b82f6', '#9ca3af', '#e5e7eb']
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { padding: 20 }
+      }
+    }
+  }
+});
+
+// Half-Pay Leave Pie Chart
+const halfpayCtx = document.getElementById('halfpayChart');
+new Chart(halfpayCtx, {
+  type: 'pie',
+  data: {
+    labels: ['Used', 'Pending', 'Available'],
+    datasets: [{
+      data: [2, 1, 7],
+      backgroundColor: ['#eab308', '#9ca3af', '#e5e7eb']
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { padding: 20 }
+      }
+    }
+  }
+});
+
+// Maternity Leave Pie Chart
+const maternityCtx = document.getElementById('maternityChart');
+new Chart(maternityCtx, {
+  type: 'pie',
+  data: {
+    labels: ['Used', 'Pending', 'Available'],
+    datasets: [{
+      data: [100, 10, 70],
+      backgroundColor: ['#ec4899', '#9ca3af', '#e5e7eb']
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { padding: 20 }
+      }
+    }
+  }
+});
+
+
+  // Initialize yearly trend chart
+  const yearlyCtx = document.getElementById('yearlyChart');
+
+// Leaves that are pre-allotted
+const allotted = [12, 10, 15, 6];
+const used = [6, 4, 2, 3];
+const pending = [2, 1, 1, 1];
+
+// On-demand leaves (no pre-allotment)
+const onDemandApproved = [3, 2]; // For Duty and Off-Pay
+const onDemandPending = [1, 2];
+
+new Chart(yearlyCtx, {
+  type: 'bar',
+  data: {
+    labels: [
+      'Casual Leave',
+      'Medical Leave',
+      'Half-Pay Leave',
+      'Maternity Leave',
+      'Duty Leave',
+      'Off-Pay Leave'
+    ],
+    datasets: [
+      // Allotted for fixed types
+      {
+        label: 'Allotted Leave',
+        data: [...allotted, 0, 0], // No allotment for last 2
+        backgroundColor: '#3b82f6',
+        borderRadius: 4,
+        stack: 'Allotted'
+      },
+      {
+        label: 'Used Leave',
+        data: [...used, ...onDemandApproved],
+        backgroundColor: '#22c55e',
+        borderRadius: 4,
+        stack: 'Used'
+      },
+      {
+        label: 'Pending Approval',
+        data: [...pending, ...onDemandPending],
+        backgroundColor: '#f97316',
+        borderRadius: 4,
+        stack: 'Used'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      x: {
+        stacked: true,
+        title: {
+          display: true,
+          text: 'Type of Leave'
+        }
+      },
+      y: {
+        beginAtZero: true,
+        stacked: true,
+        ticks: {
+          stepSize: 1
+        },
+        title: {
+          display: true,
+          text: 'Number of Leaves'
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        position: 'top'
+      },
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+        callbacks: {
+          afterBody: function (tooltipItems) {
+            const index = tooltipItems[0].dataIndex;
+
+            if (index < 4) {
+              const available = allotted[index] - (used[index] + pending[index]);
+              return 'Available: ' + available;
+            } else {
+            //   return 'On-Demand Leave (No Allotment)';
+            }
+          }
+        }
+      }
+    }
+  }
+});
+
+});
+
+
+    </script>
+
+  </body>
+</html>
