@@ -118,10 +118,10 @@
 
 
      <!-- Main Content Area with margin for sidebar -->
-     <main id="mainContent" class="flex-1 p-8 ml-[20%] overflow-auto">
+     <main id="mainContent" class="flex-1 p-4 ml-[20%] overflow-auto">
          <div id="dynamicContent">
              <?php if (strcasecmp(trim($designation), 'Principal') != 0):  ?>
-                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                 <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                      <div class="bg-white p-6 rounded-lg shadow-lg">
                          <h2 class="text-xl font-semibold text-gray-700 mb-4">Casual Leave</h2>
                          <canvas id="casualLeaveChart"></canvas>
@@ -134,7 +134,108 @@
                          <h2 class="text-xl font-semibold text-gray-700 mb-4">Medical/Half-Pay Leave</h2>
                          <canvas id="medicalLeaveChart"></canvas>
                      </div>
+                 </div> -->
+
+                 <!-- Newly added start -->
+
+
+                 <div class="min-h-screen px-2 py-4">
+                     <!-- Header -->
+                     <header class="mb-8">
+                         <h1 class="text-3xl font-bold text-gray-800">Leave Management Dashboard</h1>
+                         <p class="text-gray-600">Academic Year 2024-2025</p>
+                     </header>
+
+                     <!-- Total Leave Summary -->
+                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                         <div class="bg-white rounded-lg shadow p-6">
+                             <div class="flex items-center gap-4 mb-4">
+                                 <div class="p-3 bg-green-100 rounded-full">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                     </svg>
+                                 </div>
+                                 <h3 class="text-lg font-semibold text-gray-800">Casual Leave</h3>
+                             </div>
+                             <div class="flex gap-4 justify-center items-center">
+                                 <span class="text-3xl font-bold text-green-600">12</span>
+                                 <span class="text-sm text-gray-500">Total Days/Year</span>
+                             </div>
+                         </div>
+                         <div class="bg-white rounded-lg shadow p-6">
+                             <div class="flex items-center gap-4 mb-4">
+                                 <div class="p-3 bg-blue-100 rounded-full">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                                     </svg>
+                                 </div>
+                                 <h3 class="text-lg font-semibold text-gray-800">Medical Leave</h3>
+                             </div>
+                             <div class="flex gap-4 justify-center items-center">
+                                 <span class="text-3xl font-bold text-blue-600">15</span>
+                                 <span class="text-sm text-gray-500">Total Days/Year</span>
+                             </div>
+                         </div>
+                         <div class="bg-white rounded-lg shadow p-6">
+                             <div class="flex items-center gap-4 mb-4">
+                                 <div class="p-3 bg-yellow-100 rounded-full">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                     </svg>
+                                 </div>
+                                 <h3 class="text-lg font-semibold text-gray-800">Half Pay Leave</h3>
+                             </div>
+                             <div class="flex gap-4 justify-center items-center">
+                                 <span class="text-3xl font-bold text-yellow-600">10</span>
+                                 <span class="text-sm text-gray-500">Total Days/Year</span>
+                             </div>
+                         </div>
+                         <div class="bg-white rounded-lg shadow p-6">
+                             <div class="flex items-center gap-4 mb-4">
+                                 <div class="p-3 bg-pink-100 rounded-full">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                     </svg>
+                                 </div>
+                                 <h3 class="text-lg font-semibold text-gray-800">Maternity Leave</h3>
+                             </div>
+                             <div class="flex gap-4 justify-center items-center">
+                                 <span class="text-3xl font-bold text-pink-600">180</span>
+                                 <span class="text-sm text-gray-500">Total Days</span>
+                             </div>
+                         </div>
+                     </div>
+                     <!-- Leave Status Charts -->
+                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                         <div class="bg-white rounded-lg shadow p-6">
+                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Casual Leave Status</h3>
+                             <canvas id="casualChart"></canvas>
+                         </div>
+                         <div class="bg-white rounded-lg shadow p-6">
+                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Medical Leave Status</h3>
+                             <canvas id="medicalChart"></canvas>
+                         </div>
+                         <div class="bg-white rounded-lg shadow p-6">
+                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Half Pay Leave Status</h3>
+                             <canvas id="halfpayChart"></canvas>
+                         </div>
+                         <div class="bg-white rounded-lg shadow p-6">
+                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Maternity Leave Status</h3>
+                             <canvas id="maternityChart"></canvas>
+                         </div>
+                     </div>
+
+                     <!-- Yearly Leave Trend -->
+                     <div class="bg-white rounded-lg shadow p-6">
+                         <h3 class="text-lg font-semibold text-gray-800 mb-4">Leave Usage</h3>
+                         <canvas id="yearlyChart"></canvas>
+                     </div>
                  </div>
+
+
+
+                 <!-- Newly added end -->
+
              <?php endif; ?>
              <?php if (strcasecmp(trim($designation), 'Principal') == 0):  ?>
                  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -616,3 +717,229 @@
          dateOfLetter.required = referenceNumber !== '';
      }
  </script>
+
+ <!-- Newly added start -->
+ <script>
+     $(document).ready(function() {
+
+         // Initialize pie charts
+         //   const leaveTypes = [
+         //     { name: 'casual', color: '#22c55e', total: 12 },
+         //     { name: 'medical', color: '#3b82f6', total: 15 },
+         //     { name: 'halfpay', color: '#eab308', total: 10 },
+         //     { name: 'maternity', color: '#ec4899', total: 180 }
+         //   ];
+
+         //   leaveTypes.forEach(type => {
+         //     const ctx = document.getElementById(`${type.name}Chart`);
+         //     new Chart(ctx, {
+         //       type: 'pie',
+         //       data: {
+         //         labels: ['Used', 'Pending', 'Available'],
+         //         datasets: [{
+         //           data: [
+         //             Math.floor(Math.random() * type.total), 
+         //             Math.floor(Math.random() * 3), 
+         //             type.total - Math.floor(Math.random() * type.total)
+         //           ],
+         //           backgroundColor: [
+         //             type.color,
+         //             '#9ca3af',
+         //             '#e5e7eb'
+         //           ]
+         //         }]
+         //       },
+         //       options: {
+         //         responsive: true,
+         //         plugins: {
+         //           legend: {
+         //             position: 'bottom',
+         //             labels: {
+         //               padding: 20
+         //             }
+         //           }
+         //         }
+         //       }
+         //     });
+         //   });
+
+
+         // Casual Leave Pie Chart
+         const casualCtx = document.getElementById('casualChart');
+         new Chart(casualCtx, {
+             type: 'pie',
+             data: {
+                 labels: ['Used', 'Pending', 'Available'],
+                 datasets: [{
+                     data: [6, 2, 4],
+                     backgroundColor: ['#22c55e', '#9ca3af', '#e5e7eb']
+                 }]
+             },
+             options: {
+                 responsive: true,
+                 plugins: {
+                     legend: {
+                         position: 'bottom',
+                         labels: {
+                             padding: 20
+                         }
+                     }
+                 }
+             }
+         });
+
+         // Medical Leave Pie Chart
+         const medicalCtx = document.getElementById('medicalChart');
+         new Chart(medicalCtx, {
+             type: 'pie',
+             data: {
+                 labels: ['Used', 'Pending', 'Available'],
+                 datasets: [{
+                     data: [5, 1, 9],
+                     backgroundColor: ['#3b82f6', '#9ca3af', '#e5e7eb']
+                 }]
+             },
+             options: {
+                 responsive: true,
+                 plugins: {
+                     legend: {
+                         position: 'bottom',
+                         labels: {
+                             padding: 20
+                         }
+                     }
+                 }
+             }
+         });
+
+         // Half-Pay Leave Pie Chart
+         const halfpayCtx = document.getElementById('halfpayChart');
+         new Chart(halfpayCtx, {
+             type: 'pie',
+             data: {
+                 labels: ['Used', 'Pending', 'Available'],
+                 datasets: [{
+                     data: [2, 1, 7],
+                     backgroundColor: ['#eab308', '#9ca3af', '#e5e7eb']
+                 }]
+             },
+             options: {
+                 responsive: true,
+                 plugins: {
+                     legend: {
+                         position: 'bottom',
+                         labels: {
+                             padding: 20
+                         }
+                     }
+                 }
+             }
+         });
+
+         // Maternity Leave Pie Chart
+         const maternityCtx = document.getElementById('maternityChart');
+         new Chart(maternityCtx, {
+             type: 'pie',
+             data: {
+                 labels: ['Used', 'Pending', 'Available'],
+                 datasets: [{
+                     data: [100, 10, 70],
+                     backgroundColor: ['#ec4899', '#9ca3af', '#e5e7eb']
+                 }]
+             },
+             options: {
+                 responsive: true,
+                 plugins: {
+                     legend: {
+                         position: 'bottom',
+                         labels: {
+                             padding: 20
+                         }
+                     }
+                 }
+             }
+         });
+
+
+         // Initialize yearly trend chart
+         const yearlyCtx = document.getElementById('yearlyChart');
+         const allotted = [12, 10, 15, 6];
+         const used = [6, 4, 2, 3];
+         const pending = [2, 1, 1, 1];
+
+         new Chart(yearlyCtx, {
+             type: 'bar',
+             data: {
+                 labels: ['Casual Leave', 'Medical Leave', 'Half-Pay Leave', 'Maternity Leave'],
+                 datasets: [{
+                         label: 'Allotted Leave',
+                         data: allotted,
+                         backgroundColor: '#3b82f6',
+                         borderRadius: 4,
+                         stack: 'Allotted'
+                     },
+                     {
+                         label: 'Used Leave',
+                         data: used,
+                         backgroundColor: '#22c55e',
+                         borderRadius: 4,
+                         stack: 'Used'
+                     },
+                     {
+                         label: 'Pending Approval',
+                         data: pending,
+                         backgroundColor: '#f97316',
+                         borderRadius: 4,
+                         stack: 'Used'
+                     }
+                 ]
+             },
+             options: {
+                 responsive: true,
+                 scales: {
+                     x: {
+                         stacked: true,
+                         title: {
+                             display: true,
+                             text: 'Type of Leave'
+                         }
+                     },
+                     y: {
+                         beginAtZero: true,
+                         stacked: true,
+                         ticks: {
+                             stepSize: 1
+                         },
+                         title: {
+                             display: true,
+                             text: 'Number of Leaves'
+                         }
+                     }
+                 },
+                 plugins: {
+                     legend: {
+                         position: 'top'
+                     },
+                     tooltip: {
+                         mode: 'index',
+                         intersect: false,
+                         callbacks: {
+                             afterBody: function(tooltipItems) {
+                                 const index = tooltipItems[0].dataIndex;
+                                 const available = allotted[index] - (used[index] + pending[index]);
+                                 return 'Available: ' + available;
+                             }
+                         }
+                     }
+                 }
+             }
+         });
+     });
+ </script>
+
+
+ <!-- Newly added end -->
+  
+ </body>
+
+ </html>
