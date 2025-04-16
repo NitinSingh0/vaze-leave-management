@@ -104,6 +104,198 @@
 
     ?>
 
+ <?php
+
+    $staff_id =  $Staff_id;
+
+    $startMonth = date('n'); // Get the current month (1-12)
+    $a_year = date('Y');  // Get the current year
+
+    //If Non Teaching Then No year Change Else the 1 june - 31may Condition
+
+    if ($jobRole != "OO" && $jobRole != "NL" && $jobRole != "NO") {
+        // Determine academic year based on the month
+        if ($startMonth >= 6) { // From June onwards, current academic year starts with this year
+            $a_year = $a_year;
+        } else { // Before June, current academic year starts with last year
+            $a_year = $a_year - 1;
+        }
+    }
+
+    $totalCasualLeave = $usedCasualLeave = $pendingCasualLeave = 0;
+    $totalMedicalLeave = $usedMedicalLeave = $pendingMedicalLeave = 0;
+    $totalEarnedLeave = $usedEarnedLeave = $pendingEarnedLeave = 0;
+    $totalHalfPayLeave = $usedHalfpayLeave = $pendingHalfpayLeave = 0;
+    $totalMaternityLeave = $usedMaternityLeave = $pendingMaternityLeave = 0;
+
+
+    $totalCasualLeave = fetchTotalLeave($conn, $staff_id, 'CL', $a_year);
+    $totalHalfPayLeave = fetchTotalLeave($conn, $staff_id, 'HP', $a_year);
+    $totalMaternityLeave = fetchTotalLeave($conn, $staff_id, 'MA', $a_year);
+
+    // Step 3: Retrieve leave data based on College and Department
+    if ($jobRole == 'TD') {
+        // Junior College leave data
+        // $totalCasualLeave = fetchTotalLeave($conn, $staff_id, 'CL', $a_year);
+        $usedCasualLeave = fetchUsedLeave($conn, 'd_cl_leave', 'other', $staff_id, $a_year);
+        $pendingCasualLeave = fetchpendingLeave($conn, 'd_cl_leave', 'other', $staff_id, $a_year);
+
+        $totalMedicalLeave = fetchTotalLeave($conn, $staff_id, 'ML', $a_year);
+        $usedMedicalLeave = fetchUsedLeave($conn, 'd_mhm_leave', 'ML', $staff_id, $a_year);
+        $pendingMedicalLeave = fetchpendingLeave($conn, 'd_mhm_leave', 'ML', $staff_id, $a_year);
+
+        $usedHalfpayLeave = fetchUsedLeave($conn, 'd_mhm_leave', 'HP', $staff_id, $a_year);
+        $pendingHalfpayLeave = fetchpendingLeave($conn, 'd_mhm_leave', 'HP', $staff_id, $a_year);
+
+        $usedMaternityLeave = fetchUsedLeave($conn, 'd_mhm_leave', 'MA', $staff_id, $a_year);
+        $pendingMaternityLeave = fetchpendingLeave($conn, 'd_mhm_leave', 'MA', $staff_id, $a_year);
+    } elseif ($jobRole == 'TJ') {
+
+        $usedCasualLeave = fetchUsedLeave($conn, 'j_cl_leave', 'other', $staff_id, $a_year);
+        $pendingCasualLeave = fetchpendingLeave($conn, 'j_cl_leave', 'other', $staff_id, $a_year);
+
+        $totalEarnedLeave = fetchTotalLeave($conn, $staff_id, 'EL', $a_year);
+        $usedEarnedLeave = fetchUsedLeave($conn, 'j_ehm_leave', 'EL', $staff_id, $a_year);
+        $pendingEarnedLeave = fetchpendingLeave($conn, 'j_ehm_leave', 'EL', $staff_id, $a_year);
+
+        $usedHalfpayLeave = fetchUsedLeave($conn, 'j_ehm_leave', 'HP', $staff_id, $a_year);
+        $pendingHalfpayLeave = fetchpendingLeave($conn, 'j_ehm_leave', 'HP', $staff_id, $a_year);
+
+        $usedMaternityLeave = fetchUsedLeave($conn, 'j_ehm_leave', 'MA', $staff_id, $a_year);
+        $pendingMaternityLeave = fetchpendingLeave($conn, 'j_ehm_leave', 'MA', $staff_id, $a_year);
+    } elseif ($jobRole == 'NL') {
+
+        $usedCasualLeave = fetchUsedLeave($conn, 'n_cl_leave', 'other', $staff_id, $a_year);
+        $pendingCasualLeave = fetchpendingLeave($conn, 'n_cl_leave', 'other', $staff_id, $a_year);
+
+        $totalMedicalLeave = fetchTotalLeave($conn, $staff_id, 'ML', $a_year);
+        $usedMedicalLeave = fetchUsedLeave($conn, 'n_emhm_leave', 'ML', $staff_id, $a_year);
+        $pendingMedicalLeave = fetchpendingLeave($conn, 'n_emhm_leave', 'ML', $staff_id, $a_year);
+
+        $usedHalfpayLeave = fetchUsedLeave($conn, 'n_emhm_leave', 'HP', $staff_id, $a_year);
+        $pendingHalfpayLeave = fetchpendingLeave($conn, 'n_emhm_leave', 'HP', $staff_id, $a_year);
+
+        $usedMaternityLeave = fetchUsedLeave($conn, 'n_emhm_leave', 'MA', $staff_id, $a_year);
+        $pendingMaternityLeave = fetchpendingLeave($conn, 'n_emhm_leave', 'MA', $staff_id, $a_year);
+    } elseif ($jobRole == 'NO' || $jobRole == 'OO') {
+
+        $usedCasualLeave = fetchUsedLeave($conn, 'n_cl_leave', 'other', $staff_id, $a_year);
+        $pendingCasualLeave = fetchpendingLeave($conn, 'n_cl_leave', 'other', $staff_id, $a_year);
+
+        $totalMedicalLeave = fetchTotalLeave($conn, $staff_id, 'ML', $a_year);
+        $usedMedicalLeave = fetchUsedLeave($conn, 'n_emhm_leave', 'ML', $staff_id, $a_year);
+        $pendingMedicalLeave = fetchpendingLeave($conn, 'n_emhm_leave', 'ML', $staff_id, $a_year);
+
+        $totalEarnedLeave = fetchTotalLeave($conn, $staff_id, 'EL', $a_year);
+        $usedEarnedLeave = fetchUsedLeave($conn, 'n_emhm_leave', 'EL', $staff_id, $a_year);
+        $pendingEarnedLeave = fetchpendingLeave($conn, 'n_emhm_leave', 'EL', $staff_id, $a_year);
+
+        $usedHalfpayLeave = fetchUsedLeave($conn, 'n_emhm_leave', 'HP', $staff_id, $a_year);
+        $usedMaternityLeave = fetchUsedLeave($conn, 'n_emhm_leave', 'MA', $staff_id, $a_year);
+        $pendingMaternityLeave = fetchpendingLeave($conn, 'n_emhm_leave', 'MA', $staff_id, $a_year);
+    }
+
+
+    // Helper functions
+    function fetchTotalLeave($conn, $staff_id, $type, $a_year)
+    {
+
+        $query = $conn->prepare("SELECT SUM(No_of_leaves) AS TotalLeave FROM staff_leaves_trial 
+                                 WHERE Staff_id = ? AND Leave_type = ? AND A_year = ?");
+        // Bind parameters and execute
+        $query->bind_param("isi", $staff_id, $type, $a_year);
+
+
+        // Execute the query
+        $query->execute();
+        $result = $query->get_result()->fetch_assoc();
+        // Return the result (sum for 'Other' and No_of_leaves for specific types)
+        return $result['TotalLeave'] ?? 0;
+    }
+
+
+    function fetchUsedLeave($conn, $table, $leaveType, $staff_id, $a_year)
+    {
+        // Verify the table name is one of the expected values
+        $allowedTables = ['j_cl_leave', 'j_ehm_leave', 'n_cl_leave', 'n_emhm_leave', 'd_cl_leave', 'd_mhm_leave'];
+        if (!in_array($table, $allowedTables)) {
+            throw new Exception("Invalid table name: $table");
+        }
+
+
+        if ($leaveType == 'other') {
+            $query = $conn->prepare("SELECT SUM(No_of_days) AS UsedLeaves FROM $table WHERE Staff_id = ? AND leave_approval_status = 'PA' AND A_year = ?");
+            $query->bind_param("ii", $staff_id, $a_year);
+        } else {
+            $query = $conn->prepare("SELECT SUM(No_of_days) AS UsedLeaves FROM $table WHERE Staff_id = ? AND leave_approval_status = 'PA' AND Type = ? AND A_year = ?");
+            $query->bind_param("isi", $staff_id, $leaveType, $a_year);
+        }
+
+
+
+        $query->execute();
+        $result = $query->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['UsedLeaves'] ?? 0; // Return the value or 0 if no data
+        } else {
+            echo "No used leave record for: $staff_id, $table, $a_year<br>"; // Debugging line
+        }
+
+        return 0; // Return 0 if no results
+    }
+
+    function fetchpendingLeave($conn, $table, $leaveType, $staff_id, $a_year)
+    {
+        // Verify the table name is one of the expected values
+        $allowedTables = ['j_cl_leave', 'j_ehm_leave', 'n_cl_leave', 'n_emhm_leave', 'd_cl_leave', 'd_mhm_leave'];
+        if (!in_array($table, $allowedTables)) {
+            throw new Exception("Invalid table name: $table");
+        }
+
+
+        if ($leaveType == 'other') {
+            $query = $conn->prepare("SELECT SUM(No_of_days) AS UsedLeaves FROM $table WHERE Staff_id = ? AND leave_approval_status != 'PA' AND A_year = ?");
+            $query->bind_param("ii", $staff_id, $a_year);
+        } else {
+            $query = $conn->prepare("SELECT SUM(No_of_days) AS UsedLeaves FROM $table WHERE Staff_id = ? AND leave_approval_status != 'PA' AND Type = ? AND A_year = ?");
+            $query->bind_param("isi", $staff_id, $leaveType, $a_year);
+        }
+
+
+        // Prepare the query dynamically
+        // $query = $conn->prepare("SELECT SUM(No_of_days) AS UsedLeaves FROM $table WHERE Staff_id = ? AND leave_approval_status = 'PA' AND A_year = ?");
+
+        // if (!$query) {
+        //     die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+        // }
+
+        // $query->bind_param("ii", $staff_id, $a_year);
+        $query->execute();
+        $result = $query->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['UsedLeaves'] ?? 0; // Return the value or 0 if no data
+        } else {
+            echo "No used leave record for: $staff_id, $table, $a_year<br>"; // Debugging line
+        }
+
+        return 0; // Return 0 if no results
+    }
+
+    // echo "
+    // <script>
+    // console.log($totalCasualLeave);
+    //  console.log( $usedCasualLeave );
+    //   console.log($a_year);
+    // </script>
+
+    // ";
+
+
+    ?>
 
  <!-- Main Container -->
  <div class="mt-11 flex h-screen">
@@ -143,8 +335,28 @@
                      <!-- Header -->
                      <header class="mb-8">
                          <h1 class="text-3xl font-bold text-gray-800">Leave Management Dashboard</h1>
-                         <p class="text-gray-600">Academic Year 2024-2025</p>
+                         <p class="text-gray-600">Academic Year <?php
+                                                                $startMonth = date('n'); // Get the current month (1-12)
+                                                                $a_year = date('Y');  // Get the current year
+
+                                                                //If Non Teaching Then No year Change Else the 1 june - 31may Condition
+
+                                                                if ($jobRole != "OO" && $jobRole != "NL" && $jobRole != "NO") {
+                                                                    // Determine academic year based on the month
+                                                                    if ($startMonth >= 6) { // From June onwards, current academic year starts with this year
+                                                                        $a_year = $a_year;
+                                                                    } else { // Before June, current academic year starts with last year
+                                                                        $a_year = $a_year - 1;
+                                                                    }
+                                                                }
+                                                                echo $a_year . " - ", $a_year + 1;
+
+
+                                                                ?></p>
                      </header>
+
+
+
 
                      <!-- Total Leave Summary -->
                      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -158,38 +370,104 @@
                                  <h3 class="text-lg font-semibold text-gray-800">Casual Leave</h3>
                              </div>
                              <div class="flex gap-4 justify-center items-center">
-                                 <span class="text-3xl font-bold text-green-600">12</span>
+                                 <span class="text-3xl font-bold text-green-600"><?= $totalCasualLeave ?></span>
                                  <span class="text-sm text-gray-500">Total Days/Year</span>
                              </div>
                              <!-- Progress Bar -->
+                             <?php
+                                if ($totalCasualLeave > 0) {
+                                    $usedPercentage = ($usedCasualLeave / $totalCasualLeave) * 100;
+                                    $pendingPercent = ($pendingCasualLeave / $totalCasualLeave) * 100;
+                                    $remainingPercentage = 100 - $usedPercentage;
+                                } else {
+                                    $usedPercentage = 0;
+                                    $remainingPercentage = 100;
+                                }
+                                ?>
                              <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
-                                 <div class="h-full bg-green-500" style="width: 50%; float: left;"></div>
-                                 <div class="h-full bg-orange-400" style="width: 16.67%; float: left;"></div>
-                                 <div class="h-full bg-gray-300" style="width: 33.33%; float: left;"></div>
+                                 <div class="h-full bg-green-500" style="width: <?= $usedPercentage ?>%; float: left;"></div>
+                                 <div class="h-full bg-orange-400" style="width: <?= $pendingPercent ?>%; float: left;"></div>
+                                 <div class="h-full bg-gray-300" style="width: <?= $remainingPercentage ?>%; float: left;"></div>
                              </div>
 
                          </div>
-                         <div class="bg-white rounded-lg shadow p-6">
-                             <div class="flex items-center gap-4 mb-4">
-                                 <div class="p-3 bg-blue-100 rounded-full">
-                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                                     </svg>
+                         <?php
+
+                            if ($jobRole != 'TJ') {
+
+
+                            ?>
+                             <div class="bg-white rounded-lg shadow p-6">
+                                 <div class="flex items-center gap-4 mb-4">
+                                     <div class="p-3 bg-blue-100 rounded-full">
+                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                                         </svg>
+                                     </div>
+                                     <h3 class="text-lg font-semibold text-gray-800">Medical Leave</h3>
                                  </div>
-                                 <h3 class="text-lg font-semibold text-gray-800">Medical Leave</h3>
-                             </div>
-                             <div class="flex gap-4 justify-center items-center">
-                                 <span class="text-3xl font-bold text-blue-600">15</span>
-                                 <span class="text-sm text-gray-500">Total Days/Year</span>
-                             </div>
-                             <!-- Progress Bar -->
-                             <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
-                                 <div class="h-full bg-blue-500" style="width: 33.33%; float: left;"></div>
-                                 <div class="h-full bg-orange-400" style="width: 6.67%; float: left;"></div>
-                                 <div class="h-full bg-gray-300" style="width: 60%; float: left;"></div>
-                             </div>
+                                 <div class="flex gap-4 justify-center items-center">
+                                     <span class="text-3xl font-bold text-blue-600"><?= $totalMedicalLeave ?></span>
+                                     <span class="text-sm text-gray-500">Total Days/Year</span>
+                                 </div>
+                                 <!-- Progress Bar -->
+                                 <?php
+                                    if ($totalMedicalLeave > 0) {
+                                        $usedPercentage = ($usedMedicalLeave / $totalMedicalLeave) * 100;
+                                        $pendingPercent = ($pendingMedicalLeave / $totalMedicalLeave) * 100;
+                                        $remainingPercentage = 100 - $usedPercentage;
+                                    } else {
+                                        $usedPercentage = 0;
+                                        $remainingPercentage = 100;
+                                    }
+                                    ?>
+                                 <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
+                                     <div class="h-full bg-blue-500" style="width:  <?= $usedPercentage ?>%; float: left;"></div>
+                                     <div class="h-full bg-orange-400" style="width: <?= $pendingPercent ?>%; float: left;"></div>
+                                     <div class="h-full bg-gray-300" style="width: <?= $remainingPercentage ?>%; float: left;"></div>
+                                 </div>
 
-                         </div>
+                             </div>
+                         <?php
+                            } elseif ($jobRole == 'TJ') {
+
+                            ?>
+                             <div class="bg-white rounded-lg shadow p-6">
+                                 <div class="flex items-center gap-4 mb-4">
+                                     <div class="p-3 bg-blue-100 rounded-full">
+                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                                         </svg>
+                                     </div>
+                                     <h3 class="text-lg font-semibold text-gray-800">Earned Leave</h3>
+                                 </div>
+                                 <div class="flex gap-4 justify-center items-center">
+                                     <span class="text-3xl font-bold text-blue-600"><?= $totalEarnedLeave ?></span>
+                                     <span class="text-sm text-gray-500">Total Days/Year</span>
+                                 </div>
+                                 <!-- Progress Bar -->
+                                 <?php
+                                    if ($totalEarnedLeave > 0) {
+                                        $usedPercentage = ($usedEarnedLeave / $totalEarnedLeave) * 100;
+                                        $remainingPercentage = 100 - $usedPercentage;
+                                        $pendingPercent = ($pendingEarnedLeave / $totalEarnedLeave) * 100;
+                                    } else {
+                                        $usedPercentage = 0;
+                                        $remainingPercentage = 100;
+                                    }
+                                    ?>
+                                 <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
+                                     <div class="h-full bg-blue-500" style="width:  <?= $usedPercentage ?>%; float: left;"></div>
+                                     <div class="h-full bg-orange-400" style="width: <?= $pendingPercent ?>%; float: left;"></div>
+                                     <div class="h-full bg-gray-300" style="width: <?= $remainingPercentage ?>%; float: left;"></div>
+                                 </div>
+
+                             </div>
+                         <?php
+                            }
+                            ?>
+
+
                          <div class="bg-white rounded-lg shadow p-6">
                              <div class="flex items-center gap-4 mb-4">
                                  <div class="p-3 bg-yellow-100 rounded-full">
@@ -200,14 +478,24 @@
                                  <h3 class="text-lg font-semibold text-gray-800">Half Pay Leave</h3>
                              </div>
                              <div class="flex gap-4 justify-center items-center">
-                                 <span class="text-3xl font-bold text-yellow-600">10</span>
+                                 <span class="text-3xl font-bold text-yellow-600"><?= $totalHalfPayLeave ?></span>
                                  <span class="text-sm text-gray-500">Total Days/Year</span>
                              </div>
                              <!-- Progress Bar -->
+                             <?php
+                                if ($totalHalfPayLeave > 0) {
+                                    $usedPercentage = ($usedHalfpayLeave / $totalHalfPayLeave) * 100;
+                                    $remainingPercentage = 100 - $usedPercentage;
+                                    $pendingPercent = ($pendingHalfpayLeave / $totalHalfPayLeave) * 100;
+                                } else {
+                                    $usedPercentage = 0;
+                                    $remainingPercentage = 100;
+                                }
+                                ?>
                              <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
-                                 <div class="h-full bg-yellow-500" style="width: 20%; float: left;"></div>
-                                 <div class="h-full bg-orange-400" style="width: 10%; float: left;"></div>
-                                 <div class="h-full bg-gray-300" style="width: 70%; float: left;"></div>
+                                 <div class="h-full bg-yellow-500" style="width:  <?= $usedPercentage ?>%; float: left;"></div>
+                                 <div class="h-full bg-orange-400" style="width: <?= $pendingPercent ?>%; float: left;"></div>
+                                 <div class="h-full bg-gray-300" style="width: <?= $remainingPercentage ?>%; float: left;"></div>
                              </div>
 
                          </div>
@@ -221,14 +509,24 @@
                                  <h3 class="text-lg font-semibold text-gray-800">Maternity Leave</h3>
                              </div>
                              <div class="flex gap-4 justify-center items-center">
-                                 <span class="text-3xl font-bold text-pink-600">180</span>
+                                 <span class="text-3xl font-bold text-pink-600"><?= $totalMaternityLeave ?></span>
                                  <span class="text-sm text-gray-500">Total Days</span>
                              </div>
                              <!-- Progress Bar -->
+                             <?php
+                                if ($totalMaternityLeave > 0) {
+                                    $usedPercentage = ($usedMaternityLeave / $totalMaternityLeave) * 100;
+                                    $remainingPercentage = 100 - $usedPercentage;
+                                    $pendingPercent = ($pendingMaternityLeave / $totalMaternityLeave) * 100;
+                                } else {
+                                    $usedPercentage = 0;
+                                    $remainingPercentage = 100;
+                                }
+                                ?>
                              <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
-                                 <div class="h-full bg-pink-400" style="width: 55.56%; float: left;"></div>
-                                 <div class="h-full bg-orange-400" style="width: 5.56%; float: left;"></div>
-                                 <div class="h-full bg-gray-300" style="width: 38.88%; float: left;"></div>
+                                 <div class="h-full bg-pink-400" style="width:  <?= $usedPercentage ?>%; float: left;"></div>
+                                 <div class="h-full bg-orange-400" style="width: <?= $pendingPercent ?>%; float: left;"></div>
+                                 <div class="h-full bg-gray-300" style="width: <?= $remainingPercentage ?>%; float: left;"></div>
                              </div>
                          </div>
                      </div>
@@ -798,7 +1096,7 @@
              data: {
                  labels: ['Used', 'Pending', 'Available'],
                  datasets: [{
-                     data: [6, 2, 4],
+                     data: [<?= $usedCasualLeave ?>, <?= $pendingCasualLeave ?>, <?= $totalCasualLeave - $usedCasualLeave - $pendingCasualLeave ?>],
                      backgroundColor: ['#22c55e', '#9ca3af', '#e5e7eb']
                  }]
              },
@@ -822,7 +1120,7 @@
              data: {
                  labels: ['Used', 'Pending', 'Available'],
                  datasets: [{
-                     data: [5, 1, 9],
+                     data: [<?= implode(',', [$usedMedicalLeave, $pendingMedicalLeave, $totalMedicalLeave-$usedMedicalLeave-$pendingMedicalLeave]) ?>],
                      backgroundColor: ['#3b82f6', '#9ca3af', '#e5e7eb']
                  }]
              },
@@ -846,7 +1144,7 @@
              data: {
                  labels: ['Used', 'Pending', 'Available'],
                  datasets: [{
-                     data: [2, 1, 7],
+                     data: [<?= $usedHalfpayLeave ?>, <?= $pendingHalfpayLeave ?>, <?= $totalHalfPayLeave - $usedHalfpayLeave - $pendingHalfpayLeave ?>],
                      backgroundColor: ['#eab308', '#9ca3af', '#e5e7eb']
                  }]
              },
@@ -870,7 +1168,7 @@
              data: {
                  labels: ['Used', 'Pending', 'Available'],
                  datasets: [{
-                     data: [100, 10, 70],
+                     data: [<?= $usedMaternityLeave ?>, <?= $pendingMaternityLeave ?>, <?= $totalMaternityLeave - $usedMaternityLeave - $pendingMaternityLeave ?>],
                      backgroundColor: ['#ec4899', '#9ca3af', '#e5e7eb']
                  }]
              },
@@ -890,10 +1188,13 @@
 
          // Initialize yearly trend chart
          const yearlyCtx = document.getElementById('yearlyChart');
-         const allotted = [12, 10, 15, 6];
-         const used = [6, 4, 2, 3];
-         const pending = [2, 1, 1, 1];
+         //  const allotted = [12, 10, 15, 6];
+         //  const used = [6, 4, 2, 3];
+         //  const pending = [2, 1, 1, 1];
 
+         const allotted = [<?= implode(',', [$totalCasualLeave, $totalMedicalLeave, $totalHalfPayLeave, $totalMaternityLeave]) ?>];
+         const used = [<?= implode(',', [$usedCasualLeave, $usedMedicalLeave, $usedHalfpayLeave, $usedMaternityLeave]) ?>];
+         const pending = [<?= implode(',', [$pendingCasualLeave, $pendingMedicalLeave, $pendingHalfpayLeave, $pendingMaternityLeave]) ?>];
          new Chart(yearlyCtx, {
              type: 'bar',
              data: {
