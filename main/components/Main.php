@@ -52,6 +52,45 @@
         $deptLeaveCounts[] = $row['total_days'];
     }
 
+    // 1.1. DEPARTMENT-WISE LEAVE (Using Junior CL Leave for simplicity)
+    $deptLeaveQueryJunior = "
+    SELECT department.Name as department_name, SUM(j_cl_leave.No_of_days) as total_days
+    FROM j_cl_leave
+    INNER JOIN staff ON j_cl_leave.Staff_id = staff.Staff_id
+    INNER JOIN department ON staff.D_id = department.D_id
+    GROUP BY department.D_id
+";
+    $deptResultJunior = mysqli_query($conn, $deptLeaveQueryJunior);
+    if (!$deptResultJunior) {
+        die("Query Failed: " . mysqli_error($conn));
+    }
+    $departmentsJunior = [];
+    $deptLeaveCountsJunior = [];
+    while ($row = mysqli_fetch_assoc($deptResultJunior)) {
+        $departmentsJunior[] = $row['department_name'];
+        $deptLeaveCountsJunior[] = $row['total_days'];
+    }
+
+    // 1.2. DEPARTMENT-WISE LEAVE (Using Non teaching CL Leave for simplicity)
+    $deptLeaveQueryNonTeaching = "
+    SELECT department.Name as department_name, SUM(n_cl_leave.No_of_days) as total_days
+    FROM n_cl_leave
+    INNER JOIN staff ON n_cl_leave.Staff_id = staff.Staff_id
+    INNER JOIN department ON staff.D_id = department.D_id
+    GROUP BY department.D_id
+";
+    $deptResultNonTeaching = mysqli_query($conn, $deptLeaveQueryNonTeaching);
+    if (!$deptResultNonTeaching) {
+        die("Query Failed: " . mysqli_error($conn));
+    }
+    $departmentsNonTeaching = [];
+    $deptLeaveCountsNonTeaching = [];
+    while ($row = mysqli_fetch_assoc($deptResultNonTeaching)) {
+        $departmentsNonTeaching[] = $row['department_name'];
+        $deptLeaveCountsNonTeaching[] = $row['total_days'];
+    }
+
+
     // 2. LEAVE TYPE DISTRIBUTION
     $leaveTables = [
         'd_cl_leave' => 'Degree CL',
@@ -563,25 +602,60 @@
 
              <?php endif; ?>
              <?php if (strcasecmp(trim($designation), 'Principal') == 0):  ?>
-                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                     <!-- Department-wise -->
-                     <div class="chart-container">
-                         <h3>Department-wise CL Leave (Horizontal Bar)</h3>
-                         <canvas id="deptChart"></canvas>
+                 <div class="max-w-7xl mx-auto px-4 py-6 bg-gray-50 rounded-xl">
+                     <!-- UNIVERSAL CHARTS -->
+                     <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Overall Leave Analytics</h2>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <!-- Leave Type Distribution -->
+                         <div class="chart-container bg-white p-4 rounded-xl shadow">
+                             <h3 class="text-lg font-semibold text-gray-700 text-center mb-4">
+                                 Leave Type Distribution<br>(No. of Days)
+                             </h3>
+                             <canvas id="typeChart"></canvas>
+                         </div>
+
+                         <!-- Monthly CL Leave -->
+                         <div class="chart-container bg-white p-4 rounded-xl shadow">
+                             <h3 class="text-lg font-semibold text-gray-700 text-center mb-4">
+                                 Monthly CL Leave Requests<br>(All Categories)
+                             </h3>
+                             <canvas id="monthlyChart"></canvas>
+                         </div>
                      </div>
 
-                     <!-- Leave Type Distribution -->
-                     <div class="chart-container">
-                         <h3>Leave Type Distribution (No. of Days)</h3>
-                         <canvas id="typeChart"></canvas>
-                     </div>
+                     <!-- DEPARTMENT-WISE CHARTS -->
+                     <div class="border-t mt-10 pt-6">
+                         <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Department-wise CL Leave</h2>
+                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                             <!-- Degree College -->
+                             <div class="chart-container bg-white p-4 rounded-xl shadow">
+                                 <h3 class="text-lg font-semibold text-gray-700 text-center mb-4">
+                                     Degree College
+                                 </h3>
+                                 <canvas id="deptChart"></canvas>
+                             </div>
 
-                     <!-- Monthly Leave -->
-                     <div class="chart-container">
-                         <h3>Monthly CL Leave Requests (All Categories)</h3>
-                         <canvas id="monthlyChart"></canvas>
+                             <!-- Junior College -->
+                             <div class="chart-container bg-white p-4 rounded-xl shadow">
+                                 <h3 class="text-lg font-semibold text-gray-700 text-center mb-4">
+                                     Junior College
+                                 </h3>
+                                 <canvas id="deptChartJunior"></canvas>
+                             </div>
+
+                             <!-- Non-Teaching Staff -->
+                             <div class="chart-container bg-white p-4 rounded-xl shadow">
+                                 <h3 class="text-lg font-semibold text-gray-700 text-center mb-4">
+                                     Non-Teaching Staff
+                                 </h3>
+                                 <canvas id="deptChartNonTeaching"></canvas>
+                             </div>
+                         </div>
                      </div>
                  </div>
+
+
+
              <?php endif; ?>
 
          </div>
@@ -589,7 +663,7 @@
 
  </div>
  <script>
-     // Department-wise Leave (Horizontal Bar)
+     // Department-wise Leave (Degree college)
      new Chart(document.getElementById('deptChart'), {
          type: 'bar',
          data: {
@@ -597,6 +671,49 @@
              datasets: [{
                  label: 'Total CL Leave Days',
                  data: <?php echo json_encode($deptLeaveCounts); ?>,
+                 backgroundColor: '#4e73df'
+             }]
+         },
+         options: {
+             indexAxis: 'y',
+             responsive: true,
+             plugins: {
+                 legend: {
+                     display: false
+                 }
+             }
+         }
+     });
+     // Department-wise Leave (Junior college)
+     new Chart(document.getElementById('deptChartJunior'), {
+         type: 'bar',
+         data: {
+             labels: <?php echo json_encode($departmentsJunior); ?>,
+             datasets: [{
+                 label: 'Total CL Leave Days',
+                 data: <?php echo json_encode($deptLeaveCountsJunior); ?>,
+                 backgroundColor: '#4e73df'
+             }]
+         },
+         options: {
+             indexAxis: 'y',
+             responsive: true,
+             plugins: {
+                 legend: {
+                     display: false
+                 }
+             }
+         }
+     });
+
+     // Department-wise Leave (Degree college)
+     new Chart(document.getElementById('deptChartNonTeaching'), {
+         type: 'bar',
+         data: {
+             labels: <?php echo json_encode($departmentsNonTeaching); ?>,
+             datasets: [{
+                 label: 'Total CL Leave Days',
+                 data: <?php echo json_encode($deptLeaveCountsNonTeaching); ?>,
                  backgroundColor: '#4e73df'
              }]
          },

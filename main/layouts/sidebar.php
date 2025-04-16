@@ -65,11 +65,12 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : '';
                     </ul>
                 </details>
             </li>
+            <li><a href="#" onclick="loadContent('status')" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 text-gray-700 <?php echo ($currentPage == 'status' ? 'bg-gray-200 text-blue-600 font-semibold' : ''); ?>"><i class="fas fa-eye"></i> Check Status</a></li>
+            <li><a href="#" onclick="loadContent('summary')" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 text-gray-700 <?php echo ($currentPage == 'summary' ? 'bg-gray-200 text-blue-600 font-semibold' : ''); ?>"><i class="fas fa-list-alt"></i> Summary</a></li>
         <?php endif; ?>
 
         <!-- Common Options -->
-        <li><a href="#" onclick="loadContent('status')" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 text-gray-700 <?php echo ($currentPage == 'status' ? 'bg-gray-200 text-blue-600 font-semibold' : ''); ?>"><i class="fas fa-eye"></i> Check Status</a></li>
-        <li><a href="#" onclick="loadContent('summary')" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 text-gray-700 <?php echo ($currentPage == 'summary' ? 'bg-gray-200 text-blue-600 font-semibold' : ''); ?>"><i class="fas fa-list-alt"></i> Summary</a></li>
+
 
         <!-- Registrar -->
         <?php if (strcasecmp(trim($designation), 'Registrar') === 0): ?>
