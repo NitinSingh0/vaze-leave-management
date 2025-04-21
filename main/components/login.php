@@ -28,8 +28,14 @@ if (isset($_POST['submit'])) {
             //   </script>
             //   ";
             //header("refresh:0.5; url=../pages/changepass.php");
-            echo '<META HTTP-EQUIV="Refresh" Content="0.5; URL=../pages/changepass.php">';
-
+            $status = $row['status'];
+            if ($status != 'A') {
+              echo "<script>alert('Account Deactivated... Contact The Admin!!.'); </script>";
+              exit;
+            }else{
+              echo '<META HTTP-EQUIV="Refresh" Content="0.5; URL=../pages/changepass.php">';
+            }
+            
             // echo '
             // <META HTTP-EQUIV="Refresh" Content="0.2; URL=../pages/changepass.php">';
             $val = 3;  //   3-> for new user
@@ -53,9 +59,18 @@ if (isset($_POST['submit'])) {
 
     if ($val == 1) {  //   1-> correct password  2-> incorrect password   0 -> user not exist
 
-      $_SESSION['Staff_id'] = $row['Staff_id'];
-      echo '<script>alert("LOGIN SUCCESSFULL.....");</script>';
-      echo '<META HTTP-EQUIV="Refresh" Content="0.5; URL=index.php">';
+      // $_SESSION['Staff_id'] = $row['Staff_id'];
+      $status = $row['status'];
+      if ($status != 'A') {
+        echo "<script>alert('Account Deactivated... Contact The Admin8!!.'); </script>";
+        
+      } else {
+        $_SESSION['Staff_id'] = $row['Staff_id'];
+        echo '<script>alert("LOGIN SUCCESSFULL.....");</script>';
+        echo '<META HTTP-EQUIV="Refresh" Content="0.5; URL=index.php">';
+      }
+
+      
     } elseif ($val == 2) {
       echo '<script>alert("WRONG PASSWORd !!");</script>';
     } elseif ($val == 0) {

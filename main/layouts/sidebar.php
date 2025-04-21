@@ -20,6 +20,11 @@ $result = $conn->query($sql);
 if ($result && $row = $result->fetch_assoc()) {
     $jobRole = $row['Job_role'];
     $designation = $row['Designation'];
+    $status=$row['status'];
+    if ($status!='A') {
+        echo "<script>alert('Account Deactivated... Contact The Admin!!.'); window.location.href='login.php';</script>";
+        exit;
+    }
 }
 $currentSubPage = basename($_SERVER['PHP_SELF']);
 $currentPage = isset($_GET['page']) ? $_GET['page'] : '';

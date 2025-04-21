@@ -160,6 +160,13 @@
             $a_year = $a_year - 1;
         }
     }
+    if ($jobRole == 'OO' || $jobRole == 'NO' || $jobRole == 'NL') {
+        $usedOffPayLeave = $pendingOffPayLeave = 0; // Initialize variables for Duty Leave
+        $usedOffPayLeave = fetchUsedLeave($conn, 'n_off_pay_leave', 'offpay', $staff_id, $a_year);
+        $pendingOffPayLeave = fetchpendingLeave($conn, 'n_off_pay_leave', 'offpay', $staff_id, $a_year);
+    }
+
+    $usedDutyLeave = $pendingDutyLeave = 0; // Initialize variables for Duty Leave
 
     $totalCasualLeave = $usedCasualLeave = $pendingCasualLeave = 0;
     $totalMedicalLeave = $usedMedicalLeave = $pendingMedicalLeave = 0;
@@ -174,6 +181,11 @@
 
     // Step 3: Retrieve leave data based on College and Department
     if ($jobRole == 'TD') {
+
+
+        $usedDutyLeave = fetchUsedLeave($conn, 'd_dl_leave', 'other', $staff_id, $a_year);
+        $pendingDutyLeave = fetchpendingLeave($conn, 'd_dl_leave', 'other', $staff_id, $a_year);
+
         // Junior College leave data
         // $totalCasualLeave = fetchTotalLeave($conn, $staff_id, 'CL', $a_year);
         $usedCasualLeave = fetchUsedLeave($conn, 'd_cl_leave', 'other', $staff_id, $a_year);
@@ -190,6 +202,10 @@
         $pendingMaternityLeave = fetchpendingLeave($conn, 'd_mhm_leave', 'MA', $staff_id, $a_year);
     } elseif ($jobRole == 'TJ') {
 
+        $usedDutyLeave = fetchUsedLeave($conn, 'j_dl_leave', 'other', $staff_id, $a_year);
+        $pendingDutyLeave = fetchpendingLeave($conn, 'j_dl_leave', 'other', $staff_id, $a_year);
+
+
         $usedCasualLeave = fetchUsedLeave($conn, 'j_cl_leave', 'other', $staff_id, $a_year);
         $pendingCasualLeave = fetchpendingLeave($conn, 'j_cl_leave', 'other', $staff_id, $a_year);
 
@@ -203,6 +219,13 @@
         $usedMaternityLeave = fetchUsedLeave($conn, 'j_ehm_leave', 'MA', $staff_id, $a_year);
         $pendingMaternityLeave = fetchpendingLeave($conn, 'j_ehm_leave', 'MA', $staff_id, $a_year);
     } elseif ($jobRole == 'NL') {
+
+
+
+
+        $usedDutyLeave = fetchUsedLeave($conn, 'n_dl_leave', 'other', $staff_id, $a_year);
+        $pendingDutyLeave = fetchpendingLeave($conn, 'n_dl_leave', 'other', $staff_id, $a_year);
+
 
         $usedCasualLeave = fetchUsedLeave($conn, 'n_cl_leave', 'other', $staff_id, $a_year);
         $pendingCasualLeave = fetchpendingLeave($conn, 'n_cl_leave', 'other', $staff_id, $a_year);
@@ -218,6 +241,11 @@
         $pendingMaternityLeave = fetchpendingLeave($conn, 'n_emhm_leave', 'MA', $staff_id, $a_year);
     } elseif ($jobRole == 'NO' || $jobRole == 'OO') {
 
+
+        $usedDutyLeave = fetchUsedLeave($conn, 'n_dl_leave', 'other', $staff_id, $a_year);
+        $pendingDutyLeave = fetchpendingLeave($conn, 'n_dl_leave', 'other', $staff_id, $a_year);
+
+
         $usedCasualLeave = fetchUsedLeave($conn, 'n_cl_leave', 'other', $staff_id, $a_year);
         $pendingCasualLeave = fetchpendingLeave($conn, 'n_cl_leave', 'other', $staff_id, $a_year);
 
@@ -229,7 +257,11 @@
         $usedEarnedLeave = fetchUsedLeave($conn, 'n_emhm_leave', 'EL', $staff_id, $a_year);
         $pendingEarnedLeave = fetchpendingLeave($conn, 'n_emhm_leave', 'EL', $staff_id, $a_year);
 
+
         $usedHalfpayLeave = fetchUsedLeave($conn, 'n_emhm_leave', 'HP', $staff_id, $a_year);
+        $pendingHalfpayLeave = fetchpendingLeave($conn, 'n_emhm_leave', 'HP', $staff_id, $a_year);
+
+
         $usedMaternityLeave = fetchUsedLeave($conn, 'n_emhm_leave', 'MA', $staff_id, $a_year);
         $pendingMaternityLeave = fetchpendingLeave($conn, 'n_emhm_leave', 'MA', $staff_id, $a_year);
     }
@@ -256,7 +288,7 @@
     function fetchUsedLeave($conn, $table, $leaveType, $staff_id, $a_year)
     {
         // Verify the table name is one of the expected values
-        $allowedTables = ['j_cl_leave', 'j_ehm_leave', 'n_cl_leave', 'n_emhm_leave', 'd_cl_leave', 'd_mhm_leave'];
+        $allowedTables = ['j_cl_leave', 'j_ehm_leave', 'n_off_pay_leave', 'n_cl_leave', 'n_emhm_leave', 'd_cl_leave', 'd_mhm_leave', 'd_dl_leave', 'n_dl_leave', 'j_dl_leave'];
         if (!in_array($table, $allowedTables)) {
             throw new Exception("Invalid table name: $table");
         }
@@ -265,12 +297,13 @@
         if ($leaveType == 'other') {
             $query = $conn->prepare("SELECT SUM(No_of_days) AS UsedLeaves FROM $table WHERE Staff_id = ? AND leave_approval_status = 'PA' AND A_year = ?");
             $query->bind_param("ii", $staff_id, $a_year);
+        } elseif ($leaveType == 'offpay') {
+            $query = $conn->prepare("SELECT COUNT(*) AS UsedLeaves FROM $table WHERE Staff_id = ? AND leave_approval_status = 'PA' AND A_year = ?");
+            $query->bind_param("ii", $staff_id, $a_year);
         } else {
             $query = $conn->prepare("SELECT SUM(No_of_days) AS UsedLeaves FROM $table WHERE Staff_id = ? AND leave_approval_status = 'PA' AND Type = ? AND A_year = ?");
             $query->bind_param("isi", $staff_id, $leaveType, $a_year);
         }
-
-
 
         $query->execute();
         $result = $query->get_result();
@@ -288,7 +321,7 @@
     function fetchpendingLeave($conn, $table, $leaveType, $staff_id, $a_year)
     {
         // Verify the table name is one of the expected values
-        $allowedTables = ['j_cl_leave', 'j_ehm_leave', 'n_cl_leave', 'n_emhm_leave', 'd_cl_leave', 'd_mhm_leave'];
+        $allowedTables = ['j_cl_leave', 'j_ehm_leave', 'n_off_pay_leave', 'n_cl_leave', 'n_emhm_leave', 'd_cl_leave', 'd_mhm_leave', 'd_dl_leave', 'n_dl_leave', 'j_dl_leave'];
         if (!in_array($table, $allowedTables)) {
             throw new Exception("Invalid table name: $table");
         }
@@ -296,6 +329,9 @@
 
         if ($leaveType == 'other') {
             $query = $conn->prepare("SELECT SUM(No_of_days) AS UsedLeaves FROM $table WHERE Staff_id = ? AND leave_approval_status != 'PA' AND A_year = ?");
+            $query->bind_param("ii", $staff_id, $a_year);
+        } elseif ($leaveType == 'offpay') {
+            $query = $conn->prepare("SELECT COUNT(*) AS UsedLeaves FROM $table WHERE Staff_id = ? AND leave_approval_status != 'PA' AND A_year = ?");
             $query->bind_param("ii", $staff_id, $a_year);
         } else {
             $query = $conn->prepare("SELECT SUM(No_of_days) AS UsedLeaves FROM $table WHERE Staff_id = ? AND leave_approval_status != 'PA' AND Type = ? AND A_year = ?");
@@ -398,13 +434,18 @@
 
 
                      <!-- Total Leave Summary -->
-                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                     <div class="grid grid-cols-1 gap-6 mb-8 <?= ($jobRole == 'OO' || $jobRole == 'NO') ? 'md:grid-cols-5' : 'md:grid-cols-4'; ?>">
                          <div class="bg-white rounded-lg shadow p-6">
                              <div class="flex items-center gap-4 mb-4">
                                  <div class="p-3 bg-green-100 rounded-full">
                                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                         <!-- Calendar Outline -->
+                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M5 11h14M4 7a2 2 0 012-2h12a2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V7z" />
+
+                                         <!-- Checkmark -->
+                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 16l2 2 4-4" />
                                      </svg>
+
                                  </div>
                                  <h3 class="text-lg font-semibold text-gray-800">Casual Leave</h3>
                              </div>
@@ -440,8 +481,9 @@
                                  <div class="flex items-center gap-4 mb-4">
                                      <div class="p-3 bg-blue-100 rounded-full">
                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M5 11h14M12 14v4m2-2h-4m7 6H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v11a2 2 0 01-2 2z" />
                                          </svg>
+
                                      </div>
                                      <h3 class="text-lg font-semibold text-gray-800">Medical Leave</h3>
                                  </div>
@@ -506,7 +548,51 @@
                             }
                             ?>
 
+                         <?php if ($jobRole == 'OO' || $jobRole == 'NO') {
 
+                            ?>
+
+                             <div class="bg-white rounded-lg shadow p-6">
+                                 <div class="flex items-center gap-4 mb-4">
+                                     <div class="p-1 bg-blue-100 rounded-full">
+                                         <div class="p-3 bg-blue-100 rounded-full">
+                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-600" viewBox="0 0 640 512" fill="currentColor">
+                                                 <path d="M96 96l0 224c0 35.3 28.7 64 64 64l416 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64L160 32c-35.3 0-64 28.7-64 64zm64 160c35.3 0 64 28.7 64 64l-64 0 0-64zM224 96c0 35.3-28.7 64-64 64l0-64 64 0zM576 256l0 64-64 0c0-35.3 28.7-64 64-64zM512 96l64 0 0 64c-35.3 0-64-28.7-64-64zM288 208a80 80 0 1 1 160 0 80 80 0 1 1 -160 0zM48 120c0-13.3-10.7-24-24-24S0 106.7 0 120L0 360c0 66.3 53.7 120 120 120l400 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-400 0c-39.8 0-72-32.2-72-72l0-240z" />
+                                             </svg>
+
+                                         </div>
+
+
+                                     </div>
+                                     <h3 class="text-lg font-semibold text-gray-800">Earned Leave</h3>
+                                 </div>
+                                 <div class="flex gap-4 justify-center items-center">
+                                     <span class="text-3xl font-bold text-blue-600"><?= $totalEarnedLeave ?></span>
+                                     <span class="text-sm text-gray-500">Total Days</span>
+                                 </div>
+                                 <!-- Progress Bar -->
+                                 <?php
+                                    if ($totalEarnedLeave > 0) {
+                                        $usedPercentage = ($usedEarnedLeave / $totalEarnedLeave) * 100;
+                                        $remainingPercentage = 100 - $usedPercentage;
+                                        $pendingPercent = ($pendingEarnedLeave / $totalEarnedLeave) * 100;
+                                    } else {
+                                        $usedPercentage = 0;
+                                        $remainingPercentage = 100;
+                                    }
+                                    ?>
+                                 <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
+                                     <div class="h-full bg-blue-400" style="width:  <?= $usedPercentage ?>%; float: left;"></div>
+                                     <div class="h-full bg-orange-400" style="width: <?= $pendingPercent ?>%; float: left;"></div>
+                                     <div class="h-full bg-gray-300" style="width: <?= $remainingPercentage ?>%; float: left;"></div>
+                                 </div>
+                             </div>
+
+
+                         <?php
+
+                            }
+                            ?>
                          <div class="bg-white rounded-lg shadow p-6">
                              <div class="flex items-center gap-4 mb-4">
                                  <div class="p-3 bg-yellow-100 rounded-full">
@@ -533,7 +619,7 @@
                                 ?>
                              <div class="w-full h-3 mt-5 bg-gray-200 rounded-full overflow-hidden">
                                  <div class="h-full bg-yellow-500" style="width:  <?= $usedPercentage ?>%; float: left;"></div>
-                                 <div class="h-full bg-orange-400" style="width: <?= $pendingPercent ?>%; float: left;"></div>
+                                 <div class="h-full bg-orange-300" style="width: <?= $pendingPercent ?>%; float: left;"></div>
                                  <div class="h-full bg-gray-300" style="width: <?= $remainingPercentage ?>%; float: left;"></div>
                              </div>
 
@@ -568,6 +654,9 @@
                                  <div class="h-full bg-gray-300" style="width: <?= $remainingPercentage ?>%; float: left;"></div>
                              </div>
                          </div>
+
+
+
                      </div>
                      <!-- Leave Status Charts -->
                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -575,18 +664,52 @@
                              <h3 class="text-lg font-semibold text-gray-800 mb-4">Casual Leave Status</h3>
                              <canvas id="casualChart"></canvas>
                          </div>
-                         <div class="bg-white rounded-lg shadow p-6">
-                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Medical Leave Status</h3>
-                             <canvas id="medicalChart"></canvas>
-                         </div>
+
+                         <?php
+                            if ($jobRole == 'TJ') {
+
+                            ?>
+                             <div class="bg-white rounded-lg shadow p-6">
+                                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Earned Leave Status</h3>
+                                 <canvas id="earnedChart"></canvas>
+                             </div>
+                         <?php
+                            } else {
+                            ?>
+                             <div class="bg-white rounded-lg shadow p-6">
+                                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Medical Leave Status</h3>
+                                 <canvas id="medicalChart"></canvas>
+                             </div>
+                         <?php } ?>
+
                          <div class="bg-white rounded-lg shadow p-6">
                              <h3 class="text-lg font-semibold text-gray-800 mb-4">Half Pay Leave Status</h3>
                              <canvas id="halfpayChart"></canvas>
                          </div>
-                         <div class="bg-white rounded-lg shadow p-6">
-                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Maternity Leave Status</h3>
-                             <canvas id="maternityChart"></canvas>
-                         </div>
+
+                         <?php
+                            if ($jobRole == 'OO' || $jobRole == 'NO') {
+
+
+                            ?>
+                             <div class="bg-white rounded-lg shadow p-6">
+                                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Earned Leave Status</h3>
+                                 <canvas id="earnedChart"></canvas>
+                             </div>
+
+                         <?php
+                            } else {
+
+
+                            ?>
+
+                             <div class="bg-white rounded-lg shadow p-6">
+                                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Maternity Leave Status</h3>
+                                 <canvas id="maternityChart"></canvas>
+                             </div>
+                         <?php
+                            }
+                            ?>
                      </div>
 
                      <!-- Yearly Leave Trend -->
@@ -1237,7 +1360,7 @@
              data: {
                  labels: ['Used', 'Pending', 'Available'],
                  datasets: [{
-                     data: [<?= implode(',', [$usedMedicalLeave, $pendingMedicalLeave, $totalMedicalLeave-$usedMedicalLeave-$pendingMedicalLeave]) ?>],
+                     data: [<?= implode(',', [$usedMedicalLeave, $pendingMedicalLeave, $totalMedicalLeave - $usedMedicalLeave - $pendingMedicalLeave]) ?>],
                      backgroundColor: ['#3b82f6', '#9ca3af', '#e5e7eb']
                  }]
              },
@@ -1280,27 +1403,58 @@
 
          // Maternity Leave Pie Chart
          const maternityCtx = document.getElementById('maternityChart');
-         new Chart(maternityCtx, {
-             type: 'pie',
-             data: {
-                 labels: ['Used', 'Pending', 'Available'],
-                 datasets: [{
-                     data: [<?= $usedMaternityLeave ?>, <?= $pendingMaternityLeave ?>, <?= $totalMaternityLeave - $usedMaternityLeave - $pendingMaternityLeave ?>],
-                     backgroundColor: ['#ec4899', '#9ca3af', '#e5e7eb']
-                 }]
-             },
-             options: {
-                 responsive: true,
-                 plugins: {
-                     legend: {
-                         position: 'bottom',
-                         labels: {
-                             padding: 20
+
+         if (maternityCtx) {
+             new Chart(maternityCtx, {
+                 type: 'pie',
+                 data: {
+                     labels: ['Used', 'Pending', 'Available'],
+                     datasets: [{
+                         data: [<?= $usedMaternityLeave ?>, <?= $pendingMaternityLeave ?>, <?= $totalMaternityLeave - $usedMaternityLeave - $pendingMaternityLeave ?>],
+                         backgroundColor: ['#ec4899', '#9ca3af', '#e5e7eb']
+                     }]
+                 },
+                 options: {
+                     responsive: true,
+                     plugins: {
+                         legend: {
+                             position: 'bottom',
+                             labels: {
+                                 padding: 20
+                             }
                          }
                      }
                  }
-             }
-         });
+             });
+         }
+
+
+         const earnedCtx = document.getElementById('earnedChart');
+
+         if (earnedCtx) {
+             new Chart(earnedCtx, {
+                 type: 'pie',
+                 data: {
+                     labels: ['Used', 'Pending', 'Available'],
+                     datasets: [{
+                         data: [<?= $usedEarnedLeave ?>, <?= $pendingEarnedLeave ?>, <?= $totalEarnedLeave - $usedEarnedLeave - $pendingEarnedLeave ?>],
+                         backgroundColor: ['#ec4899', '#9ca3af', '#e5e7eb']
+                     }]
+                 },
+                 options: {
+                     responsive: true,
+                     plugins: {
+                         legend: {
+                             position: 'bottom',
+                             labels: {
+                                 padding: 20
+                             }
+                         }
+                     }
+                 }
+             });
+         }
+
 
 
          // Initialize yearly trend chart
@@ -1309,13 +1463,72 @@
          //  const used = [6, 4, 2, 3];
          //  const pending = [2, 1, 1, 1];
 
-         const allotted = [<?= implode(',', [$totalCasualLeave, $totalMedicalLeave, $totalHalfPayLeave, $totalMaternityLeave]) ?>];
-         const used = [<?= implode(',', [$usedCasualLeave, $usedMedicalLeave, $usedHalfpayLeave, $usedMaternityLeave]) ?>];
-         const pending = [<?= implode(',', [$pendingCasualLeave, $pendingMedicalLeave, $pendingHalfpayLeave, $pendingMaternityLeave]) ?>];
+         const allotted = [<?php
+                            if ($jobRole == 'TJ') {
+                                echo implode(',', [$totalCasualLeave, $totalEarnedLeave, $totalHalfPayLeave, $totalMaternityLeave, 0]);
+                            } elseif ($jobRole == 'TD' || $jobRole == 'NL') {
+                                echo implode(',', [$totalCasualLeave, $totalMedicalLeave, $totalHalfPayLeave, $totalMaternityLeave, 0]);
+                            } else {
+                                echo implode(',', [$totalCasualLeave, $totalMedicalLeave, $totalEarnedLeave, $totalHalfPayLeave, $totalMaternityLeave, 0]);
+                            }
+                            ?>];
+
+         const used = [<?php
+                        if ($jobRole == 'TJ') {
+                            echo implode(',', [$usedCasualLeave, $usedEarnedLeave, $usedHalfpayLeave, $usedMaternityLeave, $usedDutyLeave]);
+                        } elseif ($jobRole == 'TD' || $jobRole == 'NL') {
+                            echo implode(',', [$usedCasualLeave, $usedMedicalLeave, $usedHalfpayLeave, $usedMaternityLeave, $usedDutyLeave]);
+                        } else {
+                            echo implode(',', [$usedCasualLeave, $usedMedicalLeave, $usedEarnedLeave, $usedHalfpayLeave, $usedMaternityLeave, $usedDutyLeave]);
+                        }
+
+                        ?>];
+         const pending = [<?php
+                            if ($jobRole == 'TJ') {
+                                echo implode(',', [$pendingCasualLeave, $pendingEarnedLeave, $pendingHalfpayLeave, $pendingMaternityLeave, $pendingDutyLeave]);
+                            } elseif ($jobRole == 'TD' || $jobRole == 'NL') {
+                                echo implode(',', [$pendingCasualLeave, $pendingMedicalLeave, $pendingHalfpayLeave, $pendingMaternityLeave, $pendingDutyLeave]);
+                            } else {
+                                echo implode(',', [$pendingCasualLeave, $pendingMedicalLeave, $pendingEarnedLeave, $pendingHalfpayLeave, $pendingMaternityLeave, $pendingDutyLeave]);
+                            }
+
+                            ?>];
+
+         const label = [<?php
+                        if ($jobRole == 'TJ') {
+                            echo '"' . implode('","', [
+                                'Casual Leave',
+                                'Earned Leave',
+                                'Half-Pay Leave',
+                                'Maternity Leave',
+                                'Duty Leave'
+                            ]) . '"';
+                        } elseif ($jobRole == 'TD' || $jobRole == 'NL') {
+                            echo '"' . implode('","', [
+                                'Casual Leave',
+                                'Medical Leave',
+                                'Half-Pay Leave',
+                                'Maternity Leave',
+                                'Duty Leave'
+                            ]) . '"';
+                        } else {
+                            echo '"' . implode('","', [
+                                'Casual Leave',
+                                'Medical Leave',
+                                'Earned Leave',
+                                'Half-Pay Leave',
+                                'Maternity Leave',
+                                'Duty Leave'
+                            ]) . '"';
+                        }
+                        ?>];
+
+
+
          new Chart(yearlyCtx, {
              type: 'bar',
              data: {
-                 labels: ['Casual Leave', 'Medical Leave', 'Half-Pay Leave', 'Maternity Leave'],
+                 labels: label,
                  datasets: [{
                          label: 'Allotted Leave',
                          data: allotted,
