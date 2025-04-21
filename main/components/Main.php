@@ -32,22 +32,22 @@
         'n_emhm_leave',
         'n_off_pay_leave'
     ];
-                            $startMonth = date('n'); // Get the current month (1-12)
-                            $a_year = date('Y');  // Get the current year
+    $startMonth = date('n'); // Get the current month (1-12)
+    $a_year = date('Y');  // Get the current year
 
-                            //If Non Teaching Then No year Change Else the 1 june - 31may Condition
+    //If Non Teaching Then No year Change Else the 1 june - 31may Condition
 
-                            if ($jobRole != "OO" && $jobRole != "NL" && $jobRole != "NO") {
-                                // Determine academic year based on the month
-                                if ($startMonth >= 6) { // From June onwards, current academic year starts with this year
-                                    $a_year = $a_year;
-                                } else { // Before June, current academic year starts with last year
-                                    $a_year = $a_year - 1;
-                                }
-                            }
+    if ($jobRole != "OO" && $jobRole != "NL" && $jobRole != "NO") {
+        // Determine academic year based on the month
+        if ($startMonth >= 6) { // From June onwards, current academic year starts with this year
+            $a_year = $a_year;
+        } else { // Before June, current academic year starts with last year
+            $a_year = $a_year - 1;
+        }
+    }
 
-                            // 1. DEPARTMENT-WISE LEAVE (Using Degree CL Leave for simplicity)
-                            $deptLeaveQuery = "
+    // 1. DEPARTMENT-WISE LEAVE (Using Degree CL Leave for simplicity)
+    $deptLeaveQuery = "
     SELECT department.Name as department_name, SUM(d_cl_leave.No_of_days) as total_days
     FROM d_cl_leave
     INNER JOIN staff ON d_cl_leave.Staff_id = staff.Staff_id
@@ -56,7 +56,7 @@
     GROUP BY department.D_id
 ";
 
-                            $deptResult = mysqli_query($conn, $deptLeaveQuery);
+    $deptResult = mysqli_query($conn, $deptLeaveQuery);
     if (!$deptResult) {
         die("Query Failed: " . mysqli_error($conn));
     }
@@ -130,8 +130,8 @@
         $leaveLabels[] = $label;
         $leaveCounts[] = (int)$data['total'];
     }
-                            // Add n_off_pay_leave separately using COUNT(*)
-                            $offPayQuery = "SELECT COUNT(*) as total FROM n_off_pay_leave WHERE A_year = $a_year";
+    // Add n_off_pay_leave separately using COUNT(*)
+    $offPayQuery = "SELECT COUNT(*) as total FROM n_off_pay_leave WHERE A_year = $a_year";
     $offPayResult = mysqli_query($conn, $offPayQuery);
     if (!$offPayResult) {
         die("Query Failed on n_off_pay_leave: " . mysqli_error($conn));
@@ -183,7 +183,7 @@
 
     $usedDutyLeave = $pendingDutyLeave = 0; // Initialize variables for Duty Leave
 
-                            $totalCasualLeave = $usedCasualLeave = $pendingCasualLeave = 0;
+    $totalCasualLeave = $usedCasualLeave = $pendingCasualLeave = 0;
     $totalMedicalLeave = $usedMedicalLeave = $pendingMedicalLeave = 0;
     $totalEarnedLeave = $usedEarnedLeave = $pendingEarnedLeave = 0;
     $totalHalfPayLeave = $usedHalfpayLeave = $pendingHalfpayLeave = 0;
@@ -1370,27 +1370,31 @@
 
          // Medical Leave Pie Chart
          const medicalCtx = document.getElementById('medicalChart');
-         new Chart(medicalCtx, {
-             type: 'pie',
-             data: {
-                 labels: ['Used', 'Pending', 'Available'],
-                 datasets: [{
-                     data: [<?= implode(',', [$usedMedicalLeave, $pendingMedicalLeave, $totalMedicalLeave - $usedMedicalLeave - $pendingMedicalLeave]) ?>],
-                     backgroundColor: ['#3b82f6', '#9ca3af', '#e5e7eb']
-                 }]
-             },
-             options: {
-                 responsive: true,
-                 plugins: {
-                     legend: {
-                         position: 'bottom',
-                         labels: {
-                             padding: 20
+
+         if (medicalCtx) {
+             new Chart(medicalCtx, {
+                 type: 'pie',
+                 data: {
+                     labels: ['Used', 'Pending', 'Available'],
+                     datasets: [{
+                         data: [<?= implode(',', [$usedMedicalLeave, $pendingMedicalLeave, $totalMedicalLeave - $usedMedicalLeave - $pendingMedicalLeave]) ?>],
+                         backgroundColor: ['#3b82f6', '#9ca3af', '#e5e7eb']
+                     }]
+                 },
+                 options: {
+                     responsive: true,
+                     plugins: {
+                         legend: {
+                             position: 'bottom',
+                             labels: {
+                                 padding: 20
+                             }
                          }
                      }
                  }
-             }
-         });
+             });
+         }
+
 
          // Half-Pay Leave Pie Chart
          const halfpayCtx = document.getElementById('halfpayChart');
