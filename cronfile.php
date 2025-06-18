@@ -25,13 +25,133 @@ if ($result->num_rows > 0) {
         if ($jobRole != "OO" && $jobRole != "NL" && $jobRole != "NO") {
             // Determine academic year based on the month
             if ($startMonth >= 6) { // From June onwards, current academic year starts with this year
-                $startYear = $startYear;
-            } else { // Before June, current academic year starts with last year
-                $startYear = $startYear - 1;
-            }
+                Teachingstaff($staff_id, $jobRole, $startYear, $conn);
+            }else{
+                continue; // Skip carry forward for teaching staff if the month is before June
+            } 
+        }else{
+            NonTeachingstaff($staff_id, $jobRole, $startYear, $conn);;
         }
 
-        // CHECK THE TOTAL ML LEAVE OF THE staff member for the current academic year
+      
+    }
+}else{
+    echo "<script>alert('No active staff members found.');</script>";
+    exit;
+}
+
+function Teachingstaff( $staff_id, $jobRole, $startYear, $conn) {
+
+    // CHECK THE TOTAL ML LEAVE OF THE staff member for the current academic year
+    $sql2 = "SELECT Staff_id,sum(No_of_leaves) AS TotalML FROM staff_leaves_trial WHERE Staff_id = '$staff_id' AND A_year = '$startYear' AND Leave_type = 'ML'";
+    $result2 = $conn->query($sql2);
+    if ($result2->num_rows > 0) {
+        if ($row2 = $result2->fetch_assoc()) {
+            $totalML = $row2['TotalML'];
+        }
+    } else {
+        $totalML = 0; // Default value if no records found
+    }
+
+    // CHECK THE JOB_ROLE OF THE STAFF MEMBER AND FETCH THE USED ML LEAVE
+    if ($jobRole == "TD") {
+        // CHECK THE TOTAL USED ML LEAVE OF THE staff member for the current academic year
+        $sql3 = "SELECT Staff_id,sum(No_of_days) AS TotalMLUSED FROM d_mhm_leave WHERE Staff_id = '$staff_id' AND A_year = '$startYear' AND leave_approval_status = 'PA' AND Type = 'ML' ";
+        $result3 = $conn->query($sql3);
+        if ($result3->num_rows > 0) {
+            if ($row3 = $result3->fetch_assoc()) {
+                $totalMLUSED = $row3['TotalMLUSED'];
+            }
+        } else {
+            $totalMLUSED = 0; // Default value if no records found
+        }
+    } 
+
+    // Calculate the remaining Medical Leave (ML) for the staff member
+    $REMAININGML = $totalML - $totalMLUSED;
+
+    if ($REMAININGML > 0) {
+
+        //INCREMENTING THE ACEDEMIC YEAR
+        $nextyear = $startYear + 1;
+
+        //INSERTING THE REMAINING ML LEAVE FOR THAT STAFF MEMBER FOR THE NEXT YEAR
+        $sql4 = "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) 
+    VALUES ('$staff_id', 'ML', '$REMAININGML', '$nextyear')";
+
+        if ($res = $conn->query($sql4)) {
+            echo "<script>alert('Medical Leave for teaching staff Carry forward Successfully!');</script>";
+            //echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_DL.php">';
+            // echo json_encode(['status' => 'success', 'message' => 'ML Leave Applied Successfully!']);
+        } else {
+            echo "<script>alert('ERROR!!');</script>";
+            // echo json_encode(['status' => 'error', 'message' => 'ERROR!!']);
+        }
+    } else {
+        echo "<script>alert('No Medical Leave to carry forward for Teaching Staff ID: $staff_id');</script>";
+        // echo json_encode(['status' => 'info', 'message' => 'No Medical Leave to carry forward for Staff ID: ' . $staff_id]);
+    }
+}
+
+
+function  NonTeachingstaff($staff_id, $jobRole, $startYear, $conn){
+
+    // CHECK THE TOTAL ML LEAVE OF THE staff member for the current academic year
+    $sql2 = "SELECT Staff_id,sum(No_of_leaves) AS TotalML FROM staff_leaves_trial WHERE Staff_id = '$staff_id' AND A_year = '$startYear' AND Leave_type = 'ML'";
+    $result2 = $conn->query($sql2);
+    if ($result2->num_rows > 0) {
+        if ($row2 = $result2->fetch_assoc()) {
+            $totalML = $row2['TotalML'];
+        }
+    } else {
+        $totalML = 0; // Default value if no records found
+    }
+
+    // CHECK THE JOB_ROLE OF THE STAFF MEMBER AND FETCH THE USED ML LEAVE
+    if ($jobRole != "TD") {
+        // CHECK THE TOTAL USED ML LEAVE OF THE staff member for the current academic year
+        $sql3 = "SELECT Staff_id,sum(No_of_days) AS TotalMLUSED FROM n_emhm_leave WHERE Staff_id = '$staff_id' AND A_year = '$startYear' AND leave_approval_status = 'PA' AND Type = 'ML' ";
+        $result3 = $conn->query($sql3);
+        if ($result3->num_rows > 0) {
+            if ($row3 = $result3->fetch_assoc()) {
+                $totalMLUSED = $row3['TotalMLUSED'];
+            }
+        } else {
+            $totalMLUSED = 0; // Default value if no records found
+        }
+    }
+
+    // Calculate the remaining Medical Leave (ML) for the staff member
+    $REMAININGML = $totalML - $totalMLUSED;
+
+    if ($REMAININGML > 0) {
+
+        //INCREMENTING THE ACEDEMIC YEAR
+        $nextyear = $startYear + 1;
+
+        //INSERTING THE REMAINING ML LEAVE FOR THAT STAFF MEMBER FOR THE NEXT YEAR
+        $sql4 = "INSERT INTO staff_leaves_trial (Staff_id, Leave_type, No_of_leaves, A_year) 
+            VALUES ('$staff_id', 'ML', '$REMAININGML', '$nextyear')";
+
+        if ($res = $conn->query($sql4)) {
+            echo "<script>alert('Medical Leave for Non- Teaching staff Carry forward Successfully!');</script>";
+            //echo '<META HTTP-EQUIV="Refresh" Content="0.5;URL=APPLY_DL.php">';
+            // echo json_encode(['status' => 'success', 'message' => 'ML Leave Applied Successfully!']);
+        } else {
+            echo "<script>alert('ERROR!!');</script>";
+            // echo json_encode(['status' => 'error', 'message' => 'ERROR!!']);
+        }
+    } else {
+        echo "<script>alert('No Medical Leave to carry forward for Non Teaching Staff ID: $staff_id');</script>";
+        // echo json_encode(['status' => 'info', 'message' => 'No Medical Leave to carry forward for Staff ID: ' . $staff_id]);
+    }
+
+}
+
+
+
+/*
+// CHECK THE TOTAL ML LEAVE OF THE staff member for the current academic year
         $sql2 = "SELECT Staff_id,sum(No_of_leaves) AS TotalML FROM staff_leaves_trial WHERE Staff_id = '$staff_id' AND A_year = '$startYear' AND Leave_type = 'ML'";
         $result2 = $conn->query($sql2);
         if( $result2->num_rows > 0) {
@@ -93,12 +213,7 @@ if ($result->num_rows > 0) {
             echo "<script>alert('No Medical Leave to carry forward for Staff ID: $staff_id');</script>";
             // echo json_encode(['status' => 'info', 'message' => 'No Medical Leave to carry forward for Staff ID: ' . $staff_id]);
         }
-      
-    }
-}else{
-    echo "<script>alert('No active staff members found.');</script>";
-    exit;
-}
-
+           
+        */
 
 ?>
