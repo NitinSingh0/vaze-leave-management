@@ -9,11 +9,12 @@
     <title>Vaze Leave Management</title>
 
     <?php include('../../config/connect.php'); ?>
+    <?php include('../../library/library.php'); ?>
     <link rel="stylesheet" href="../../css/common/header.css" />
-  
+
 </head>
 
-<body class="bg-white dark:bg-black">
+<body class="bg-gray-100 dark:bg-black">
     <!--
     /***************
     NAVBAR 
@@ -36,6 +37,6 @@
 </body>
 <?php include('../../library/AOS.php'); ?>
 
-<?php include('../../library/library.php'); ?>
+
 
 </html>
